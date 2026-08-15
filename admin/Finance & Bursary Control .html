@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>Finance & Bursary Control · British Poly Admin</title>
+    <!-- Google Font + minimal reset -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f6faff;
+            color: #0a1e3c;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 260px;
+            background: #0a1e3c;
+            color: white;
+            min-height: 100vh;
+            padding: 1.8rem 1.2rem 2rem;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.25s ease;
+            z-index: 200;
+        }
+
+        .sidebar .logo {
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar .logo span {
+            color: #6a9aff;
+        }
+
+        .sidebar .logo small {
+            font-weight: 400;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.4);
+            display: block;
+            margin-top: 0.1rem;
+        }
+
+        .sidebar .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar .nav-section .label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .sidebar .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.6rem 0.8rem;
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: 0.15s ease;
+            margin-bottom: 0.15rem;
+            cursor: pointer;
+        }
+
+        .sidebar .nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .sidebar .nav-item.active {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+        }
+
+        .sidebar .nav-item .icon {
+            font-size: 1.1rem;
+            width: 28px;
+            text-align: center;
+        }
+
+        .sidebar .nav-item .badge {
+            margin-left: auto;
+            background: #1a5cff;
+            color: white;
+            font-size: 0.6rem;
+            padding: 0.05rem 0.6rem;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+
+        .sidebar .user-card {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 0.8rem 1rem;
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .sidebar .user-card .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1a5cff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .sidebar .user-card .info {
+            font-size: 0.8rem;
+        }
+
+        .sidebar .user-card .info .name {
+            font-weight: 600;
+            color: white;
+        }
+
+        .sidebar .user-card .info .role {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem 2rem 3rem;
+            max-width: calc(100% - 260px);
+            width: 100%;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            background: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eef2f8;
+            margin-bottom: 2rem;
+        }
+
+        .top-bar .greeting {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .top-bar .greeting small {
+            font-weight: 400;
+            color: #4a6a8a;
+            font-size: 0.8rem;
+        }
+
+        .top-bar .actions {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .top-bar .actions .btn {
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: 0.15s ease;
+            background: white;
+            color: #0a1e3c;
+            border-color: #c5d4ee;
+            text-decoration: none;
+        }
+
+        .top-bar .actions .btn-primary {
+            background: #0a1e3c;
+            color: white;
+            border-color: #0a1e3c;
+        }
+
+        .top-bar .actions .btn-primary:hover {
+            background: #17335c;
+            border-color: #17335c;
+        }
+
+        .top-bar .actions .btn-success {
+            background: #0e7b3a;
+            color: white;
+            border-color: #0e7b3a;
+        }
+
+        .top-bar .actions .btn-success:hover {
+            background: #1a934a;
+            border-color: #1a934a;
+        }
+
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0a1e3c;
+        }
+
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: #4a6a8a;
+            font-weight: 500;
+        }
+
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 60px;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+        }
+
+        .tab-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 40px;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #4a6a8a;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .tab-btn:hover {
+            background: #f0f4fe;
+            color: #0a1e3c;
+        }
+
+        .tab-btn.active {
+            background: #0a1e3c;
+            color: white;
+            box-shadow: 0 4px 12px rgba(10, 30, 60, 0.15);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ===== FILTER BAR ===== */
+        .filter-bar {
+            background: white;
+            border-radius: 24px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.5rem;
+            align-items: center;
+        }
+
+        .filter-bar .search-group {
+            flex: 2;
+            min-width: 180px;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-bar .search-group input {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.85rem;
+            outline: none;
+            min-width: 100px;
+        }
+
+        .filter-bar .search-group input:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .filter-bar .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+            align-items: center;
+        }
+
+        .filter-bar .filter-group label {
+            font-weight: 500;
+            font-size: 0.7rem;
+            color: #1a3660;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .filter-bar .filter-group select {
+            padding: 0.3rem 1rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.8rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .filter-bar .filter-group select:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .filter-bar .result-count {
+            font-size: 0.8rem;
+            color: #4a6a8a;
+            margin-left: auto;
+        }
+
+        .filter-bar .result-count strong {
+            color: #0a1e3c;
+        }
+
+        /* ===== TABLE ===== */
+        .table-section {
+            background: white;
+            border-radius: 24px;
+            padding: 0.5rem 0 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            overflow-x: auto;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 1.5rem 0.3rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .table-header .actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+        }
+
+        .btn-sm {
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
+        }
+
+        .btn-primary {
+            background: #1a5cff;
+            color: white;
+            border-color: #1a5cff;
+        }
+
+        .btn-primary:hover {
+            background: #2a6cff;
+            border-color: #2a6cff;
+        }
+
+        .btn-success {
+            background: #0e7b3a;
+            color: white;
+            border-color: #0e7b3a;
+        }
+
+        .btn-success:hover {
+            background: #1a934a;
+            border-color: #1a934a;
+        }
+
+        .btn-danger {
+            background: #b22234;
+            color: white;
+            border-color: #b22234;
+        }
+
+        .btn-danger:hover {
+            background: #a01e2e;
+            border-color: #a01e2e;
+        }
+
+        .btn-warning {
+            background: #d48c2c;
+            color: white;
+            border-color: #d48c2c;
+        }
+
+        .btn-warning:hover {
+            background: #c07a1e;
+            border-color: #c07a1e;
+        }
+
+        .btn-outline-blue {
+            background: white;
+            color: #0a1e3c;
+            border-color: #0a1e3c;
+        }
+
+        .btn-outline-blue:hover {
+            background: #edf4ff;
+            border-color: #1a5cff;
+            color: #1a5cff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 800px;
+        }
+
+        th {
+            text-align: left;
+            padding: 0.6rem 1rem 0.4rem;
+            font-weight: 600;
+            color: #1a3660;
+            border-bottom: 2px solid #e6edf8;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        td {
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #ecf2fa;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #fafcff;
+        }
+
+        .status-badge {
+            padding: 0.1rem 0.7rem;
+            border-radius: 40px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-paid {
+            background: #ddf0e6;
+            color: #0e7b3a;
+        }
+        .status-pending {
+            background: #f0ece6;
+            color: #d48c2c;
+        }
+        .status-overdue {
+            background: #f0e6e6;
+            color: #b22234;
+        }
+        .status-partial {
+            background: #e6eeff;
+            color: #1a5cff;
+        }
+        .status-approved {
+            background: #ddf0e6;
+            color: #0e7b3a;
+        }
+        .status-rejected {
+            background: #f0e6e6;
+            color: #b22234;
+        }
+        .status-review {
+            background: #f0ece6;
+            color: #d48c2c;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 30, 60, 0.45);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            max-width: 580px;
+            width: 92%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem 2rem 2.2rem;
+            border-radius: 32px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            animation: modalIn 0.2s ease;
+        }
+
+        @keyframes modalIn {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .modal .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: #1a3660;
+            margin-bottom: 0.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .modal .form-group label .required {
+            color: #b22234;
+        }
+
+        .modal .form-group input,
+        .modal .form-group select,
+        .modal .form-group textarea {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.85rem;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .modal .form-group textarea {
+            border-radius: 20px;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .modal .form-group input:focus,
+        .modal .form-group select:focus,
+        .modal .form-group textarea:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .modal .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .modal .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .modal .modal-actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .modal .modal-actions .btn {
+            flex: 1;
+            justify-content: center;
+            min-width: 100px;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #0a1e3c;
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.25s, transform 0.25s;
+            pointer-events: none;
+            font-size: 0.9rem;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .toast.success {
+            background: #0e7b3a;
+        }
+
+        .toast.error {
+            background: #b22234;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 0.8rem;
+            left: 0.8rem;
+            z-index: 300;
+            background: #0a1e3c;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0.6rem 1rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 150;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: fixed;
+                transform: translateX(-100%);
+                width: 280px;
+                height: 100vh;
+                border-radius: 0 20px 20px 0;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+                box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+            }
+            .sidebar-toggle {
+                display: block;
+            }
+            .main-content {
+                padding: 1rem 1rem 2rem;
+                max-width: 100%;
+            }
+            .top-bar {
+                padding: 0.5rem 1rem;
+                border-radius: 20px;
+                margin-top: 0.5rem;
+            }
+            .tabs {
+                border-radius: 20px;
+                padding: 0.3rem;
+                gap: 0.3rem;
+            }
+            .tab-btn {
+                padding: 0.3rem 1rem;
+                font-size: 0.75rem;
+                flex: 1;
+                text-align: center;
+            }
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 0.8rem 1rem;
+            }
+            .filter-bar .result-count {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .top-bar .greeting {
+                font-size: 0.85rem;
+            }
+            .top-bar .actions {
+                width: 100%;
+            }
+            .top-bar .actions .btn {
+                flex: 1;
+                text-align: center;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .filter-bar .search-group {
+                flex-direction: column;
+            }
+            .filter-bar .filter-group {
+                width: 100%;
+            }
+            .filter-bar .filter-group select {
+                flex: 1;
+            }
+            .table-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .table-header .actions {
+                justify-content: stretch;
+            }
+            .table-header .actions .btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="British Poly · Home.html">Admin Home</a><a href="About Us · British Poly.html">About Us · British Poly</a><a href="Admin Profile · Account.html">Admin Profile · Account</a><a href="Admissions · British Poly.html">Admissions · British Poly</a><a href="British Poly · Home.html">British Poly · Home</a><a href="Contact Us.html">Contact Us</a><a href="Notice Board.html">Notice Board</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page15.html">page15</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page19.html">page19</a><a href="page21.html">page21</a><a href="page22.html">page22</a><a href="page23.html">page23</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a><a href="Parent & Guardian Portal.html">Parent & Guardian Portal</a><a href="Programs · British Poly.html">Programs · British Poly</a><a href="Staff Management.html">Staff Management</a><a href="Student Life.html">Student Life</a></div>
+
+    <!-- ===== SIDEBAR TOGGLE ===== -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            British<span>Poly</span>
+            <small>Administration</small>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Main</div>
+            <a href="#" class="nav-item">
+                <span class="icon">📊</span> Dashboard
+            </a>
+            <a href="#" class="nav-item active">
+                <span class="icon">💰</span> Finance & Bursary
+                <span class="badge">24</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">🎓</span> Credentials
+                <span class="badge">156</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">👨‍🎓</span> Student Registry
+                <span class="badge">1,247</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Management</div>
+            <a href="#" class="nav-item">
+                <span class="icon">📚</span> Curriculum
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📅</span> Sessions
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📝</span> Results
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Settings</div>
+            <a href="#" class="nav-item">
+                <span class="icon">🔐</span> Access Control
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">⚙️</span> System Settings
+            </a>
+        </div>
+
+        <div class="user-card">
+            <div class="avatar">AD</div>
+            <div class="info">
+                <div class="name">Admin User</div>
+                <div class="role">Administrator</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content">
+
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="greeting">
+                💰 Finance & Bursary Control
+                <small>| Manage fees, payments &amp; bursaries</small>
+            </div>
+            <div class="actions">
+                <button class="btn btn-primary" onclick="openModal('fee')">➕ Add Fee</button>
+                <button class="btn btn-success" onclick="exportCSV()">📥 Export CSV</button>
+                <button class="btn btn-outline" onclick="refreshData()">🔄 Refresh</button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="number" id="totalRevenue">£0</div>
+                <div class="label">Total Revenue</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="pendingPayments">0</div>
+                <div class="label">Pending Payments</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="bursaryApplications">0</div>
+                <div class="label">Bursary Applications</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="approvedBursaries">0</div>
+                <div class="label">Approved Bursaries</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tab-fees">💳 Fee Management</button>
+            <button class="tab-btn" data-tab="tab-payments">📊 Payments</button>
+            <button class="tab-btn" data-tab="tab-bursary">🎓 Bursary Applications</button>
+            <button class="tab-btn" data-tab="tab-reports">📈 Reports</button>
+        </div>
+
+        <!-- ===== TAB 1: FEE MANAGEMENT ===== -->
+        <div class="tab-content active" id="tab-fees">
+            <div class="filter-bar">
+                <div class="search-group">
+                    <input type="text" id="feeSearch" placeholder="🔎 Search fees...">
+                </div>
+                <div class="filter-group">
+                    <label for="feeProgramFilter">Program</label>
+                    <select id="feeProgramFilter">
+                        <option value="all">All Programs</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Business">Business</option>
+                        <option value="Health Sciences">Health Sciences</option>
+                    </select>
+                    <label for="feeStatusFilter">Status</label>
+                    <select id="feeStatusFilter">
+                        <option value="all">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="archived">Archived</option>
+                    </select>
+                </div>
+                <span class="result-count">Showing <strong id="feeResultCount">0</strong> fees</span>
+            </div>
+
+            <div class="table-section">
+                <div class="table-header">
+                    <span style="font-weight:600; font-size:0.9rem;">💳 Fee Structure</span>
+                    <div class="actions">
+                        <button class="btn btn-sm btn-primary" onclick="openModal('fee')">➕ Add Fee</button>
+                    </div>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Program</th>
+                                <th>Fee Type</th>
+                                <th>Amount (£)</th>
+                                <th>Semester</th>
+                                <th>Status</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="feesBody">
+                            <!-- dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TAB 2: PAYMENTS ===== -->
+        <div class="tab-content" id="tab-payments">
+            <div class="filter-bar">
+                <div class="search-group">
+                    <input type="text" id="paymentSearch" placeholder="🔎 Search payments...">
+                </div>
+                <div class="filter-group">
+                    <label for="paymentStatusFilter">Status</label>
+                    <select id="paymentStatusFilter">
+                        <option value="all">All Status</option>
+                        <option value="paid">Paid</option>
+                        <option value="pending">Pending</option>
+                        <option value="overdue">Overdue</option>
+                        <option value="partial">Partial</option>
+                    </select>
+                </div>
+                <span class="result-count">Showing <strong id="paymentResultCount">0</strong> payments</span>
+            </div>
+
+            <div class="table-section">
+                <div class="table-header">
+                    <span style="font-weight:600; font-size:0.9rem;">📊 Student Payments</span>
+                    <div class="actions">
+                        <button class="btn btn-sm btn-primary" onclick="openModal('payment')">➕ Record Payment</button>
+                    </div>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Student ID</th>
+                                <th>Amount (£)</th>
+                                <th>Date</th>
+                                <th>Method</th>
+                                <th>Status</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="paymentsBody">
+                            <!-- dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TAB 3: BURSARY APPLICATIONS ===== -->
+        <div class="tab-content" id="tab-bursary">
+            <div class="filter-bar">
+                <div class="search-group">
+                    <input type="text" id="bursarySearch" placeholder="🔎 Search applications...">
+                </div>
+                <div class="filter-group">
+                    <label for="bursaryStatusFilter">Status</label>
+                    <select id="bursaryStatusFilter">
+                        <option value="all">All Status</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                        <option value="review">Under Review</option>
+                    </select>
+                </div>
+                <span class="result-count">Showing <strong id="bursaryResultCount">0</strong> applications</span>
+            </div>
+
+            <div class="table-section">
+                <div class="table-header">
+                    <span style="font-weight:600; font-size:0.9rem;">🎓 Bursary Applications</span>
+                    <div class="actions">
+                        <button class="btn btn-sm btn-primary" onclick="openModal('bursary')">➕ Add Application</button>
+                    </div>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Student ID</th>
+                                <th>Amount (£)</th>
+                                <th>Type</th>
+                                <th>Application Date</th>
+                                <th>Status</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bursaryBody">
+                            <!-- dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TAB 4: REPORTS ===== -->
+        <div class="tab-content" id="tab-reports">
+            <div class="table-section" style="padding:1.5rem;">
+                <h3 style="margin-bottom:1.5rem;">📈 Financial Reports</h3>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:1.5rem;">
+                    <div class="stat-card" style="cursor:pointer;" onclick="generateReport('revenue')">
+                        <div class="number">💰</div>
+                        <div class="label">Revenue Report</div>
+                        <p style="font-size:0.75rem; color:#6a8aaa; margin-top:0.3rem;">View detailed revenue breakdown</p>
+                    </div>
+                    <div class="stat-card" style="cursor:pointer;" onclick="generateReport('payments')">
+                        <div class="number">📊</div>
+                        <div class="label">Payment Summary</div>
+                        <p style="font-size:0.75rem; color:#6a8aaa; margin-top:0.3rem;">Payment statistics by program</p>
+                    </div>
+                    <div class="stat-card" style="cursor:pointer;" onclick="generateReport('bursary')">
+                        <div class="number">🎓</div>
+                        <div class="label">Bursary Report</div>
+                        <p style="font-size:0.75rem; color:#6a8aaa; margin-top:0.3rem;">Bursary distribution analysis</p>
+                    </div>
+                    <div class="stat-card" style="cursor:pointer;" onclick="generateReport('outstanding')">
+                        <div class="number">⚠️</div>
+                        <div class="label">Outstanding Fees</div>
+                        <p style="font-size:0.75rem; color:#6a8aaa; margin-top:0.3rem;">List of students with overdue fees</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="mainModal">
+        <div class="modal">
+            <h2 id="modalTitle">Add New Item</h2>
+            <div id="modalBody">
+                <!-- dynamic -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast" class="toast">message</div>
+
+    <script>
+        // ===== DATA =====
+        let fees = [
+            { id: 1, program: 'Computer Science', type: 'Tuition', amount: 9250, semester: '2025/2026', status: 'active' },
+            { id: 2, program: 'Engineering', type: 'Tuition', amount: 9850, semester: '2025/2026', status: 'active' },
+            { id: 3, program: 'Business', type: 'Tuition', amount: 12500, semester: '2025/2026', status: 'active' },
+            { id: 4, program: 'Health Sciences', type: 'Tuition', amount: 8750, semester: '2025/2026', status: 'active' },
+            { id: 5, program: 'Computer Science', type: 'Lab Fee', amount: 450, semester: '2025/2026', status: 'active' },
+            { id: 6, program: 'Engineering', type: 'Lab Fee', amount: 550, semester: '2025/2026', status: 'archived' }
+        ];
+
+        let payments = [
+            { id: 1, student: 'Sarah Johnson', studentId: 'STU-2025-002', amount: 9250, date: '2025-06-15',
+                method: 'Bank Transfer', status: 'paid' },
+            { id: 2, student: 'Michael Okafor', studentId: 'STU-2025-003', amount: 12500, date: '2025-06-20',
+                method: 'Card', status: 'paid' },
+            { id: 3, student: 'Aisha Labana', studentId: 'STU-2025-004', amount: 8750, date: '2025-06-10',
+                method: 'Paystack', status: 'paid' },
+            { id: 4, student: 'David Chen', studentId: 'STU-2025-005', amount: 9250, date: '2025-07-01',
+                method: 'Stripe', status: 'pending' },
+            { id: 5, student: 'Emma Williams', studentId: 'STU-2025-006', amount: 9850, date: '2025-06-18',
+                method: 'Bank Transfer', status: 'overdue' },
+            { id: 6, student: 'James Kofi', studentId: 'STU-2025-007', amount: 450, date: '2025-06-12',
+                method: 'Card', status: 'partial' }
+        ];
+
+        let bursaryApplications = [
+            { id: 1, student: 'Sophia Patel', studentId: 'STU-2025-008', amount: 2500, type: 'Merit-Based',
+                applicationDate: '2025-06-22', status: 'approved' },
+            { id: 2, student: 'Thomas Mensah', studentId: 'STU-2025-009', amount: 1800, type: 'Need-Based',
+                applicationDate: '2025-06-25', status: 'review' },
+            { id: 3, student: 'Olivia Brown', studentId: 'STU-2025-010', amount: 3000, type: 'Merit-Based',
+                applicationDate: '2025-06-28', status: 'rejected' },
+            { id: 4, student: 'Daniel Adeyemi', studentId: 'STU-2025-011', amount: 2000, type: 'Need-Based',
+                applicationDate: '2025-07-01', status: 'review' },
+            { id: 5, student: 'Grace Okonkwo', studentId: 'STU-2025-012', amount: 3500, type: 'Merit-Based',
+                applicationDate: '2025-06-30', status: 'approved' },
+            { id: 6, student: 'Samuel Quaye', studentId: 'STU-2025-013', amount: 1500, type: 'Need-Based',
+                applicationDate: '2025-07-03', status: 'pending' }
+        ];
+
+        let nextId = { fee: 7, payment: 7, bursary: 7 };
+
+        // ===== DOM REFS =====
+        const modal = document.getElementById('mainModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const toast = document.getElementById('toast');
+
+        // ===== TAB SWITCHING =====
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab).classList.add('active');
+                renderAll();
+            });
+        });
+
+        // ===== RENDER ALL =====
+        function renderAll() {
+            renderFees();
+            renderPayments();
+            renderBursary();
+            updateStats();
+        }
+
+        // ===== UPDATE STATS =====
+        function updateStats() {
+            const totalRevenue = payments.filter(p => p.status === 'paid').reduce((sum, p) => sum + p.amount, 0);
+            document.getElementById('totalRevenue').textContent = '£' + totalRevenue.toLocaleString();
+            document.getElementById('pendingPayments').textContent = payments.filter(p => p.status === 'pending' || p.status ===
+                'overdue').length;
+            document.getElementById('bursaryApplications').textContent = bursaryApplications.length;
+            document.getElementById('approvedBursaries').textContent = bursaryApplications.filter(b => b.status === 'approved')
+                .length;
+        }
+
+        // ===== RENDER FEES =====
+        function renderFees() {
+            const searchTerm = document.getElementById('feeSearch').value.toLowerCase().trim();
+            const program = document.getElementById('feeProgramFilter').value;
+            const status = document.getElementById('feeStatusFilter').value;
+
+            let filtered = fees.filter(f => {
+                const matchSearch = f.program.toLowerCase().includes(searchTerm) || f.type.toLowerCase().includes(
+                searchTerm);
+                const matchProgram = program === 'all' || f.program === program;
+                const matchStatus = status === 'all' || f.status === status;
+                return matchSearch && matchProgram && matchStatus;
+            });
+
+            document.getElementById('feeResultCount').textContent = filtered.length;
+
+            let html = '';
+            filtered.forEach(f => {
+                const statusClass = 'status-' + (f.status === 'active' ? 'paid' : 'archived');
+                html += `
+                    <tr>
+                        <td><strong>${f.program}</strong></td>
+                        <td>${f.type}</td>
+                        <td>£${f.amount.toFixed(2)}</td>
+                        <td>${f.semester}</td>
+                        <td><span class="status-badge ${statusClass}">${f.status.charAt(0).toUpperCase() + f.status.slice(1)}</span></td>
+                        <td style="text-align:right;">
+                            <div class="action-btns">
+                                <button class="btn btn-sm btn-primary" onclick="editItem('fee', ${f.id})">✎</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteItem('fee', ${f.id})">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            document.getElementById('feesBody').innerHTML = html || `<tr><td colspan="6" style="text-align:center; padding:1.5rem; color:#6a7f9e;">No fees found.</td></tr>`;
+        }
+
+        // ===== RENDER PAYMENTS =====
+        function renderPayments() {
+            const searchTerm = document.getElementById('paymentSearch').value.toLowerCase().trim();
+            const status = document.getElementById('paymentStatusFilter').value;
+
+            let filtered = payments.filter(p => {
+                const matchSearch = p.student.toLowerCase().includes(searchTerm) || p.studentId.toLowerCase().includes(
+                    searchTerm);
+                const matchStatus = status === 'all' || p.status === status;
+                return matchSearch && matchStatus;
+            });
+
+            document.getElementById('paymentResultCount').textContent = filtered.length;
+
+            let html = '';
+            filtered.forEach(p => {
+                const statusClass = 'status-' + p.status;
+                html += `
+                    <tr>
+                        <td><strong>${p.student}</strong></td>
+                        <td>${p.studentId}</td>
+                        <td>£${p.amount.toFixed(2)}</td>
+                        <td>${formatDate(p.date)}</td>
+                        <td>${p.method}</td>
+                        <td><span class="status-badge ${statusClass}">${p.status.charAt(0).toUpperCase() + p.status.slice(1)}</span></td>
+                        <td style="text-align:right;">
+                            <div class="action-btns">
+                                <button class="btn btn-sm btn-primary" onclick="editItem('payment', ${p.id})">✎</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteItem('payment', ${p.id})">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            document.getElementById('paymentsBody').innerHTML = html || `<tr><td colspan="7" style="text-align:center; padding:1.5rem; color:#6a7f9e;">No payments found.</td></tr>`;
+        }
+
+        // ===== RENDER BURSARY =====
+        function renderBursary() {
+            const searchTerm = document.getElementById('bursarySearch').value.toLowerCase().trim();
+            const status = document.getElementById('bursaryStatusFilter').value;
+
+            let filtered = bursaryApplications.filter(b => {
+                const matchSearch = b.student.toLowerCase().includes(searchTerm) || b.studentId.toLowerCase().includes(
+                    searchTerm);
+                const matchStatus = status === 'all' || b.status === status;
+                return matchSearch && matchStatus;
+            });
+
+            document.getElementById('bursaryResultCount').textContent = filtered.length;
+
+            let html = '';
+            filtered.forEach(b => {
+                const statusClass = 'status-' + b.status;
+                html += `
+                    <tr>
+                        <td><strong>${b.student}</strong></td>
+                        <td>${b.studentId}</td>
+                        <td>£${b.amount.toFixed(2)}</td>
+                        <td>${b.type}</td>
+                        <td>${formatDate(b.applicationDate)}</td>
+                        <td><span class="status-badge ${statusClass}">${b.status === 'review' ? 'Under Review' : b.status.charAt(0).toUpperCase() + b.status.slice(1)}</span></td>
+                        <td style="text-align:right;">
+                            <div class="action-btns">
+                                <button class="btn btn-sm btn-primary" onclick="editItem('bursary', ${b.id})">✎</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteItem('bursary', ${b.id})">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            document.getElementById('bursaryBody').innerHTML = html || `<tr><td colspan="7" style="text-align:center; padding:1.5rem; color:#6a7f9e;">No applications found.</td></tr>`;
+        }
+
+        // ===== FORMAT DATE =====
+        function formatDate(dateStr) {
+            if (!dateStr) return 'N/A';
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        // ===== MODAL =====
+        function openModal(type, item) {
+            let html = '';
+
+            if (type === 'fee') {
+                modalTitle.textContent = item ? '✎ Edit Fee' : '➕ Add Fee';
+                html = `
+                    <div class="form-group">
+                        <label>Program <span class="required">*</span></label>
+                        <select id="feeProgram">
+                            <option value="Computer Science" ${item && item.program === 'Computer Science' ? 'selected' : ''}>Computer Science</option>
+                            <option value="Engineering" ${item && item.program === 'Engineering' ? 'selected' : ''}>Engineering</option>
+                            <option value="Business" ${item && item.program === 'Business' ? 'selected' : ''}>Business</option>
+                            <option value="Health Sciences" ${item && item.program === 'Health Sciences' ? 'selected' : ''}>Health Sciences</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fee Type <span class="required">*</span></label>
+                        <select id="feeType">
+                            <option value="Tuition" ${item && item.type === 'Tuition' ? 'selected' : ''}>Tuition</option>
+                            <option value="Lab Fee" ${item && item.type === 'Lab Fee' ? 'selected' : ''}>Lab Fee</option>
+                            <option value="Registration" ${item && item.type === 'Registration' ? 'selected' : ''}>Registration</option>
+                            <option value="Other" ${item && item.type === 'Other' ? 'selected' : ''}>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Amount (£) <span class="required">*</span></label>
+                            <input type="number" id="feeAmount" value="${item ? item.amount : ''}" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Semester</label>
+                            <select id="feeSemester">
+                                <option value="2024/2025" ${item && item.semester === '2024/2025' ? 'selected' : ''}>2024/2025</option>
+                                <option value="2025/2026" ${item && item.semester === '2025/2026' ? 'selected' : ''}>2025/2026</option>
+                                <option value="2026/2027" ${item && item.semester === '2026/2027' ? 'selected' : ''}>2026/2027</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="feeStatus">
+                            <option value="active" ${item && item.status === 'active' ? 'selected' : ''}>Active</option>
+                            <option value="archived" ${item && item.status === 'archived' ? 'selected' : ''}>Archived</option>
+                        </select>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" onclick="saveItem('fee')">💾 Save</button>
+                        <button class="btn btn-outline-blue" onclick="closeModal()">Cancel</button>
+                    </div>
+                `;
+            } else if (type === 'payment') {
+                modalTitle.textContent = item ? '✎ Edit Payment' : '➕ Record Payment';
+                html = `
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Student Name <span class="required">*</span></label>
+                            <input type="text" id="payStudent" value="${item ? item.student : ''}" placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label>Student ID <span class="required">*</span></label>
+                            <input type="text" id="payStudentId" value="${item ? item.studentId : ''}" placeholder="STU-2025-001">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Amount (£) <span class="required">*</span></label>
+                            <input type="number" id="payAmount" value="${item ? item.amount : ''}" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" id="payDate" value="${item ? item.date : ''}">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Method</label>
+                            <select id="payMethod">
+                                <option value="Bank Transfer" ${item && item.method === 'Bank Transfer' ? 'selected' : ''}>Bank Transfer</option>
+                                <option value="Card" ${item && item.method === 'Card' ? 'selected' : ''}>Card</option>
+                                <option value="Paystack" ${item && item.method === 'Paystack' ? 'selected' : ''}>Paystack</option>
+                                <option value="Stripe" ${item && item.method === 'Stripe' ? 'selected' : ''}>Stripe</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="payStatus">
+                                <option value="paid" ${item && item.status === 'paid' ? 'selected' : ''}>Paid</option>
+                                <option value="pending" ${item && item.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                <option value="overdue" ${item && item.status === 'overdue' ? 'selected' : ''}>Overdue</option>
+                                <option value="partial" ${item && item.status === 'partial' ? 'selected' : ''}>Partial</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" onclick="saveItem('payment')">💾 Save</button>
+                        <button class="btn btn-outline-blue" onclick="closeModal()">Cancel</button>
+                    </div>
+                `;
+            } else if (type === 'bursary') {
+                modalTitle.textContent = item ? '✎ Edit Bursary Application' : '➕ Add Bursary Application';
+                html = `
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Student Name <span class="required">*</span></label>
+                            <input type="text" id="bursStudent" value="${item ? item.student : ''}" placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label>Student ID <span class="required">*</span></label>
+                            <input type="text" id="bursStudentId" value="${item ? item.studentId : ''}" placeholder="STU-2025-001">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Amount (£) <span class="required">*</span></label>
+                            <input type="number" id="bursAmount" value="${item ? item.amount : ''}" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Type</label>
+                            <select id="bursType">
+                                <option value="Merit-Based" ${item && item.type === 'Merit-Based' ? 'selected' : ''}>Merit-Based</option>
+                                <option value="Need-Based" ${item && item.type === 'Need-Based' ? 'selected' : ''}>Need-Based</option>
+                                <option value="Sports" ${item && item.type === 'Sports' ? 'selected' : ''}>Sports</option>
+                                <option value="Special" ${item && item.type === 'Special' ? 'selected' : ''}>Special</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Application Date</label>
+                            <input type="date" id="bursDate" value="${item ? item.applicationDate : ''}">
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="bursStatus">
+                                <option value="approved" ${item && item.status === 'approved' ? 'selected' : ''}>Approved</option>
+                                <option value="rejected" ${item && item.status === 'rejected' ? 'selected' : ''}>Rejected</option>
+                                <option value="review" ${item && item.status === 'review' ? 'selected' : ''}>Under Review</option>
+                                <option value="pending" ${item && item.status === 'pending' ? 'selected' : ''}>Pending</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" onclick="saveItem('bursary')">💾 Save</button>
+                        <button class="btn btn-outline-blue" onclick="closeModal()">Cancel</button>
+                    </div>
+                `;
+            }
+
+            modalBody.innerHTML = html;
+            modal.classList.add('open');
+        }
+
+        // ===== EDIT ITEM =====
+        function editItem(type, id) {
+            let item = null;
+            if (type === 'fee') item = fees.find(f => f.id === id);
+            else if (type === 'payment') item = payments.find(p => p.id === id);
+            else if (type === 'bursary') item = bursaryApplications.find(b => b.id === id);
+            if (item) openModal(type, item);
+        }
+
+        // ===== SAVE ITEM =====
+        function saveItem(type) {
+            if (type === 'fee') {
+                const program = document.getElementById('feeProgram').value;
+                const typeVal = document.getElementById('feeType').value;
+                const amount = parseFloat(document.getElementById('feeAmount').value);
+                const semester = document.getElementById('feeSemester').value;
+                const status = document.getElementById('feeStatus').value;
+
+                if (!program || !typeVal || !amount) {
+                    showToast('❌ Please fill in all required fields', 'error');
+                    return;
+                }
+
+                const newFee = { id: nextId.fee++, program, type: typeVal, amount, semester, status };
+                fees.push(newFee);
+                showToast('✅ Fee added successfully', 'success');
+            } else if (type === 'payment') {
+                const student = document.getElementById('payStudent').value.trim();
+                const studentId = document.getElementById('payStudentId').value.trim();
+                const amount = parseFloat(document.getElementById('payAmount').value);
+                const date = document.getElementById('payDate').value;
+                const method = document.getElementById('payMethod').value;
+                const status = document.getElementById('payStatus').value;
+
+                if (!student || !studentId || !amount) {
+                    showToast('❌ Please fill in all required fields', 'error');
+                    return;
+                }
+
+                const newPayment = { id: nextId.payment++, student, studentId, amount, date: date || new Date().toISOString()
+                        .slice(0, 10), method, status };
+                payments.push(newPayment);
+                showToast('✅ Payment recorded successfully', 'success');
+            } else if (type === 'bursary') {
+                const student = document.getElementById('bursStudent').value.trim();
+                const studentId = document.getElementById('bursStudentId').value.trim();
+                const amount = parseFloat(document.getElementById('bursAmount').value);
+                const typeVal = document.getElementById('bursType').value;
+                const date = document.getElementById('bursDate').value;
+                const status = document.getElementById('bursStatus').value;
+
+                if (!student || !studentId || !amount) {
+                    showToast('❌ Please fill in all required fields', 'error');
+                    return;
+                }
+
+                const newBursary = { id: nextId.bursary++, student, studentId, amount, type: typeVal,
+                    applicationDate: date || new Date().toISOString().slice(0, 10), status };
+                bursaryApplications.push(newBursary);
+                showToast('✅ Bursary application added successfully', 'success');
+            }
+
+            closeModal();
+            renderAll();
+        }
+
+        // ===== DELETE ITEM =====
+        function deleteItem(type, id) {
+            let confirmMsg = '';
+            if (type === 'fee') { confirmMsg = 'Delete this fee structure?'; } else if (type ===
+                'payment') { confirmMsg = 'Delete this payment record?'; } else if (type === 'bursary') { confirmMsg =
+                    'Delete this bursary application?'; }
+
+            if (!confirm(confirmMsg)) return;
+
+            if (type === 'fee') fees = fees.filter(f => f.id !== id);
+            else if (type === 'payment') payments = payments.filter(p => p.id !== id);
+            else if (type === 'bursary') bursaryApplications = bursaryApplications.filter(b => b.id !== id);
+
+            renderAll();
+            showToast('🗑️ Item deleted', 'success');
+        }
+
+        // ===== CLOSE MODAL =====
+        function closeModal() {
+            modal.classList.remove('open');
+        }
+
+        // ===== REFRESH =====
+        function refreshData() {
+            renderAll();
+            showToast('↻ Data refreshed', 'success');
+        }
+
+        // ===== EXPORT CSV =====
+        function exportCSV() {
+            const headers = ['Type', 'Student/Program', 'Amount', 'Date/Semester', 'Status'];
+            let rows = [];
+
+            payments.forEach(p => {
+                rows.push(['Payment', p.student, p.amount, p.date, p.status]);
+            });
+            fees.forEach(f => {
+                rows.push(['Fee', f.program + ' (' + f.type + ')', f.amount, f.semester, f.status]);
+            });
+            bursaryApplications.forEach(b => {
+                rows.push(['Bursary', b.student, b.amount, b.applicationDate, b.status]);
+            });
+
+            let csv = headers.join(',') + '\n';
+            rows.forEach(row => {
+                csv += row.map(cell => `"${cell}"`).join(',') + '\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download',
+                `finance_bursary_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showToast(`✅ Exported ${rows.length} records`, 'success');
+        }
+
+        // ===== GENERATE REPORT =====
+        function generateReport(type) {
+            const reportNames = {
+                'revenue': 'Revenue Report',
+                'payments': 'Payment Summary',
+                'bursary': 'Bursary Report',
+                'outstanding': 'Outstanding Fees Report'
+            };
+            showToast(`📊 Generating "${reportNames[type]}"...`, 'success');
+            setTimeout(() => {
+                showToast(`✅ "${reportNames[type]}" generated successfully`, 'success');
+            }, 1000);
+        }
+
+        // ===== TOAST =====
+        let toastTimer;
+
+        function showToast(msg, type = 'success') {
+            toast.textContent = msg;
+            toast.className = 'toast ' + type + ' show';
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ===== SIDEBAR TOGGLE =====
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const toggleBtn = document.getElementById('sidebarToggle');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        toggleBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (sidebar.classList.contains('open')) toggleSidebar();
+                if (modal.classList.contains('open')) closeModal();
+            }
+        });
+
+        // ===== EVENT BINDING =====
+        document.getElementById('feeSearch').addEventListener('input', renderFees);
+        document.getElementById('feeProgramFilter').addEventListener('change', renderFees);
+        document.getElementById('feeStatusFilter').addEventListener('change', renderFees);
+
+        document.getElementById('paymentSearch').addEventListener('input', renderPayments);
+        document.getElementById('paymentStatusFilter').addEventListener('change', renderPayments);
+
+        document.getElementById('bursarySearch').addEventListener('input', renderBursary);
+        document.getElementById('bursaryStatusFilter').addEventListener('change', renderBursary);
+
+        // ===== INIT =====
+        renderAll();
+        console.log('✅ British Poly · Finance & Bursary Control loaded');
+        console.log(`💰 ${fees.length} fees, ${payments.length} payments, ${bursaryApplications.length} bursary applications loaded`);
+    </script>
+
+</body>
+</html>

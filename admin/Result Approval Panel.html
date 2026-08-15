@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>Result Approval Panel · British Poly Admin</title>
+    <!-- Google Font + minimal reset -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f6faff;
+            color: #0a1e3c;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 260px;
+            background: #0a1e3c;
+            color: white;
+            min-height: 100vh;
+            padding: 1.8rem 1.2rem 2rem;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.25s ease;
+            z-index: 200;
+        }
+
+        .sidebar .logo {
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar .logo span {
+            color: #6a9aff;
+        }
+
+        .sidebar .logo small {
+            font-weight: 400;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.4);
+            display: block;
+            margin-top: 0.1rem;
+        }
+
+        .sidebar .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar .nav-section .label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .sidebar .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.6rem 0.8rem;
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: 0.15s ease;
+            margin-bottom: 0.15rem;
+            cursor: pointer;
+        }
+
+        .sidebar .nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .sidebar .nav-item.active {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+        }
+
+        .sidebar .nav-item .icon {
+            font-size: 1.1rem;
+            width: 28px;
+            text-align: center;
+        }
+
+        .sidebar .nav-item .badge {
+            margin-left: auto;
+            background: #1a5cff;
+            color: white;
+            font-size: 0.6rem;
+            padding: 0.05rem 0.6rem;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+
+        .sidebar .user-card {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 0.8rem 1rem;
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .sidebar .user-card .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1a5cff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .sidebar .user-card .info {
+            font-size: 0.8rem;
+        }
+
+        .sidebar .user-card .info .name {
+            font-weight: 600;
+            color: white;
+        }
+
+        .sidebar .user-card .info .role {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem 2rem 3rem;
+            max-width: calc(100% - 260px);
+            width: 100%;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            background: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eef2f8;
+            margin-bottom: 2rem;
+        }
+
+        .top-bar .greeting {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .top-bar .greeting small {
+            font-weight: 400;
+            color: #4a6a8a;
+            font-size: 0.8rem;
+        }
+
+        .top-bar .actions {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .top-bar .actions .btn {
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: 0.15s ease;
+            background: white;
+            color: #0a1e3c;
+            border-color: #c5d4ee;
+            text-decoration: none;
+        }
+
+        .top-bar .actions .btn-primary {
+            background: #0a1e3c;
+            color: white;
+            border-color: #0a1e3c;
+        }
+
+        .top-bar .actions .btn-primary:hover {
+            background: #17335c;
+            border-color: #17335c;
+        }
+
+        .top-bar .actions .btn-success {
+            background: #0e7b3a;
+            color: white;
+            border-color: #0e7b3a;
+        }
+
+        .top-bar .actions .btn-success:hover {
+            background: #1a934a;
+            border-color: #1a934a;
+        }
+
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0a1e3c;
+        }
+
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: #4a6a8a;
+            font-weight: 500;
+        }
+
+        /* ===== FILTER BAR ===== */
+        .filter-bar {
+            background: white;
+            border-radius: 24px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.5rem;
+            align-items: center;
+        }
+
+        .filter-bar .search-group {
+            flex: 2;
+            min-width: 180px;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-bar .search-group input {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.85rem;
+            outline: none;
+            min-width: 100px;
+        }
+
+        .filter-bar .search-group input:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .filter-bar .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+            align-items: center;
+        }
+
+        .filter-bar .filter-group label {
+            font-weight: 500;
+            font-size: 0.7rem;
+            color: #1a3660;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .filter-bar .filter-group select {
+            padding: 0.3rem 1rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.8rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .filter-bar .filter-group select:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .filter-bar .result-count {
+            font-size: 0.8rem;
+            color: #4a6a8a;
+            margin-left: auto;
+        }
+
+        .filter-bar .result-count strong {
+            color: #0a1e3c;
+        }
+
+        /* ===== TABLE ===== */
+        .table-section {
+            background: white;
+            border-radius: 24px;
+            padding: 0.5rem 0 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            overflow-x: auto;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 1.5rem 0.3rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .table-header .actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+        }
+
+        .btn-sm {
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
+        }
+
+        .btn-primary {
+            background: #1a5cff;
+            color: white;
+            border-color: #1a5cff;
+        }
+
+        .btn-primary:hover {
+            background: #2a6cff;
+            border-color: #2a6cff;
+        }
+
+        .btn-success {
+            background: #0e7b3a;
+            color: white;
+            border-color: #0e7b3a;
+        }
+
+        .btn-success:hover {
+            background: #1a934a;
+            border-color: #1a934a;
+        }
+
+        .btn-danger {
+            background: #b22234;
+            color: white;
+            border-color: #b22234;
+        }
+
+        .btn-danger:hover {
+            background: #a01e2e;
+            border-color: #a01e2e;
+        }
+
+        .btn-warning {
+            background: #d48c2c;
+            color: white;
+            border-color: #d48c2c;
+        }
+
+        .btn-warning:hover {
+            background: #c07a1e;
+            border-color: #c07a1e;
+        }
+
+        .btn-outline-blue {
+            background: white;
+            color: #0a1e3c;
+            border-color: #0a1e3c;
+        }
+
+        .btn-outline-blue:hover {
+            background: #edf4ff;
+            border-color: #1a5cff;
+            color: #1a5cff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 900px;
+        }
+
+        th {
+            text-align: left;
+            padding: 0.6rem 1rem 0.4rem;
+            font-weight: 600;
+            color: #1a3660;
+            border-bottom: 2px solid #e6edf8;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        td {
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #ecf2fa;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #fafcff;
+        }
+
+        .status-badge {
+            padding: 0.1rem 0.7rem;
+            border-radius: 40px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #f0ece6;
+            color: #d48c2c;
+        }
+        .status-reviewed {
+            background: #e6eeff;
+            color: #1a5cff;
+        }
+        .status-approved {
+            background: #ddf0e6;
+            color: #0e7b3a;
+        }
+        .status-rejected {
+            background: #f0e6e6;
+            color: #b22234;
+        }
+        .status-published {
+            background: #ddf0e6;
+            color: #0e7b3a;
+        }
+
+        .grade-badge {
+            padding: 0.1rem 0.6rem;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        .grade-A {
+            background: #ddf0e6;
+            color: #0e7b3a;
+        }
+        .grade-B {
+            background: #e6f0e6;
+            color: #2a7a3a;
+        }
+        .grade-C {
+            background: #f0ece6;
+            color: #d48c2c;
+        }
+        .grade-D {
+            background: #f0e6e6;
+            color: #b22234;
+        }
+        .grade-F {
+            background: #f0dcdc;
+            color: #8a1a1a;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        /* ===== BULK ACTION BAR ===== */
+        .bulk-bar {
+            display: none;
+            background: #e6eeff;
+            border-radius: 16px;
+            padding: 0.8rem 1.2rem;
+            margin: 0.5rem 1.5rem;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .bulk-bar.show {
+            display: flex;
+        }
+
+        .bulk-bar .count {
+            font-weight: 600;
+            color: #1a5cff;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 30, 60, 0.45);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            max-width: 520px;
+            width: 92%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem 2rem 2.2rem;
+            border-radius: 32px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            animation: modalIn 0.2s ease;
+        }
+
+        @keyframes modalIn {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .modal .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: #1a3660;
+            margin-bottom: 0.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .modal .form-group textarea {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border-radius: 20px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.85rem;
+            outline: none;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .modal .form-group textarea:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .modal .modal-actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .modal .modal-actions .btn {
+            flex: 1;
+            justify-content: center;
+            min-width: 100px;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #0a1e3c;
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.25s, transform 0.25s;
+            pointer-events: none;
+            font-size: 0.9rem;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .toast.success {
+            background: #0e7b3a;
+        }
+
+        .toast.error {
+            background: #b22234;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 0.8rem;
+            left: 0.8rem;
+            z-index: 300;
+            background: #0a1e3c;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0.6rem 1rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 150;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: fixed;
+                transform: translateX(-100%);
+                width: 280px;
+                height: 100vh;
+                border-radius: 0 20px 20px 0;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+                box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+            }
+            .sidebar-toggle {
+                display: block;
+            }
+            .main-content {
+                padding: 1rem 1rem 2rem;
+                max-width: 100%;
+            }
+            .top-bar {
+                padding: 0.5rem 1rem;
+                border-radius: 20px;
+                margin-top: 0.5rem;
+            }
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 0.8rem 1rem;
+            }
+            .filter-bar .result-count {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .top-bar .greeting {
+                font-size: 0.85rem;
+            }
+            .top-bar .actions {
+                width: 100%;
+            }
+            .top-bar .actions .btn {
+                flex: 1;
+                text-align: center;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .filter-bar .search-group {
+                flex-direction: column;
+            }
+            .filter-bar .filter-group {
+                width: 100%;
+            }
+            .filter-bar .filter-group select {
+                flex: 1;
+            }
+            .table-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .table-header .actions {
+                justify-content: stretch;
+            }
+            .table-header .actions .btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="British Poly · Home.html">Admin Home</a><a href="About Us · British Poly.html">About Us · British Poly</a><a href="Admin Profile · Account.html">Admin Profile · Account</a><a href="Admissions · British Poly.html">Admissions · British Poly</a><a href="British Poly · Home.html">British Poly · Home</a><a href="Contact Us.html">Contact Us</a><a href="Finance & Bursary Control .html">Finance & Bursary Control </a><a href="Notice Board.html">Notice Board</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page15.html">page15</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page19.html">page19</a><a href="page22.html">page22</a><a href="page23.html">page23</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a><a href="Parent & Guardian Portal.html">Parent & Guardian Portal</a><a href="Programs · British Poly.html">Programs · British Poly</a><a href="Staff Management.html">Staff Management</a><a href="Student Life.html">Student Life</a></div>
+
+    <!-- ===== SIDEBAR TOGGLE ===== -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            British<span>Poly</span>
+            <small>Administration</small>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Main</div>
+            <a href="#" class="nav-item">
+                <span class="icon">📊</span> Dashboard
+            </a>
+            <a href="#" class="nav-item active">
+                <span class="icon">📝</span> Result Approval
+                <span class="badge">12</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">🎓</span> Credentials
+                <span class="badge">156</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">👨‍🎓</span> Student Registry
+                <span class="badge">1,247</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Management</div>
+            <a href="#" class="nav-item">
+                <span class="icon">📚</span> Curriculum
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📅</span> Sessions
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">💰</span> Finance
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Settings</div>
+            <a href="#" class="nav-item">
+                <span class="icon">🔐</span> Access Control
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">⚙️</span> System Settings
+            </a>
+        </div>
+
+        <div class="user-card">
+            <div class="avatar">AD</div>
+            <div class="info">
+                <div class="name">Admin User</div>
+                <div class="role">Administrator</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content">
+
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="greeting">
+                📝 Result Approval Panel
+                <small>| Review, approve &amp; publish results</small>
+            </div>
+            <div class="actions">
+                <button class="btn btn-success" onclick="publishAll()">📢 Publish All Approved</button>
+                <button class="btn btn-outline" onclick="refreshData()">🔄 Refresh</button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="number" id="totalResults">0</div>
+                <div class="label">Total Results</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="pendingResults">0</div>
+                <div class="label">Pending Review</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="approvedResults">0</div>
+                <div class="label">Approved</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="publishedResults">0</div>
+                <div class="label">Published</div>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <div class="search-group">
+                <input type="text" id="searchInput" placeholder="🔎 Search by student or course...">
+            </div>
+            <div class="filter-group">
+                <label for="statusFilter">Status</label>
+                <select id="statusFilter">
+                    <option value="all">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="reviewed">Reviewed</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="published">Published</option>
+                </select>
+                <label for="courseFilter">Course</label>
+                <select id="courseFilter">
+                    <option value="all">All Courses</option>
+                    <option value="CS101">CS101 - Programming</option>
+                    <option value="CS201">CS201 - Data Structures</option>
+                    <option value="ME101">ME101 - Engineering Math</option>
+                    <option value="BUS101">BUS101 - Management</option>
+                    <option value="PH101">PH101 - Public Health</option>
+                    <option value="DM101">DM101 - Digital Media</option>
+                    <option value="PSY101">PSY101 - Psychology</option>
+                </select>
+            </div>
+            <span class="result-count">Showing <strong id="resultCount">0</strong> results</span>
+        </div>
+
+        <!-- Table -->
+        <div class="table-section">
+            <div class="table-header">
+                <span style="font-weight:600; font-size:0.9rem;">📋 Student Results</span>
+                <div class="actions">
+                    <button class="btn btn-sm btn-outline-blue" onclick="resetFilters()">↻ Reset Filters</button>
+                    <button class="btn btn-sm btn-success" onclick="exportCSV()">📥 Export CSV</button>
+                </div>
+            </div>
+
+            <!-- Bulk Action Bar -->
+            <div class="bulk-bar" id="bulkBar">
+                <span class="count" id="selectedCount">0</span> results selected
+                <button class="btn btn-sm btn-primary" onclick="bulkAction('reviewed')">📝 Mark Reviewed</button>
+                <button class="btn btn-sm btn-success" onclick="bulkAction('approved')">✅ Approve</button>
+                <button class="btn btn-sm btn-danger" onclick="bulkAction('rejected')">❌ Reject</button>
+                <button class="btn btn-sm btn-outline-blue" onclick="clearSelection()">✕ Clear</button>
+            </div>
+
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:30px;">
+                                <input type="checkbox" id="selectAll" onchange="toggleAll()">
+                            </th>
+                            <th>Student</th>
+                            <th>Student ID</th>
+                            <th>Course</th>
+                            <th>Score</th>
+                            <th>Grade</th>
+                            <th>Status</th>
+                            <th style="text-align:right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody">
+                        <!-- dynamic -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="resultModal">
+        <div class="modal">
+            <h2>Review Result</h2>
+            <div style="margin-bottom:1rem; padding:0.8rem 1rem; background:#f8faff; border-radius:16px;">
+                <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;">
+                    <span><strong>Student:</strong> <span id="modalStudent"></span></span>
+                    <span><strong>Course:</strong> <span id="modalCourse"></span></span>
+                    <span><strong>Score:</strong> <span id="modalScore"></span>%</span>
+                    <span><strong>Grade:</strong> <span id="modalGrade"></span></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Reviewer Comments</label>
+                <textarea id="modalComments" placeholder="Add your comments about this result..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-success" onclick="modalAction('approved')">✅ Approve</button>
+                <button class="btn btn-danger" onclick="modalAction('rejected')">❌ Reject</button>
+                <button class="btn btn-outline-blue" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast" class="toast">message</div>
+
+    <script>
+        // ===== DATA =====
+        let results = [
+            { id: 1, student: 'Sarah Johnson', studentId: 'STU-2025-002', course: 'CS101',
+                courseName: 'Introduction to Programming', score: 92, grade: 'A', status: 'pending' },
+            { id: 2, student: 'Michael Okafor', studentId: 'STU-2025-003', course: 'BUS101',
+                courseName: 'Principles of Management', score: 78, grade: 'B', status: 'pending' },
+            { id: 3, student: 'Aisha Labana', studentId: 'STU-2025-004', course: 'PH101',
+                courseName: 'Introduction to Public Health', score: 88, grade: 'A', status: 'reviewed' },
+            { id: 4, student: 'David Chen', studentId: 'STU-2025-005', course: 'DM101',
+                courseName: 'Digital Media Fundamentals', score: 65, grade: 'C', status: 'pending' },
+            { id: 5, student: 'Emma Williams', studentId: 'STU-2025-006', course: 'PSY101',
+                courseName: 'Introduction to Psychology', score: 74, grade: 'B', status: 'approved' },
+            { id: 6, student: 'James Kofi', studentId: 'STU-2025-007', course: 'ME101',
+                courseName: 'Engineering Mathematics', score: 55, grade: 'D', status: 'pending' },
+            { id: 7, student: 'Sophia Patel', studentId: 'STU-2025-008', course: 'CS201',
+                courseName: 'Data Structures & Algorithms', score: 95, grade: 'A', status: 'approved' },
+            { id: 8, student: 'Thomas Mensah', studentId: 'STU-2025-009', course: 'CS101',
+                courseName: 'Introduction to Programming', score: 42, grade: 'F', status: 'rejected' },
+            { id: 9, student: 'Olivia Brown', studentId: 'STU-2025-010', course: 'BUS101',
+                courseName: 'Principles of Management', score: 82, grade: 'B', status: 'reviewed' },
+            { id: 10, student: 'Daniel Adeyemi', studentId: 'STU-2025-011', course: 'ME101',
+                courseName: 'Engineering Mathematics', score: 68, grade: 'C', status: 'approved' },
+            { id: 11, student: 'Grace Okonkwo', studentId: 'STU-2025-012', course: 'PH101',
+                courseName: 'Introduction to Public Health', score: 90, grade: 'A', status: 'published' },
+            { id: 12, student: 'Samuel Quaye', studentId: 'STU-2025-013', course: 'CS201',
+                courseName: 'Data Structures & Algorithms', score: 71, grade: 'B', status: 'published' }
+        ];
+
+        let nextId = 13;
+        let currentSort = 'student';
+        let sortAsc = true;
+        let selectedResults = new Set();
+        let modalResultId = null;
+
+        // ===== DOM REFS =====
+        const tbody = document.getElementById('resultsBody');
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const courseFilter = document.getElementById('courseFilter');
+        const resultCount = document.getElementById('resultCount');
+        const bulkBar = document.getElementById('bulkBar');
+        const selectedCount = document.getElementById('selectedCount');
+        const selectAll = document.getElementById('selectAll');
+        const modal = document.getElementById('resultModal');
+        const modalStudent = document.getElementById('modalStudent');
+        const modalCourse = document.getElementById('modalCourse');
+        const modalScore = document.getElementById('modalScore');
+        const modalGrade = document.getElementById('modalGrade');
+        const modalComments = document.getElementById('modalComments');
+
+        // Stats
+        const totalResults = document.getElementById('totalResults');
+        const pendingResults = document.getElementById('pendingResults');
+        const approvedResults = document.getElementById('approvedResults');
+        const publishedResults = document.getElementById('publishedResults');
+
+        // ===== RENDER =====
+        function renderResults() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const status = statusFilter.value;
+            const course = courseFilter.value;
+
+            let filtered = results.filter(r => {
+                const matchSearch = r.student.toLowerCase().includes(searchTerm) ||
+                    r.studentId.toLowerCase().includes(searchTerm) ||
+                    r.courseName.toLowerCase().includes(searchTerm);
+                const matchStatus = status === 'all' || r.status === status;
+                const matchCourse = course === 'all' || r.course === course;
+                return matchSearch && matchStatus && matchCourse;
+            });
+
+            // Sort
+            filtered.sort((a, b) => {
+                let valA = a[currentSort];
+                let valB = b[currentSort];
+                if (typeof valA === 'string') valA = valA.toLowerCase();
+                if (typeof valB === 'string') valB = valB.toLowerCase();
+                if (valA < valB) return sortAsc ? -1 : 1;
+                if (valA > valB) return sortAsc ? 1 : -1;
+                return 0;
+            });
+
+            resultCount.textContent = filtered.length;
+
+            // Update Stats
+            updateStats();
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align:center; padding:2rem; color:#6a7f9e;">
+                            <div style="font-size:2.5rem; margin-bottom:0.5rem;">📝</div>
+                            <p>No results found matching your criteria.</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(r => {
+                const statusClass = 'status-' + r.status;
+                const gradeClass = 'grade-' + r.grade;
+                const statusLabel = r.status.charAt(0).toUpperCase() + r.status.slice(1);
+                const checked = selectedResults.has(r.id) ? 'checked' : '';
+
+                html += `
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="result-checkbox" data-id="${r.id}" ${checked} onchange="toggleResult(${r.id})">
+                        </td>
+                        <td><strong>${r.student}</strong></td>
+                        <td>${r.studentId}</td>
+                        <td>${r.courseName}</td>
+                        <td>${r.score}%</td>
+                        <td><span class="grade-badge ${gradeClass}">${r.grade}</span></td>
+                        <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
+                        <td style="text-align:right;">
+                            <div class="action-btns">
+                                ${r.status !== 'published' ? `<button class="btn btn-sm btn-primary" onclick="openModal(${r.id})">👁️ Review</button>` : `<span style="font-size:0.7rem; color:#6a8aaa;">Published</span>`}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+
+            // Update select all
+            const checkboxes = document.querySelectorAll('.result-checkbox');
+            const checkedBoxes = document.querySelectorAll('.result-checkbox:checked');
+            selectAll.checked = checkboxes.length > 0 && checkboxes.length === checkedBoxes.length;
+
+            updateBulkBar();
+        }
+
+        // ===== UPDATE STATS =====
+        function updateStats() {
+            totalResults.textContent = results.length;
+            pendingResults.textContent = results.filter(r => r.status === 'pending' || r.status === 'reviewed').length;
+            approvedResults.textContent = results.filter(r => r.status === 'approved').length;
+            publishedResults.textContent = results.filter(r => r.status === 'published').length;
+        }
+
+        // ===== BULK SELECTION =====
+        function toggleResult(id) {
+            if (selectedResults.has(id)) {
+                selectedResults.delete(id);
+            } else {
+                selectedResults.add(id);
+            }
+            renderResults();
+        }
+
+        function toggleAll() {
+            const checkboxes = document.querySelectorAll('.result-checkbox');
+            const allChecked = selectAll.checked;
+            checkboxes.forEach(cb => {
+                const id = parseInt(cb.dataset.id);
+                if (allChecked) {
+                    selectedResults.add(id);
+                } else {
+                    selectedResults.delete(id);
+                }
+                cb.checked = allChecked;
+            });
+            updateBulkBar();
+        }
+
+        function updateBulkBar() {
+            const count = selectedResults.size;
+            if (count > 0) {
+                bulkBar.classList.add('show');
+                selectedCount.textContent = count;
+            } else {
+                bulkBar.classList.remove('show');
+            }
+        }
+
+        function clearSelection() {
+            selectedResults.clear();
+            renderResults();
+        }
+
+        function bulkAction(status) {
+            if (selectedResults.size === 0) return;
+            if (!confirm(`Update ${selectedResults.size} results to "${status}"?`)) return;
+
+            results.forEach(r => {
+                if (selectedResults.has(r.id)) {
+                    r.status = status;
+                }
+            });
+            clearSelection();
+            renderResults();
+            showToast(`✅ ${selectedResults.size} results updated to ${status}`, 'success');
+        }
+
+        // ===== MODAL =====
+        function openModal(id) {
+            const result = results.find(r => r.id === id);
+            if (!result) return;
+
+            modalResultId = id;
+            modalStudent.textContent = result.student + ' (' + result.studentId + ')';
+            modalCourse.textContent = result.courseName;
+            modalScore.textContent = result.score;
+            modalGrade.textContent = result.grade;
+            modalComments.value = '';
+            modal.classList.add('open');
+        }
+
+        function closeModal() {
+            modal.classList.remove('open');
+            modalResultId = null;
+        }
+
+        function modalAction(status) {
+            if (!modalResultId) return;
+            const result = results.find(r => r.id === modalResultId);
+            if (!result) return;
+
+            result.status = status;
+            closeModal();
+            renderResults();
+            showToast(`✅ Result for ${result.student} ${status === 'approved' ? 'approved' : 'rejected'}`, 'success');
+        }
+
+        // Modal close on overlay click
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // ===== PUBLISH ALL =====
+        function publishAll() {
+            const approved = results.filter(r => r.status === 'approved');
+            if (approved.length === 0) {
+                showToast('ℹ️ No approved results to publish', 'error');
+                return;
+            }
+            if (!confirm(`Publish ${approved.length} approved results?`)) return;
+
+            approved.forEach(r => r.status = 'published');
+            renderResults();
+            showToast(`✅ ${approved.length} results published successfully`, 'success');
+        }
+
+        // ===== RESET FILTERS =====
+        function resetFilters() {
+            searchInput.value = '';
+            statusFilter.value = 'all';
+            courseFilter.value = 'all';
+            clearSelection();
+            renderResults();
+            showToast('↻ Filters reset', 'success');
+        }
+
+        // ===== REFRESH =====
+        function refreshData() {
+            renderResults();
+            showToast('↻ Data refreshed', 'success');
+        }
+
+        // ===== EXPORT CSV =====
+        function exportCSV() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const status = statusFilter.value;
+            const course = courseFilter.value;
+
+            let filtered = results.filter(r => {
+                const matchSearch = r.student.toLowerCase().includes(searchTerm) ||
+                    r.studentId.toLowerCase().includes(searchTerm);
+                const matchStatus = status === 'all' || r.status === status;
+                const matchCourse = course === 'all' || r.course === course;
+                return matchSearch && matchStatus && matchCourse;
+            });
+
+            if (filtered.length === 0) {
+                showToast('❌ No data to export', 'error');
+                return;
+            }
+
+            const headers = ['Student', 'Student ID', 'Course', 'Score', 'Grade', 'Status'];
+            const rows = filtered.map(r => [
+                r.student, r.studentId, r.courseName, r.score, r.grade, r.status
+            ]);
+
+            let csv = headers.join(',') + '\n';
+            rows.forEach(row => {
+                csv += row.map(cell => `"${cell}"`).join(',') + '\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download',
+                `results_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showToast(`✅ Exported ${filtered.length} results`, 'success');
+        }
+
+        // ===== TOAST =====
+        const toast = document.getElementById('toast');
+        let toastTimer;
+
+        function showToast(msg, type = 'success') {
+            toast.textContent = msg;
+            toast.className = 'toast ' + type + ' show';
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ===== SIDEBAR TOGGLE =====
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const toggleBtn = document.getElementById('sidebarToggle');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        toggleBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (sidebar.classList.contains('open')) toggleSidebar();
+                if (modal.classList.contains('open')) closeModal();
+            }
+        });
+
+        // ===== EVENT BINDING =====
+        searchInput.addEventListener('input', renderResults);
+        statusFilter.addEventListener('change', renderResults);
+        courseFilter.addEventListener('change', renderResults);
+
+        // ===== INIT =====
+        renderResults();
+
+        console.log('✅ British Poly · Result Approval Panel loaded');
+        console.log(`📝 ${results.length} results loaded`);
+    </script>
+
+</body>
+</html>

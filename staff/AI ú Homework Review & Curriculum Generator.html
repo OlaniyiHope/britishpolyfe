@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI · Homework Review & Curriculum Generator</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #edf2f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+
+        .container {
+            max-width: 1280px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 36px;
+            box-shadow: 0 24px 56px -16px rgba(0, 20, 40, 0.18);
+            padding: 2rem 2.2rem;
+            transition: all 0.2s;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem 1.5rem;
+            border-bottom: 1px solid #e9eff6;
+            padding-bottom: 1.4rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .header-left .icon-box {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #6b3f9e, #2563eb);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.4rem;
+            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.3);
+        }
+
+        .header-left h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0b1e2e;
+            letter-spacing: -0.02em;
+        }
+
+        .header-left h1 span { 
+            background: linear-gradient(135deg, #6b3f9e, #2563eb);
+            -webkit-backgroundclip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-left .badge {
+            background: #ede4f5;
+            color: #6b3f9e;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .header-right .date-badge {
+            background: #f2f6fc;
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            color: #1f3b57;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-outline {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #1f3f5c;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+
+        .btn-outline i { color: #2563eb; }
+        .btn-outline:hover { background: #f4f9ff; border-color: #b2c8dd; }
+
+        /* ===== AI STATUS BAR ===== */
+        .ai-status {
+            background: #f4f0fc;
+            border-radius: 16px;
+            padding: 0.6rem 1.2rem;
+            margin-bottom: 1.8rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid #e4d9f0;
+        }
+
+        .ai-status .ai-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #1a6d3b;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .ai-status .ai-label {
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #4d6a87;
+        }
+
+        .ai-status .ai-label strong { color: #6b3f9e; }
+
+        .ai-status .ai-stats {
+            margin-left: auto;
+            display: flex;
+            gap: 1.2rem;
+            font-size: 0.8rem;
+            color: #4d6a87;
+        }
+
+        .ai-status .ai-stats span i { color: #6b3f9e; margin-right: 0.3rem; }
+
+        /* ===== 2-COLUMN GRID ===== */
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.8rem;
+            margin-bottom: 1.8rem;
+        }
+
+        @media (max-width: 860px) {
+            .grid-2col { grid-template-columns: 1fr; }
+        }
+
+        /* ===== SECTION CARDS ===== */
+        .section-card {
+            background: #f9fcff;
+            border-radius: 24px;
+            padding: 1.2rem 1.4rem 1.4rem;
+            border: 1px solid #e9f0f7;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .section-title h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0b1e2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title h3 i { color: #6b3f9e; }
+
+        .section-title .badge-count {
+            background: #e5edf9;
+            color: #1f4f8a;
+            border-radius: 60px;
+            padding: 0.05rem 0.9rem;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        /* ===== FORM ===== */
+        .form-group {
+            margin-bottom: 0.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #3c5a79;
+            margin-bottom: 0.2rem;
+        }
+
+        .form-group label i { color: #6b3f9e; margin-right: 0.3rem; }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.6rem 0.9rem;
+            border: 1px solid #d7e2ed;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            color: #0b1e2e;
+            background: white;
+            transition: 0.15s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #6b3f9e;
+            box-shadow: 0 0 0 3px rgba(107, 63, 158, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        @media (max-width: 500px) {
+            .form-row { grid-template-columns: 1fr; }
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, #6b3f9e, #2563eb);
+            border: none;
+            color: white;
+            border-radius: 60px;
+            padding: 0.5rem 2rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: default;
+            transition: 0.15s;
+            box-shadow: 0 4px 12px rgba(107, 63, 158, 0.25);
+        }
+        .btn-generate:hover { transform: scale(0.98); opacity: 0.9; }
+
+        .btn-outline-purple {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #6b3f9e;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+        .btn-outline-purple i { color: #6b3f9e; }
+        .btn-outline-purple:hover { background: #f4f0fc; border-color: #c9b8e0; }
+
+        /* ===== GENERATED CONTENT ===== */
+        .gen-content {
+            background: white;
+            border-radius: 16px;
+            padding: 1rem 1.2rem;
+            border: 1px solid #e9f0f7;
+            margin-top: 0.8rem;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .gen-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .gen-content::-webkit-scrollbar-thumb {
+            background: #c9b8e0;
+            border-radius: 10px;
+        }
+
+        .gen-item {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #eef4fa;
+        }
+        .gen-item:last-child { border-bottom: 0; }
+
+        .gen-item .gen-q {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #0b1e2e;
+        }
+
+        .gen-item .gen-a {
+            font-size: 0.8rem;
+            color: #4d6a87;
+            margin-top: 0.15rem;
+            padding-left: 0.5rem;
+            border-left: 3px solid #6b3f9e;
+        }
+
+        .gen-item .gen-tag {
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 0.05rem 0.7rem;
+            border-radius: 40px;
+            background: #e5edf9;
+            color: #1f4f8a;
+            margin-right: 0.4rem;
+        }
+
+        .gen-item .gen-tag.easy { background: #e2f0e6; color: #1a6d3b; }
+        .gen-item .gen-tag.medium { background: #fef3d7; color: #a7691a; }
+        .gen-item .gen-tag.hard { background: #fde8e8; color: #b13e3e; }
+
+        /* ===== CURRICULUM OUTPUT ===== */
+        .curriculum-output {
+            background: white;
+            border-radius: 16px;
+            padding: 1rem 1.2rem;
+            border: 1px solid #e9f0f7;
+            margin-top: 0.8rem;
+        }
+
+        .curriculum-output .mod {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eef4fa;
+        }
+        .curriculum-output .mod:last-child { border-bottom: 0; }
+
+        .curriculum-output .mod .mod-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #0b1e2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .curriculum-output .mod .mod-title i { color: #6b3f9e; }
+
+        .curriculum-output .mod .mod-desc {
+            font-size: 0.8rem;
+            color: #4d6a87;
+            margin-top: 0.1rem;
+            padding-left: 1.5rem;
+        }
+
+        .curriculum-output .mod .mod-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            margin-top: 0.2rem;
+            padding-left: 1.5rem;
+        }
+
+        .curriculum-output .mod .mod-topics span {
+            font-size: 0.7rem;
+            background: #e5edf9;
+            color: #1f4f8a;
+            padding: 0.05rem 0.7rem;
+            border-radius: 40px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .container { padding: 1.2rem; border-radius: 28px; }
+            .header-left h1 { font-size: 1.2rem; }
+            .ai-status { flex-direction: column; align-items: stretch; }
+            .ai-status .ai-stats { margin-left: 0; justify-content: space-between; }
+            .grid-2col { gap: 1rem; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 0.8rem; border-radius: 24px; }
+            .header-left .icon-box { width: 40px; height: 40px; font-size: 1.2rem; }
+            .ai-status .ai-stats { flex-wrap: wrap; }
+            .gen-content { max-height: 220px; }
+        }
+
+        .footer-note {
+            margin-top: 1.2rem;
+            font-size: 0.7rem;
+            color: #7f99b5;
+            display: flex;
+            justify-content: flex-end;
+            border-top: 1px solid #e9eff6;
+            padding-top: 1rem;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-note .ai-credit {
+            color: #6b3f9e;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Staff Home</a><a href="pag19.html">pag19</a><a href="page.10.html">page 10</a><a href="page.12.html">page 12</a><a href="page.14.html">page 14</a><a href="page1.html">page1</a><a href="page11.html">page11</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a></div>
+<div class="container">
+
+    <!-- ===== HEADER ===== -->
+    <div class="header">
+        <div class="header-left">
+            <div class="icon-box"><i class="fas fa-robot"></i></div>
+            <div>
+                <h1>AI <span>Homework & Curriculum</span></h1>
+                <div style="display: flex; gap: 0.5rem; margin-top: 0.1rem;">
+                    <span class="badge"><i class="fas fa-brain"></i> Powered by AI</span>
+                    <span class="badge" style="background: #e2f0e6; color: #1a6d3b;"><i class="fas fa-check-circle"></i> Ready</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-right">
+            <span class="date-badge"><i class="far fa-calendar-alt"></i> Aug 14, 2026</span>
+            <span class="btn-outline"><i class="fas fa-history"></i> History</span>
+            <span class="btn-outline"><i class="fas fa-cog"></i> Settings</span>
+        </div>
+    </div>
+
+    <!-- ===== AI STATUS ===== -->
+    <div class="ai-status">
+        <span class="ai-dot"></span>
+        <span class="ai-label"><strong>AI Assistant</strong> · Ready to generate</span>
+        <div class="ai-stats">
+            <span><i class="fas fa-file-alt"></i> 24 questions generated</span>
+            <span><i class="fas fa-book"></i> 6 curricula created</span>
+            <span><i class="fas fa-clock"></i> Last: 2 min ago</span>
+        </div>
+    </div>
+
+    <!-- ===== 2-COLUMN ===== -->
+    <div class="grid-2col">
+
+        <!-- LEFT: GENERATE QUESTIONS -->
+        <div class="section-card">
+            <div class="section-title">
+                <h3><i class="fas fa-question-circle"></i> Generate Questions</h3>
+                <span class="badge-count">AI powered</span>
+            </div>
+
+            <form>
+                <div class="form-group">
+                    <label><i class="fas fa-book"></i> Subject / Topic *</label>
+                    <input type="text" placeholder="e.g. Data Structures, Calculus, History..." value="Computer Science - Algorithms" />
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-layer-group"></i> Difficulty</label>
+                        <select>
+                            <option>Beginner</option>
+                            <option selected>Intermediate</option>
+                            <option>Advanced</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-sort-numeric-up"></i> Number of Questions</label>
+                        <select>
+                            <option>5</option>
+                            <option selected>10</option>
+                            <option>15</option>
+                            <option>20</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-align-left"></i> Additional Context (optional)</label>
+                    <textarea placeholder="Specify focus areas, learning objectives, or particular concepts...">Focus on sorting algorithms: merge sort, quick sort, and heap sort. Include time complexity questions.</textarea>
+                </div>
+
+                <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                    <span class="btn-generate"><i class="fas fa-magic"></i> Generate Questions</span>
+                    <span class="btn-outline-purple"><i class="fas fa-undo-alt"></i> Reset</span>
+                </div>
+            </form>
+
+            <!-- Generated Questions Output -->
+            <div style="margin-top: 1rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                    <span style="font-size: 0.75rem; font-weight: 600; color: #4d6a87;"><i class="fas fa-list-ul"></i> Generated Questions (10)</span>
+                    <span class="btn-outline" style="padding: 0.1rem 0.8rem; font-size: 0.65rem;"><i class="fas fa-download"></i> Export</span>
+                </div>
+                <div class="gen-content">
+                    <div class="gen-item">
+                        <div class="gen-q">
+                            <span class="gen-tag medium">Medium</span>
+                            1. Explain the divide-and-conquer approach used in merge sort. How does it compare to quick sort?
+                        </div>
+                        <div class="gen-a">Merge sort divides the array into halves recursively, then merges sorted halves. Quick sort partitions around a pivot. Merge sort is stable and O(n log n) worst-case, quick sort is faster in practice but O(n²) worst-case.</div>
+                    </div>
+                    <div class="gen-item">
+                        <div class="gen-q">
+                            <span class="gen-tag hard">Hard</span>
+                            2. What is the time complexity of heap sort? Explain the heapify process and its role.
+                        </div>
+                        <div class="gen-a">Heap sort runs in O(n log n) time. Heapify builds a max-heap from an array in O(n) time, then repeatedly extracts the maximum element and reheapifies, resulting in O(n log n) overall.</div>
+                    </div>
+                    <div class="gen-item">
+                        <div class="gen-q">
+                            <span class="gen-tag easy">Easy</span>
+                            3. Describe the basic concept of a sorting algorithm. Why is sorting important in computer science?
+                        </div>
+                        <div class="gen-a">A sorting algorithm arranges elements in a specific order (ascending/descending). Sorting enables efficient searching, data organization, and is a fundamental building block for many algorithms.</div>
+                    </div>
+                    <div class="gen-item">
+                        <div class="gen-q">
+                            <span class="gen-tag medium">Medium</span>
+                            4. Compare and contrast the space complexity of merge sort and quick sort.
+                        </div>
+                        <div class="gen-a">Merge sort uses O(n) auxiliary space due to temporary arrays. Quick sort uses O(log n) space for the recursive call stack (in-place partitioning).</div>
+                    </div>
+                    <div class="gen-item">
+                        <div class="gen-q">
+                            <span class="gen-tag hard">Hard</span>
+                            5. Implement a function to find the k-th smallest element in an unsorted array using quickselect.
+                        </div>
+                        <div class="gen-a">Quickselect uses partitioning similar to quick sort but only recurses into the partition containing the k-th element. Average O(n) time, worst-case O(n²).</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: GENERATE CURRICULUM -->
+        <div class="section-card">
+            <div class="section-title">
+                <h3><i class="fas fa-book-open"></i> Generate Curriculum</h3>
+                <span class="badge-count">AI structured</span>
+            </div>
+
+            <form>
+                <div class="form-group">
+                    <label><i class="fas fa-graduation-cap"></i> Course / Subject *</label>
+                    <input type="text" placeholder="e.g. Introduction to Machine Learning" value="Advanced Algorithms" />
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-clock"></i> Duration (weeks)</label>
+                        <select>
+                            <option>4</option>
+                            <option selected>6</option>
+                            <option>8</option>
+                            <option>12</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-signal"></i> Level</label>
+                        <select>
+                            <option>Beginner</option>
+                            <option selected>Intermediate</option>
+                            <option>Advanced</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-bullseye"></i> Learning Objectives</label>
+                    <textarea placeholder="List key learning outcomes or goals...">Master advanced algorithm design, complexity analysis, and optimization techniques. Prepare for technical interviews.</textarea>
+                </div>
+
+                <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                    <span class="btn-generate"><i class="fas fa-magic"></i> Generate Curriculum</span>
+                    <span class="btn-outline-purple"><i class="fas fa-undo-alt"></i> Reset</span>
+                </div>
+            </form>
+
+            <!-- Generated Curriculum Output -->
+            <div style="margin-top: 1rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                    <span style="font-size: 0.75rem; font-weight: 600; color: #4d6a87;"><i class="fas fa-sitemap"></i> Generated Curriculum (6 weeks)</span>
+                    <span class="btn-outline" style="padding: 0.1rem 0.8rem; font-size: 0.65rem;"><i class="fas fa-download"></i> Export</span>
+                </div>
+                <div class="curriculum-output">
+                    <div class="mod">
+                        <div class="mod-title"><i class="fas fa-check-circle" style="color: #1a6d3b;"></i> Week 1: Introduction to Algorithms</div>
+                        <div class="mod-desc">Overview of algorithm analysis, asymptotic notation, and basic data structures.</div>
+                        <div class="mod-topics">
+                            <span>Big O notation</span>
+                            <span>Arrays & Linked Lists</span>
+                            <span>Stacks & Queues</span>
+                        </div>
+                    </div>
+                    <div class="mod">
+                        <div class="mod-title"><i class="fas fa-check-circle" style="color: #1a6d3b;"></i> Week 2: Sorting Algorithms</div>
+                        <div class="mod-desc">Deep dive into sorting techniques, complexity analysis, and practical applications.</div>
+                        <div class="mod-topics">
+                            <span>Merge Sort</span>
+                            <span>Quick Sort</span>
+                            <span>Heap Sort</span>
+                            <span>Radix Sort</span>
+                        </div>
+                    </div>
+                    <div class="mod">
+                        <div class="mod-title"><i class="fas fa-check-circle" style="color: #1a6d3b;"></i> Week 3: Graph Algorithms</div>
+                        <div class="mod-desc">Fundamental graph algorithms for traversal, shortest paths, and connectivity.</div>
+                        <div class="mod-topics">
+                            <span>DFS & BFS</span>
+                            <span>Dijkstra's Algorithm</span>
+                            <span>Bellman-Ford</span>
+                            <span>Prim's & Kruskal's</span>
+                        </div>
+                    </div>
+                    <div class="mod">
+                        <div class="mod-title"><i class="fas fa-check-circle" style="color: #1a6d3b;"></i> Week 4: Dynamic Programming</div>
+                        <div class="mod-desc">Problem-solving with dynamic programming, memoization, and tabulation techniques.</div>
+                        <div class="mod-topics">
+                            <span>Knapsack Problem</span>
+                            <span>Longest Common Subsequence</span>
+                            <span>Matrix Chain Multiplication</span>
+                        </div>
+                    </div>
+                    <div class="mod">
+                        <div class="mod-title"><i class="fas fa-check-circle" style="color: #1a6d3b;"></i> Week 5: Advanced Topics</div>
+                        <div class="mod-desc">Advanced algorithm paradigms and problem-solving strategies.</div>
+                        <div class="mod-topics">
+                            <span>Greedy Algorithms</span>
+                            <span>Backtracking</span>
+                            <span>Branch & Bound</span>
+                            <span>NP-Completeness</span>
+                        </div>
+                    </div>
+                    <div class="mod">
+                        <div class="mod-title"><i class="fas fa-check-circle" style="color: #1a6d3b;"></i> Week 6: Final Project & Review</div>
+                        <div class="mod-desc">Apply all learned concepts to a comprehensive project and review key topics.</div>
+                        <div class="mod-topics">
+                            <span>Capstone Project</span>
+                            <span>Mock Interviews</span>
+                            <span>Final Assessment</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== QUICK ACTIONS ===== -->
+    <div class="section-card" style="margin-top: 0.2rem;">
+        <div class="section-title">
+            <h3><i class="fas fa-bolt"></i> Quick AI Actions</h3>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.6rem 1rem;">
+            <span class="btn-generate" style="padding: 0.4rem 1.4rem; font-size: 0.8rem;"><i class="fas fa-random"></i> Generate Quiz</span>
+            <span class="btn-outline-purple"><i class="fas fa-file-alt"></i> Create Worksheet</span>
+            <span class="btn-outline-purple"><i class="fas fa-lightbulb"></i> Suggest Topics</span>
+            <span class="btn-outline-purple"><i class="fas fa-chart-bar"></i> Analyze Difficulty</span>
+            <span class="btn-outline-purple"><i class="fas fa-print"></i> Print All</span>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="footer-note">
+        <span><i class="fas fa-sync-alt"></i> Last sync: 2 min ago</span>
+        <span><i class="fas fa-robot"></i> <span class="ai-credit">AI v2.4 · Powered by advanced NLP</span></span>
+        <span><i class="fas fa-chevron-right"></i> <a href="#" style="color: #6b3f9e; text-decoration: none;">view all generated content</a></span>
+        <span><i class="fas fa-shield-alt"></i> Secure</span>
+    </div>
+</div>
+</body>
+</html>

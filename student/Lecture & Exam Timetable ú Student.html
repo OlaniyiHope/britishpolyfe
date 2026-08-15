@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <title>Lecture & Exam Timetable · Student</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #eef3fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .timetable-portal {
+            max-width: 1300px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 44px;
+            box-shadow: 0 30px 60px -18px rgba(0, 20, 40, 0.18);
+            padding: 28px 30px 32px;
+            transition: all 0.2s;
+        }
+
+        /* header */
+        .portal-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            gap: 14px;
+        }
+
+        .portal-header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #0a1e32;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .portal-header h1 i {
+            color: #7c3aed;
+            font-size: 2rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .student-badge {
+            background: #e6edf8;
+            padding: 8px 20px;
+            border-radius: 60px;
+            font-weight: 500;
+            color: #1c3857;
+            font-size: 0.9rem;
+        }
+
+        .student-badge i {
+            margin-right: 6px;
+            color: #2563eb;
+        }
+
+        .live-badge {
+            background: #dc3545;
+            color: white;
+            font-weight: 600;
+            font-size: 0.7rem;
+            padding: 6px 16px 6px 14px;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            animation: livePulse 1.8s infinite;
+        }
+
+        @keyframes livePulse {
+            0% { opacity: 0.75; transform: scale(0.97); }
+            50% { opacity: 1; transform: scale(1.02); }
+            100% { opacity: 0.75; transform: scale(0.97); }
+        }
+
+        /* semester info */
+        .semester-bar {
+            background: #f8fbff;
+            border-radius: 20px;
+            padding: 14px 22px;
+            border: 1px solid #e7eef9;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 26px;
+            gap: 12px;
+        }
+
+        .semester-bar .semester-label {
+            font-weight: 600;
+            color: #0a1e32;
+            font-size: 1rem;
+        }
+
+        .semester-bar .semester-label i {
+            color: #7c3aed;
+            margin-right: 8px;
+        }
+
+        .semester-bar .week-info {
+            font-size: 0.85rem;
+            color: #4f6e8e;
+        }
+
+        .semester-bar .week-info i {
+            margin-right: 4px;
+            color: #2563eb;
+        }
+
+        /* tabs */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: white;
+            border: 1px solid #d8e2ef;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #1d3957;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tab-btn i {
+            font-size: 0.8rem;
+            color: #617e9e;
+        }
+
+        .tab-btn:hover {
+            background: #e9f0fa;
+            border-color: #a6bdd9;
+        }
+
+        .tab-btn.active {
+            background: #7c3aed;
+            border-color: #7c3aed;
+            color: white;
+        }
+
+        .tab-btn.active i {
+            color: white;
+        }
+
+        /* table wrapper */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 20px;
+            border: 1px solid #e7eef9;
+            background: #fafdff;
+        }
+
+        .timetable {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 700px;
+        }
+
+        .timetable th {
+            text-align: left;
+            padding: 16px 16px;
+            background: #f2f8ff;
+            font-weight: 600;
+            color: #1a3652;
+            border-bottom: 2px solid #dce6f2;
+        }
+
+        .timetable td {
+            padding: 16px 16px;
+            border-bottom: 1px solid #eaf0f8;
+            color: #1d3957;
+            vertical-align: middle;
+        }
+
+        .timetable tr:last-child td {
+            border-bottom: none;
+        }
+
+        .timetable .course-code {
+            font-weight: 600;
+            color: #7c3aed;
+        }
+
+        .timetable .type-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 40px;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .type-badge.lecture {
+            background: #dbeafe;
+            color: #1e4b8f;
+        }
+
+        .type-badge.exam {
+            background: #fee9e7;
+            color: #b91c1c;
+        }
+
+        .type-badge.lab {
+            background: #d1fae5;
+            color: #0b6e4f;
+        }
+
+        .timetable .location {
+            font-size: 0.8rem;
+            color: #4f6e8e;
+        }
+
+        .timetable .location i {
+            margin-right: 4px;
+            color: #7c3aed;
+        }
+
+        .exam-highlight {
+            background: #fff8f6;
+        }
+
+        .exam-highlight td {
+            border-bottom-color: #fde8e3;
+        }
+
+        /* empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #4b6a89;
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            color: #b0c8e0;
+            margin-bottom: 8px;
+        }
+
+        /* footer */
+        .portal-footer {
+            margin-top: 28px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 0.78rem;
+            color: #577392;
+            border-top: 1px solid #e7eef8;
+            padding-top: 20px;
+        }
+
+        .portal-footer i {
+            margin-right: 4px;
+        }
+
+        /* responsive */
+        @media (max-width: 700px) {
+            .timetable-portal { padding: 20px 16px 28px; }
+            .portal-header h1 { font-size: 1.5rem; }
+            .semester-bar { flex-direction: column; align-items: flex-start; }
+            .tabs { gap: 6px; }
+            .tab-btn { padding: 8px 16px; font-size: 0.8rem; }
+            .timetable { font-size: 0.8rem; min-width: 550px; }
+            .timetable th, .timetable td { padding: 12px 12px; }
+        }
+
+        @media (max-width: 480px) {
+            .timetable { font-size: 0.7rem; min-width: 480px; }
+            .timetable th, .timetable td { padding: 8px 8px; }
+            .tab-btn { padding: 6px 12px; font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Student Home</a><a href="page1.html">page1</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page15.html">page15</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page6.html">page6</a></div>
+
+<div class="timetable-portal" id="timetableApp">
+    <!-- header -->
+    <div class="portal-header">
+        <h1><i class="fas fa-calendar-alt"></i> Timetable</h1>
+        <div class="header-right">
+            <span class="student-badge"><i class="fas fa-id-badge"></i> S-2026-014 · Sarah Chen</span>
+            <span class="live-badge"><i class="fas fa-circle" style="font-size:0.45rem;"></i> LIVE</span>
+        </div>
+    </div>
+
+    <!-- semester bar -->
+    <div class="semester-bar">
+        <span class="semester-label"><i class="fas fa-graduation-cap"></i> Spring 2026</span>
+        <span class="week-info"><i class="far fa-calendar-alt"></i> Week 8 · Mar 17 – Mar 23</span>
+        <span class="week-info"><i class="fas fa-clock"></i> <span id="updateTime">just now</span></span>
+    </div>
+
+    <!-- tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" data-view="all"><i class="fas fa-th"></i> All</button>
+        <button class="tab-btn" data-view="lecture"><i class="fas fa-chalkboard-teacher"></i> Lectures</button>
+        <button class="tab-btn" data-view="exam"><i class="fas fa-pencil-alt"></i> Exams</button>
+        <button class="tab-btn" data-view="lab"><i class="fas fa-flask"></i> Labs</button>
+    </div>
+
+    <!-- timetable table -->
+    <div class="table-wrap">
+        <table class="timetable" id="timetableTable">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th>Course</th>
+                    <th>Type</th>
+                    <th>Location</th>
+                    <th>Instructor</th>
+                </tr>
+            </thead>
+            <tbody id="timetableBody">
+                <!-- injected by js -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- footer -->
+    <div class="portal-footer">
+        <span><i class="far fa-clock"></i> last updated: <span id="footerUpdate">just now</span></span>
+        <span><i class="fas fa-sync-alt fa-fw"></i> auto‑sync</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // ----- timetable data -----
+        let events = [
+            { id: 1, day: 'Monday', time: '10:00 – 11:30', course: 'CS 201', title: 'Data Structures', type: 'lecture', location: 'Room 301, Eng. Bldg', instructor: 'Dr. Alan Turing' },
+            { id: 2, day: 'Monday', time: '2:00 – 3:30', course: 'MATH 220', title: 'Linear Algebra', type: 'lecture', location: 'Room 105, Math Bldg', instructor: 'Dr. Emmy Noether' },
+            { id: 3, day: 'Tuesday', time: '11:00 – 12:30', course: 'CS 260', title: 'Web Development', type: 'lecture', location: 'Lab 202, CS Bldg', instructor: 'Prof. Tim Berners-Lee' },
+            { id: 4, day: 'Tuesday', time: '1:00 – 3:00', course: 'PHYS 101', title: 'Intro to Physics', type: 'exam', location: 'Hall A, Main Bldg', instructor: 'Prof. Richard Feynman' },
+            { id: 5, day: 'Wednesday', time: '10:00 – 11:30', course: 'CS 201', title: 'Data Structures', type: 'lecture', location: 'Room 301, Eng. Bldg', instructor: 'Dr. Alan Turing' },
+            { id: 6, day: 'Wednesday', time: '2:00 – 4:00', course: 'CS 260', title: 'Web Development Lab', type: 'lab', location: 'Lab 202, CS Bldg', instructor: 'Prof. Tim Berners-Lee' },
+            { id: 7, day: 'Thursday', time: '9:00 – 10:30', course: 'ENG 110', title: 'Composition I', type: 'lecture', location: 'Room 204, Humanities', instructor: 'Prof. Maya Angelou' },
+            { id: 8, day: 'Thursday', time: '11:00 – 12:30', course: 'CS 260', title: 'Web Development', type: 'lecture', location: 'Lab 202, CS Bldg', instructor: 'Prof. Tim Berners-Lee' },
+            { id: 9, day: 'Friday', time: '8:00 – 9:30', course: 'MATH 220', title: 'Linear Algebra', type: 'exam', location: 'Room 105, Math Bldg', instructor: 'Dr. Emmy Noether' },
+            { id: 10, day: 'Friday', time: '10:00 – 11:30', course: 'CS 201', title: 'Data Structures', type: 'lecture', location: 'Room 301, Eng. Bldg', instructor: 'Dr. Alan Turing' },
+            { id: 11, day: 'Friday', time: '1:00 – 3:00', course: 'PHYS 101', title: 'Physics Lab', type: 'lab', location: 'Lab 5, Science Bldg', instructor: 'Prof. Richard Feynman' },
+        ];
+
+        // ----- state -----
+        let currentView = 'all';
+
+        // DOM refs
+        const tbody = document.getElementById('timetableBody');
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const updateTimeSpan = document.getElementById('updateTime');
+        const footerUpdateSpan = document.getElementById('footerUpdate');
+
+        // ----- helpers -----
+        function updateTimestamp() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2,'0');
+            const m = String(now.getMinutes()).padStart(2,'0');
+            const timeStr = `${h}:${m}`;
+            updateTimeSpan.textContent = timeStr;
+            footerUpdateSpan.textContent = timeStr;
+        }
+
+        function getTypeBadge(type) {
+            const map = {
+                'lecture': '<span class="type-badge lecture"><i class="fas fa-chalkboard-teacher"></i> Lecture</span>',
+                'exam': '<span class="type-badge exam"><i class="fas fa-pencil-alt"></i> Exam</span>',
+                'lab': '<span class="type-badge lab"><i class="fas fa-flask"></i> Lab</span>'
+            };
+            return map[type] || map.lecture;
+        }
+
+        function getTypeIcon(type) {
+            const map = {
+                'lecture': 'fa-chalkboard-teacher',
+                'exam': 'fa-pencil-alt',
+                'lab': 'fa-flask'
+            };
+            return map[type] || 'fa-circle';
+        }
+
+        // ----- render -----
+        function render() {
+            let filtered = events;
+            if (currentView !== 'all') {
+                filtered = events.filter(e => e.type === currentView);
+            }
+
+            // sort by day order
+            const dayOrder = { 'Monday': 1, 'Tuesday': 2, 'Wednesday': 3, 'Thursday': 4, 'Friday': 5 };
+            filtered.sort((a, b) => (dayOrder[a.day] || 6) - (dayOrder[b.day] || 6));
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr><td colspan="6">
+                        <div class="empty-state">
+                            <i class="fas fa-calendar-times"></i>
+                            <p style="font-weight:500;">No events for this view</p>
+                        </div>
+                    </td></tr>
+                `;
+                updateTimestamp();
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(e => {
+                const isExam = e.type === 'exam';
+                const rowClass = isExam ? 'exam-highlight' : '';
+                const badgeHtml = getTypeBadge(e.type);
+                html += `
+                    <tr class="${rowClass}">
+                        <td><strong>${e.day}</strong></td>
+                        <td><i class="far fa-clock" style="color:#7c3aed;margin-right:4px;"></i>${e.time}</td>
+                        <td><span class="course-code">${e.course}</span><br /><span style="font-size:0.8rem;color:#4f6e8e;">${e.title}</span></td>
+                        <td>${badgeHtml}</td>
+                        <td class="location"><i class="fas fa-map-marker-alt"></i> ${e.location}</td>
+                        <td><i class="fas fa-user-graduate" style="color:#7c3aed;margin-right:4px;"></i>${e.instructor}</td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+            updateTimestamp();
+        }
+
+        // ----- tab switching -----
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentView = btn.dataset.view;
+                render();
+            });
+        });
+
+        // ----- init -----
+        render();
+
+        // ----- live simulation: update timestamp & randomly add/change event -----
+        setInterval(() => {
+            updateTimestamp();
+
+            // occasionally add a new event (simulate live update)
+            if (events.length < 20 && Math.random() > 0.75) {
+                const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+                const types = ['lecture', 'lab', 'exam'];
+                const randomDay = days[Math.floor(Math.random() * days.length)];
+                const randomType = types[Math.floor(Math.random() * types.length)];
+                const newEvent = {
+                    id: events.length + 1,
+                    day: randomDay,
+                    time: '3:00 – 4:30',
+                    course: 'CS 310',
+                    title: 'Database Systems',
+                    type: randomType,
+                    location: 'Room 401, Eng. Bldg',
+                    instructor: 'Dr. Edgar Codd'
+                };
+                // avoid duplicates (simple check)
+                const exists = events.some(e => e.day === newEvent.day && e.time === newEvent.time && e.course === newEvent.course);
+                if (!exists) {
+                    events.push(newEvent);
+                    render();
+                }
+            }
+        }, 25000);
+    })();
+</script>
+</body>
+</html>

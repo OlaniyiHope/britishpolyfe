@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <title>Class Information · Student</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #eef3fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .class-portal {
+            max-width: 1300px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 44px;
+            box-shadow: 0 30px 60px -18px rgba(0, 20, 40, 0.18);
+            padding: 28px 32px 32px;
+            transition: all 0.2s;
+        }
+
+        /* header */
+        .class-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            gap: 14px;
+        }
+
+        .class-header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #0a1e32;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .class-header h1 i {
+            color: #2563eb;
+            font-size: 2rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .student-badge {
+            background: #e6edf8;
+            padding: 8px 20px;
+            border-radius: 60px;
+            font-weight: 500;
+            color: #1c3857;
+            font-size: 0.9rem;
+        }
+
+        .student-badge i {
+            margin-right: 6px;
+            color: #2563eb;
+        }
+
+        .live-badge {
+            background: #dc3545;
+            color: white;
+            font-weight: 600;
+            font-size: 0.7rem;
+            padding: 6px 16px 6px 14px;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            animation: livePulse 1.8s infinite;
+        }
+
+        @keyframes livePulse {
+            0% { opacity: 0.75; transform: scale(0.97); }
+            50% { opacity: 1; transform: scale(1.02); }
+            100% { opacity: 0.75; transform: scale(0.97); }
+        }
+
+        /* semester bar */
+        .semester-bar {
+            background: #f8fbff;
+            border-radius: 20px;
+            padding: 14px 22px;
+            border: 1px solid #e7eef9;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 26px;
+            gap: 12px;
+        }
+
+        .semester-bar .semester-label {
+            font-weight: 600;
+            color: #0a1e32;
+            font-size: 1rem;
+        }
+
+        .semester-bar .semester-label i {
+            color: #2563eb;
+            margin-right: 8px;
+        }
+
+        .semester-bar .week-info {
+            font-size: 0.85rem;
+            color: #4f6e8e;
+        }
+
+        .semester-bar .week-info i {
+            margin-right: 4px;
+            color: #2563eb;
+        }
+
+        /* class grid */
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 22px;
+            margin-top: 4px;
+        }
+
+        .class-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 22px 22px 20px;
+            border: 1px solid #ebf1f9;
+            box-shadow: 0 4px 12px rgba(0, 20, 30, 0.02);
+            transition: 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .class-card:hover {
+            border-color: #c5d7ed;
+            box-shadow: 0 12px 28px -8px rgba(22, 60, 110, 0.07);
+            transform: translateY(-3px);
+        }
+
+        .class-card .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .class-card .code-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 40px;
+            background: #dbeafe;
+            color: #1e4b8f;
+        }
+
+        .class-card .credits {
+            font-size: 0.7rem;
+            background: #f2f6fd;
+            padding: 3px 12px;
+            border-radius: 30px;
+            color: #4b6b8a;
+        }
+
+        .class-card .class-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #0b1e31;
+            margin: 4px 0 6px;
+        }
+
+        .class-card .class-instructor {
+            font-size: 0.8rem;
+            color: #4f6e8e;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .class-card .class-instructor i {
+            color: #2563eb;
+            font-size: 0.7rem;
+        }
+
+        .class-card .class-details {
+            font-size: 0.85rem;
+            color: #2f4b69;
+            line-height: 1.6;
+            flex: 1;
+            margin-bottom: 14px;
+        }
+
+        .class-card .class-details .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 0;
+        }
+
+        .class-card .class-details .detail-row i {
+            width: 18px;
+            color: #2563eb;
+            font-size: 0.75rem;
+        }
+
+        .class-card .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #e8eff7;
+            padding-top: 14px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .class-card .status-badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-badge.active {
+            background: #d1fae5;
+            color: #0b6e4f;
+        }
+
+        .status-badge.completed {
+            background: #dbeafe;
+            color: #1e4b8f;
+        }
+
+        .status-badge.upcoming {
+            background: #fef3c7;
+            color: #8b6914;
+        }
+
+        .class-card .action-icons {
+            display: flex;
+            gap: 12px;
+            color: #7e95b2;
+        }
+
+        .class-card .action-icons i {
+            cursor: pointer;
+            transition: 0.1s;
+            font-size: 0.9rem;
+        }
+
+        .class-card .action-icons i:hover {
+            color: #2563eb;
+        }
+
+        .class-card .action-icons .delete-icon:hover {
+            color: #b91c1c;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px 20px;
+            color: #4b6a89;
+            background: #fafdff;
+            border-radius: 48px;
+            border: 1px dashed #c2d6ec;
+        }
+
+        .empty-state i {
+            font-size: 2.8rem;
+            color: #b0c8e0;
+            margin-bottom: 12px;
+        }
+
+        /* add button area */
+        .add-area {
+            margin-top: 24px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .add-btn {
+            background: #1a3a6b;
+            border: none;
+            color: white;
+            padding: 12px 32px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.15s;
+            box-shadow: 0 4px 14px rgba(26, 58, 107, 0.20);
+        }
+
+        .add-btn:hover {
+            background: #0e2a4f;
+            transform: scale(1.02);
+        }
+
+        .add-btn i {
+            font-size: 0.9rem;
+        }
+
+        /* footer */
+        .class-footer {
+            margin-top: 28px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 0.78rem;
+            color: #577392;
+            border-top: 1px solid #e7eef8;
+            padding-top: 20px;
+        }
+
+        .class-footer i {
+            margin-right: 4px;
+        }
+
+        /* responsive */
+        @media (max-width: 700px) {
+            .class-portal { padding: 20px 16px 24px; }
+            .class-header h1 { font-size: 1.5rem; }
+            .class-grid { grid-template-columns: 1fr 1fr; }
+            .semester-bar { flex-direction: column; align-items: flex-start; }
+        }
+
+        @media (max-width: 480px) {
+            .class-grid { grid-template-columns: 1fr; }
+            .class-card .card-top { flex-wrap: wrap; gap: 6px; }
+            .add-btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Student Home</a><a href="page1.html">page1</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page15.html">page15</a><a href="page16.html">page16</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page9.html">page9</a></div>
+
+<div class="class-portal" id="classPortal">
+    <!-- header -->
+    <div class="class-header">
+        <h1><i class="fas fa-chalkboard-teacher"></i> Class Information</h1>
+        <div class="header-right">
+            <span class="student-badge"><i class="fas fa-id-badge"></i> S-2026-014 · Sarah Chen</span>
+            <span class="live-badge"><i class="fas fa-circle" style="font-size:0.45rem;"></i> LIVE</span>
+        </div>
+    </div>
+
+    <!-- semester bar -->
+    <div class="semester-bar">
+        <span class="semester-label"><i class="fas fa-graduation-cap"></i> Spring 2026</span>
+        <span class="week-info"><i class="far fa-calendar-alt"></i> Week 8 · Mar 17 – Mar 23</span>
+        <span class="week-info"><i class="fas fa-clock"></i> <span id="updateTime">just now</span></span>
+    </div>
+
+    <!-- class grid -->
+    <div class="class-grid" id="classGrid">
+        <!-- injected by js -->
+    </div>
+
+    <!-- add button -->
+    <div class="add-area">
+        <button class="add-btn" id="addClassBtn"><i class="fas fa-plus-circle"></i> Add Class</button>
+    </div>
+
+    <!-- footer -->
+    <div class="class-footer">
+        <span><i class="far fa-clock"></i> updated: <span id="footerUpdate">just now</span></span>
+        <span><i class="fas fa-sync-alt fa-fw"></i> auto‑sync</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // ----- class data -----
+        let classes = [
+            {
+                id: 1,
+                code: 'CS 201',
+                title: 'Data Structures',
+                instructor: 'Dr. Alan Turing',
+                schedule: 'MWF 10:00 – 11:30',
+                location: 'Room 301, Eng. Bldg',
+                credits: 3,
+                status: 'active',
+                desc: 'Fundamental data structures and algorithms. Topics include arrays, linked lists, trees, graphs, and sorting algorithms.'
+            },
+            {
+                id: 2,
+                code: 'CS 260',
+                title: 'Web Development',
+                instructor: 'Prof. Tim Berners-Lee',
+                schedule: 'TTh 11:00 – 12:30',
+                location: 'Lab 202, CS Bldg',
+                credits: 4,
+                status: 'active',
+                desc: 'Frontend and backend web technologies including HTML, CSS, JavaScript, React, Node.js, and databases.'
+            },
+            {
+                id: 3,
+                code: 'MATH 220',
+                title: 'Linear Algebra',
+                instructor: 'Dr. Emmy Noether',
+                schedule: 'MWF 8:00 – 9:30',
+                location: 'Room 105, Math Bldg',
+                credits: 3,
+                status: 'active',
+                desc: 'Vector spaces, linear transformations, matrices, eigenvalues, and applications in computer science.'
+            },
+            {
+                id: 4,
+                code: 'PHYS 101',
+                title: 'Intro to Physics',
+                instructor: 'Prof. Richard Feynman',
+                schedule: 'TTh 1:00 – 2:30',
+                location: 'Hall A, Main Bldg',
+                credits: 4,
+                status: 'completed',
+                desc: 'Mechanics, thermodynamics, waves, and modern physics concepts with laboratory components.'
+            },
+            {
+                id: 5,
+                code: 'ENG 110',
+                title: 'Composition I',
+                instructor: 'Prof. Maya Angelou',
+                schedule: 'MWF 2:00 – 3:30',
+                location: 'Room 204, Humanities',
+                credits: 3,
+                status: 'upcoming',
+                desc: 'Academic writing, critical thinking, and rhetorical analysis. Focus on argumentative and research essays.'
+            },
+        ];
+
+        // ----- state -----
+        let currentFilter = 'all';
+
+        // DOM refs
+        const grid = document.getElementById('classGrid');
+        const updateTimeSpan = document.getElementById('updateTime');
+        const footerUpdateSpan = document.getElementById('footerUpdate');
+
+        // ----- helpers -----
+        function updateTimestamp() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2,'0');
+            const m = String(now.getMinutes()).padStart(2,'0');
+            const timeStr = `${h}:${m}`;
+            updateTimeSpan.textContent = timeStr;
+            footerUpdateSpan.textContent = timeStr;
+        }
+
+        function getStatusBadge(status) {
+            const map = {
+                'active': '<span class="status-badge active"><i class="fas fa-play-circle"></i> Active</span>',
+                'completed': '<span class="status-badge completed"><i class="fas fa-check-circle"></i> Completed</span>',
+                'upcoming': '<span class="status-badge upcoming"><i class="fas fa-clock"></i> Upcoming</span>'
+            };
+            return map[status] || map.upcoming;
+        }
+
+        function getStatusIcon(status) {
+            const map = {
+                'active': 'fa-play-circle',
+                'completed': 'fa-check-circle',
+                'upcoming': 'fa-clock'
+            };
+            return map[status] || 'fa-circle';
+        }
+
+        // ----- render -----
+        function render() {
+            if (classes.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-chalkboard"></i>
+                        <p style="font-weight:500; margin-top:6px;">No classes found</p>
+                        <p style="font-size:0.85rem;">Add your first class using the button below</p>
+                    </div>
+                `;
+                updateTimestamp();
+                return;
+            }
+
+            let html = '';
+            classes.forEach(c => {
+                const badgeHtml = getStatusBadge(c.status);
+                const statusIcon = getStatusIcon(c.status);
+                html += `
+                    <div class="class-card" data-id="${c.id}">
+                        <div class="card-top">
+                            <span class="code-badge"><i class="fas fa-code"></i> ${c.code}</span>
+                            <span class="credits"><i class="fas fa-star" style="color:#2563eb;font-size:0.6rem;"></i> ${c.credits} cr</span>
+                        </div>
+                        <div class="class-title">${c.title}</div>
+                        <div class="class-instructor"><i class="fas fa-user-tie"></i> ${c.instructor}</div>
+                        <div class="class-details">
+                            <div class="detail-row"><i class="fas fa-clock"></i> ${c.schedule}</div>
+                            <div class="detail-row"><i class="fas fa-map-marker-alt"></i> ${c.location}</div>
+                            <div class="detail-row" style="margin-top:4px; font-size:0.8rem; color:#4f6e8e;">${c.desc}</div>
+                        </div>
+                        <div class="card-footer">
+                            ${badgeHtml}
+                            <div class="action-icons">
+                                <i class="far fa-edit" data-action="edit" data-id="${c.id}"></i>
+                                <i class="far fa-trash-alt delete-icon" data-action="delete" data-id="${c.id}"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = html;
+            updateTimestamp();
+        }
+
+        // ----- CRUD -----
+        function addClass() {
+            const code = prompt('Course code (e.g. CS 201):');
+            if (code === null || code.trim() === '') return;
+            const title = prompt('Course title:');
+            if (title === null || title.trim() === '') return;
+            const instructor = prompt('Instructor name:') || 'Staff';
+            const schedule = prompt('Schedule (e.g. MWF 10:00 – 11:30):') || 'TBA';
+            const location = prompt('Location:') || 'TBA';
+            const credits = parseInt(prompt('Credits:', '3')) || 3;
+            const statusOptions = ['active', 'completed', 'upcoming'];
+            const statusInput = prompt('Status (active / completed / upcoming):', 'active');
+            let status = 'active';
+            if (statusInput && statusOptions.includes(statusInput.trim().toLowerCase())) {
+                status = statusInput.trim().toLowerCase();
+            }
+            const desc = prompt('Description:') || 'Class description';
+
+            const newId = classes.length ? Math.max(...classes.map(c => c.id)) + 1 : 1;
+            classes.push({
+                id: newId,
+                code: code.trim().toUpperCase(),
+                title: title.trim(),
+                instructor: instructor.trim(),
+                schedule: schedule.trim(),
+                location: location.trim(),
+                credits: credits,
+                status: status,
+                desc: desc.trim(),
+            });
+            render();
+        }
+
+        function deleteClass(id) {
+            if (!confirm('Remove this class?')) return;
+            classes = classes.filter(c => c.id !== id);
+            render();
+        }
+
+        function editClass(id) {
+            const cls = classes.find(c => c.id === id);
+            if (!cls) return;
+
+            const newCode = prompt('Edit course code:', cls.code);
+            if (newCode === null) return;
+            const newTitle = prompt('Edit course title:', cls.title);
+            if (newTitle === null) return;
+            const newInstructor = prompt('Edit instructor:', cls.instructor);
+            if (newInstructor === null) return;
+            const newSchedule = prompt('Edit schedule:', cls.schedule);
+            if (newSchedule === null) return;
+            const newLocation = prompt('Edit location:', cls.location);
+            if (newLocation === null) return;
+            const newCredits = parseInt(prompt('Edit credits:', cls.credits.toString())) || cls.credits;
+            const newStatus = prompt('Edit status (active/completed/upcoming):', cls.status);
+            let status = cls.status;
+            if (newStatus !== null && ['active','completed','upcoming'].includes(newStatus.trim().toLowerCase())) {
+                status = newStatus.trim().toLowerCase();
+            }
+            const newDesc = prompt('Edit description:', cls.desc);
+            if (newDesc === null) return;
+
+            cls.code = newCode.trim().toUpperCase() || cls.code;
+            cls.title = newTitle.trim() || cls.title;
+            cls.instructor = newInstructor.trim() || cls.instructor;
+            cls.schedule = newSchedule.trim() || cls.schedule;
+            cls.location = newLocation.trim() || cls.location;
+            cls.credits = newCredits;
+            cls.status = status;
+            cls.desc = newDesc.trim() || cls.desc;
+            render();
+        }
+
+        // ----- event delegation -----
+        grid.addEventListener('click', (e) => {
+            const target = e.target.closest('[data-action]');
+            if (!target) return;
+            const action = target.dataset.action;
+            const id = Number(target.dataset.id);
+            if (isNaN(id)) return;
+
+            if (action === 'delete') deleteClass(id);
+            else if (action === 'edit') editClass(id);
+        });
+
+        // ----- add button -----
+        document.getElementById('addClassBtn').addEventListener('click', addClass);
+
+        // ----- init -----
+        render();
+
+        // ----- live update: timestamp & random status change -----
+        setInterval(() => {
+            updateTimestamp();
+
+            // randomly change a class status (simulate live progress)
+            if (classes.length > 0 && Math.random() > 0.7) {
+                const randomIdx = Math.floor(Math.random() * classes.length);
+                const cls = classes[randomIdx];
+                const statuses = ['active', 'completed', 'upcoming'];
+                let newStatus = statuses[Math.floor(Math.random() * statuses.length)];
+                while (newStatus === cls.status) {
+                    newStatus = statuses[Math.floor(Math.random() * statuses.length)];
+                }
+                cls.status = newStatus;
+                render();
+            }
+        }, 25000);
+    })();
+</script>
+</body>
+</html>

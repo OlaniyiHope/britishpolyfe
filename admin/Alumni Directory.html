@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>Alumni Directory · British Poly</title>
+    <!-- Google Font + minimal reset -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f6faff;
+            color: #0a1e3c;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1320px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            background: #0a1e3c;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 0.4rem 0;
+            font-size: 0.75rem;
+        }
+
+        .top-bar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+        }
+
+        .top-bar .contact-info {
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .top-bar .contact-info span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .top-bar .quick-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .top-bar .quick-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .top-bar .quick-links a:hover {
+            color: white;
+        }
+
+        .top-bar .quick-links .apply-btn {
+            background: #1a5cff;
+            color: white;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.7rem;
+        }
+
+        .top-bar .quick-links .apply-btn:hover {
+            background: #2a6cff;
+        }
+
+        /* ===== MAIN NAV ===== */
+        .main-nav {
+            background: white;
+            padding: 0.8rem 0;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+            border-bottom: 1px solid #eef2f8;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .main-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.5rem;
+        }
+
+        .main-nav .logo {
+            font-weight: 800;
+            font-size: 1.6rem;
+            letter-spacing: -0.02em;
+            color: #0a1e3c;
+            text-decoration: none;
+        }
+
+        .main-nav .logo span {
+            color: #1a5cff;
+        }
+
+        .main-nav .logo small {
+            font-weight: 400;
+            font-size: 0.7rem;
+            color: #4a6a8a;
+            margin-left: 0.3rem;
+        }
+
+        .main-nav .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .main-nav .nav-links a {
+            color: #2a3a5a;
+            text-decoration: none;
+            transition: color 0.15s;
+            position: relative;
+        }
+
+        .main-nav .nav-links a:hover {
+            color: #1a5cff;
+        }
+
+        .main-nav .nav-links a.active {
+            color: #1a5cff;
+            font-weight: 600;
+        }
+
+        .main-nav .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #1a5cff;
+            border-radius: 4px;
+        }
+
+        .main-nav .nav-links .dropdown {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .main-nav .nav-links .dropdown .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 16px;
+            padding: 0.5rem 0;
+            min-width: 200px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid #eef2f8;
+            margin-top: 0.5rem;
+        }
+
+        .main-nav .nav-links .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .main-nav .nav-links .dropdown .dropdown-menu a {
+            display: block;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.85rem;
+        }
+
+        .main-nav .nav-links .dropdown .dropdown-menu a:hover {
+            background: #f0f6ff;
+        }
+
+        .main-nav .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #0a1e3c;
+        }
+
+        /* ===== PAGE HEADER ===== */
+        .page-header {
+            background: linear-gradient(135deg, #0a1e3c 0%, #1a3a6a 100%);
+            color: white;
+            padding: 3rem 0 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 60%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(26, 92, 255, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .page-header .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header .breadcrumb {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .page-header .breadcrumb a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+        }
+
+        .page-header .breadcrumb a:hover {
+            color: white;
+        }
+
+        .page-header .breadcrumb .sep {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .page-header .subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin-top: 0.5rem;
+        }
+
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0a1e3c;
+        }
+
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: #4a6a8a;
+            font-weight: 500;
+        }
+
+        /* ===== FILTER BAR ===== */
+        .filter-bar {
+            background: white;
+            border-radius: 24px;
+            padding: 1.2rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 1.5rem;
+            align-items: center;
+        }
+
+        .filter-bar .search-group {
+            flex: 2;
+            min-width: 200px;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-bar .search-group input {
+            flex: 1;
+            padding: 0.6rem 1.2rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.9rem;
+            outline: none;
+            min-width: 120px;
+        }
+
+        .filter-bar .search-group input:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .filter-bar .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem 1rem;
+            align-items: center;
+        }
+
+        .filter-bar .filter-group label {
+            font-weight: 500;
+            font-size: 0.7rem;
+            color: #1a3660;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .filter-bar .filter-group select {
+            padding: 0.4rem 1rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.85rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .filter-bar .filter-group select:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .filter-bar .result-count {
+            font-size: 0.85rem;
+            color: #4a6a8a;
+            margin-left: auto;
+        }
+
+        .filter-bar .result-count strong {
+            color: #0a1e3c;
+        }
+
+        /* ===== ALUMNI GRID ===== */
+        .alumni-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .alumni-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem 1.8rem;
+            box-shadow: 0 4px 20px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .alumni-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 36px rgba(0, 20, 50, 0.08);
+        }
+
+        .alumni-card .header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .alumni-card .header .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .alumni-card .header .info .name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #0a1e3c;
+        }
+
+        .alumni-card .header .info .grad-year {
+            font-size: 0.85rem;
+            color: #4a6a8a;
+        }
+
+        .alumni-card .program {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #1a5cff;
+            margin-bottom: 0.3rem;
+        }
+
+        .alumni-card .company {
+            font-size: 0.9rem;
+            color: #1a3660;
+            margin-bottom: 0.8rem;
+        }
+
+        .alumni-card .bio {
+            font-size: 0.85rem;
+            color: #4a6a8a;
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .alumni-card .social-links {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid #eef2f8;
+        }
+
+        .alumni-card .social-links a {
+            font-size: 1.2rem;
+            text-decoration: none;
+            color: #4a6a8a;
+            transition: color 0.15s;
+        }
+
+        .alumni-card .social-links a:hover {
+            color: #1a5cff;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 30, 60, 0.45);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            max-width: 520px;
+            width: 92%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem 2rem 2.2rem;
+            border-radius: 32px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            animation: modalIn 0.2s ease;
+        }
+
+        @keyframes modalIn {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .modal .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #1a3660;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .modal .form-group label .required {
+            color: #b22234;
+        }
+
+        .modal .form-group input,
+        .modal .form-group select,
+        .modal .form-group textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.9rem;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .modal .form-group textarea {
+            border-radius: 20px;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .modal .form-group input:focus,
+        .modal .form-group select:focus,
+        .modal .form-group textarea:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .modal .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .modal .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .modal .modal-actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .modal .modal-actions .btn {
+            flex: 1;
+            justify-content: center;
+            min-width: 100px;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #0a1e3c;
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.25s, transform 0.25s;
+            pointer-events: none;
+            font-size: 0.9rem;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .toast.success {
+            background: #0e7b3a;
+        }
+
+        .toast.error {
+            background: #b22234;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #1a5cff;
+            color: white;
+            border-color: #1a5cff;
+        }
+
+        .btn-primary:hover {
+            background: #2a6cff;
+            border-color: #2a6cff;
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(26, 92, 255, 0.3);
+        }
+
+        .btn-success {
+            background: #0e7b3a;
+            color: white;
+            border-color: #0e7b3a;
+        }
+
+        .btn-success:hover {
+            background: #1a934a;
+            border-color: #1a934a;
+        }
+
+        .btn-outline-blue {
+            background: white;
+            color: #0a1e3c;
+            border-color: #0a1e3c;
+        }
+
+        .btn-outline-blue:hover {
+            background: #edf4ff;
+            border-color: #1a5cff;
+            color: #1a5cff;
+        }
+
+        .btn-outline-white {
+            background: transparent;
+            color: white;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-outline-white:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        .btn-sm {
+            padding: 0.3rem 0.9rem;
+            font-size: 0.75rem;
+        }
+
+        /* ===== CTA ===== */
+        .cta-banner {
+            background: linear-gradient(135deg, #0a1e3c, #1a3a6a);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 28px;
+            text-align: center;
+            margin: 2rem 0 1rem;
+        }
+
+        .cta-banner h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .cta-banner p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #0a1e3c;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 3rem 0 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .footer .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 2.5rem;
+        }
+
+        .footer .brand {
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: white;
+        }
+
+        .footer .brand span {
+            color: #6a9aff;
+        }
+
+        .footer .brand-desc {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-top: 0.5rem;
+            max-width: 280px;
+        }
+
+        .footer h4 {
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .footer ul {
+            list-style: none;
+        }
+
+        .footer ul li {
+            margin-bottom: 0.4rem;
+        }
+
+        .footer ul li a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.15s;
+        }
+
+        .footer ul li a:hover {
+            color: white;
+        }
+
+        .footer .bottom {
+            grid-column: 1 / -1;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 1.5rem;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #6a7f9e;
+            grid-column: 1 / -1;
+        }
+
+        .empty-state .icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .footer .container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar .container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.3rem;
+            }
+
+            .top-bar .contact-info {
+                gap: 0.6rem;
+            }
+
+            .main-nav .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: 0.8rem;
+                padding: 1rem 0;
+            }
+
+            .main-nav .nav-links.open {
+                display: flex;
+            }
+
+            .main-nav .nav-toggle {
+                display: block;
+            }
+
+            .main-nav .nav-links .dropdown .dropdown-menu {
+                position: static;
+                box-shadow: none;
+                border: none;
+                padding-left: 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 1rem;
+            }
+
+            .filter-bar .result-count {
+                margin-left: 0;
+            }
+
+            .alumni-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer .container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .footer .bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .modal {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="British Poly · Home.html">Admin Home</a><a href="About Us · British Poly.html">About Us · British Poly</a><a href="Admin Profile · Account.html">Admin Profile · Account</a><a href="Admissions · British Poly.html">Admissions · British Poly</a><a href="British Poly · Home.html">British Poly · Home</a><a href="Contact Us.html">Contact Us</a><a href="Finance & Bursary Control .html">Finance & Bursary Control </a><a href="Notice Board.html">Notice Board</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page15.html">page15</a><a href="page16.html">page16</a><a href="page18.html">page18</a><a href="page19.html">page19</a><a href="page21.html">page21</a><a href="page22.html">page22</a><a href="page23.html">page23</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a><a href="Parent & Guardian Portal.html">Parent & Guardian Portal</a><a href="Programs · British Poly.html">Programs · British Poly</a><a href="Staff Management.html">Staff Management</a><a href="Student Life.html">Student Life</a></div>
+
+    <!-- ===== TOP BAR ===== -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="contact-info">
+                <span>📞 +44 20 7946 0100</span>
+                <span>✉️ alumni@britishpoly.org</span>
+                <span>📍 London, UK</span>
+            </div>
+            <div class="quick-links">
+                <a href="#">Staff Portal</a>
+                <a href="#">Student Portal</a>
+                <a href="#" class="apply-btn">Join Alumni</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN NAV ===== -->
+    <nav class="main-nav">
+        <div class="container">
+            <a href="#" class="logo">British<span>Poly</span><small>· since 1987</small></a>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+
+            <div class="nav-links" id="navLinks">
+                <a href="#">Home</a>
+                <a href="#">About</a>
+                <a href="#">Programs</a>
+                <a href="#">Admissions</a>
+                <a href="#">Student Life</a>
+                <a href="#" class="active">Alumni</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="#">Home</a>
+                <span class="sep">/</span>
+                <span>Alumni Directory</span>
+            </div>
+            <h1>Alumni Directory</h1>
+            <p class="subtitle">Connect with our global network of graduates who are making an impact in their communities and industries.</p>
+        </div>
+    </section>
+
+    <!-- ===== STATS ===== -->
+    <div class="container" style="margin-top:-1.5rem; position:relative; z-index:10;">
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="number" id="totalAlumni">0</div>
+                <div class="label">Total Alumni</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="activeAlumni">0</div>
+                <div class="label">Active Members</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="countriesAlumni">0</div>
+                <div class="label">Countries</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="industriesAlumni">0</div>
+                <div class="label">Industries</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== FILTER BAR ===== -->
+    <div class="container">
+        <div class="filter-bar">
+            <div class="search-group">
+                <input type="text" id="searchInput" placeholder="🔎 Search by name, program, or company...">
+            </div>
+            <div class="filter-group">
+                <label for="gradYearFilter">Graduation Year</label>
+                <select id="gradYearFilter">
+                    <option value="all">All Years</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                    <option value="2020">2020</option>
+                    <option value="2019">2019</option>
+                </select>
+                <label for="programFilter">Program</label>
+                <select id="programFilter">
+                    <option value="all">All Programs</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                    <option value="Business Administration">Business Administration</option>
+                    <option value="Public Health">Public Health</option>
+                    <option value="Digital Media">Digital Media</option>
+                    <option value="Psychology">Psychology</option>
+                </select>
+            </div>
+            <span class="result-count">Showing <strong id="resultCount">0</strong> alumni</span>
+        </div>
+
+        <!-- ===== ALUMNI GRID ===== -->
+        <div class="alumni-grid" id="alumniGrid">
+            <!-- dynamic -->
+        </div>
+
+        <!-- ===== CTA BANNER ===== -->
+        <div class="cta-banner">
+            <h2>🎓 Join Our Alumni Network</h2>
+            <p>Stay connected with fellow graduates and help shape the future of British Polytechnic.</p>
+            <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+                <button class="btn btn-primary" onclick="openModal()" style="background:#1a5cff; border-color:#1a5cff;">Register Now →</button>
+                <a href="#" class="btn btn-outline-white">Learn More</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="alumniModal">
+        <div class="modal">
+            <h2>🎓 Register as Alumni</h2>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>First Name <span class="required">*</span></label>
+                    <input type="text" id="alumniFirstName" placeholder="John">
+                </div>
+                <div class="form-group">
+                    <label>Last Name <span class="required">*</span></label>
+                    <input type="text" id="alumniLastName" placeholder="Doe">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Email <span class="required">*</span></label>
+                <input type="email" id="alumniEmail" placeholder="alumni@britishpoly.org">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Program <span class="required">*</span></label>
+                    <select id="alumniProgram">
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                        <option value="Business Administration">Business Administration</option>
+                        <option value="Public Health">Public Health</option>
+                        <option value="Digital Media">Digital Media</option>
+                        <option value="Psychology">Psychology</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Graduation Year <span class="required">*</span></label>
+                    <select id="alumniGradYear">
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Current Company / Organization</label>
+                <input type="text" id="alumniCompany" placeholder="e.g. Google, NHS, University of London">
+            </div>
+
+            <div class="form-group">
+                <label>Job Title</label>
+                <input type="text" id="alumniJobTitle" placeholder="e.g. Software Engineer, Marketing Manager">
+            </div>
+
+            <div class="form-group">
+                <label>Bio</label>
+                <textarea id="alumniBio" rows="2" placeholder="Tell us about your journey since graduation..."></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>LinkedIn</label>
+                    <input type="text" id="alumniLinkedIn" placeholder="linkedin.com/in/username">
+                </div>
+                <div class="form-group">
+                    <label>Twitter</label>
+                    <input type="text" id="alumniTwitter" placeholder="@username">
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="saveAlumni()">💾 Register</button>
+                <button class="btn btn-outline-blue" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast" class="toast">message</div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div>
+                <div class="brand">British<span>Poly</span></div>
+                <div class="brand-desc">Excellence in polytechnic education since 1987. Empowering students with practical skills, industry knowledge, and a global perspective.</div>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Programs</a></li>
+                    <li><a href="#">Admissions</a></li>
+                    <li><a href="#">Student Life</a></li>
+                    <li><a href="#">Alumni</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Student Portal</a></li>
+                    <li><a href="#">Staff Portal</a></li>
+                    <li><a href="#">Library</a></li>
+                    <li><a href="#">Events Calendar</a></li>
+                    <li><a href="#">News &amp; Blog</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="#">📞 +44 20 7946 0100</a></li>
+                    <li><a href="#">✉️ info@britishpoly.org</a></li>
+                    <li><a href="#">📍 London, UK</a></li>
+                    <li><a href="#">📱 Social Media</a></li>
+                </ul>
+            </div>
+            <div class="bottom">
+                <span>© 2025 British Polytechnic. All rights reserved.</span>
+                <span>
+                    <a href="#" style="color:rgba(255,255,255,0.5); text-decoration:none; margin-right:1rem;">Privacy Policy</a>
+                    <a href="#" style="color:rgba(255,255,255,0.5); text-decoration:none;">Terms &amp; Conditions</a>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== DATA =====
+        let alumni = [
+            { id: 1, firstName: 'Sarah', lastName: 'Johnson', email: 'sarah.j@example.com', program: 'Computer Science',
+                gradYear: '2025', company: 'Google', jobTitle: 'Software Engineer', bio: 'Working on AI and machine learning projects.',
+                linkedIn: 'linkedin.com/in/sarahjohnson', twitter: '@sarahj', color: '#1a5cff' },
+            { id: 2, firstName: 'Michael', lastName: 'Okafor', email: 'michael.o@example.com', program: 'Business Administration',
+                gradYear: '2024', company: 'Goldman Sachs', jobTitle: 'Investment Analyst', bio: 'Passionate about finance and emerging markets.',
+                linkedIn: 'linkedin.com/in/michaelokafor', twitter: '@mikeo', color: '#0e7b3a' },
+            { id: 3, firstName: 'Aisha', lastName: 'Labana', email: 'aisha.l@example.com', program: 'Public Health',
+                gradYear: '2025', company: 'NHS', jobTitle: 'Public Health Advisor', bio: 'Working on community health initiatives in London.',
+                linkedIn: 'linkedin.com/in/aishalabana', twitter: '@aishal', color: '#d48c2c' },
+            { id: 4, firstName: 'David', lastName: 'Chen', email: 'david.c@example.com', program: 'Digital Media',
+                gradYear: '2024', company: 'BBC', jobTitle: 'Digital Content Producer', bio: 'Creating compelling digital stories and documentaries.',
+                linkedIn: 'linkedin.com/in/davidchen', twitter: '@davidc', color: '#b22234' },
+            { id: 5, firstName: 'Emma', lastName: 'Williams', email: 'emma.w@example.com', program: 'Psychology',
+                gradYear: '2023', company: 'University of Cambridge', jobTitle: 'Research Fellow', bio: 'Researching cognitive development and mental health.',
+                linkedIn: 'linkedin.com/in/emmawilliams', twitter: '@emmaw', color: '#1a5cff' },
+            { id: 6, firstName: 'James', lastName: 'Kofi', email: 'james.k@example.com', program: 'Mechanical Engineering',
+                gradYear: '2025', company: 'Rolls-Royce', jobTitle: 'Design Engineer', bio: 'Innovating in aerospace propulsion systems.',
+                linkedIn: 'linkedin.com/in/jameskofi', twitter: '@jamesk', color: '#0e7b3a' },
+            { id: 7, firstName: 'Sophia', lastName: 'Patel', email: 'sophia.p@example.com', program: 'Data Science',
+                gradYear: '2024', company: 'Microsoft', jobTitle: 'Data Scientist', bio: 'Working on big data and analytics solutions.',
+                linkedIn: 'linkedin.com/in/sophiapatel', twitter: '@sophiap', color: '#d48c2c' },
+            { id: 8, firstName: 'Thomas', lastName: 'Mensah', email: 'thomas.m@example.com', program: 'Computer Science',
+                gradYear: '2023', company: 'Amazon', jobTitle: 'Cloud Architect', bio: 'Building scalable cloud infrastructure.',
+                linkedIn: 'linkedin.com/in/thomasmensah', twitter: '@thomasm', color: '#b22234' },
+            { id: 9, firstName: 'Olivia', lastName: 'Brown', email: 'olivia.b@example.com', program: 'Business Administration',
+                gradYear: '2025', company: 'Accenture', jobTitle: 'Management Consultant', bio: 'Transforming businesses through digital innovation.',
+                linkedIn: 'linkedin.com/in/oliviabrown', twitter: '@oliviab', color: '#1a5cff' },
+            { id: 10, firstName: 'Daniel', lastName: 'Adeyemi', email: 'daniel.a@example.com', program: 'Mechanical Engineering',
+                gradYear: '2022', company: 'Tesla', jobTitle: 'Automotive Engineer', bio: 'Developing next-generation electric vehicles.',
+                linkedIn: 'linkedin.com/in/danieladeyemi', twitter: '@daniela', color: '#0e7b3a' },
+            { id: 11, firstName: 'Grace', lastName: 'Okonkwo', email: 'grace.o@example.com', program: 'Public Health',
+                gradYear: '2024', company: 'WHO', jobTitle: 'Health Policy Analyst', bio: 'Working on global health policy and strategy.',
+                linkedIn: 'linkedin.com/in/graceokonkwo', twitter: '@graceo', color: '#d48c2c' },
+            { id: 12, firstName: 'Samuel', lastName: 'Quaye', email: 'samuel.q@example.com', program: 'Computer Science',
+                gradYear: '2025', company: 'Meta', jobTitle: 'Software Engineer', bio: 'Building innovative social media experiences.',
+                linkedIn: 'linkedin.com/in/samuelquaye', twitter: '@samuelq', color: '#b22234' }
+        ];
+
+        let nextId = 13;
+
+        // ===== DOM REFS =====
+        const grid = document.getElementById('alumniGrid');
+        const searchInput = document.getElementById('searchInput');
+        const gradYearFilter = document.getElementById('gradYearFilter');
+        const programFilter = document.getElementById('programFilter');
+        const resultCount = document.getElementById('resultCount');
+        const modal = document.getElementById('alumniModal');
+
+        // Stats
+        const totalAlumni = document.getElementById('totalAlumni');
+        const activeAlumni = document.getElementById('activeAlumni');
+        const countriesAlumni = document.getElementById('countriesAlumni');
+        const industriesAlumni = document.getElementById('industriesAlumni');
+
+        // ===== RENDER =====
+        function renderAlumni() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const gradYear = gradYearFilter.value;
+            const program = programFilter.value;
+
+            let filtered = alumni.filter(a => {
+                const fullName = (a.firstName + ' ' + a.lastName).toLowerCase();
+                const matchSearch = fullName.includes(searchTerm) ||
+                    a.program.toLowerCase().includes(searchTerm) ||
+                    a.company.toLowerCase().includes(searchTerm) ||
+                    a.jobTitle.toLowerCase().includes(searchTerm);
+                const matchGradYear = gradYear === 'all' || a.gradYear === gradYear;
+                const matchProgram = program === 'all' || a.program === program;
+                return matchSearch && matchGradYear && matchProgram;
+            });
+
+            resultCount.textContent = filtered.length;
+
+            // Update Stats
+            const uniquePrograms = new Set(alumni.map(a => a.program));
+            const uniqueCompanies = new Set(alumni.map(a => a.company));
+            const uniqueYears = new Set(alumni.map(a => a.gradYear));
+            totalAlumni.textContent = alumni.length;
+            activeAlumni.textContent = alumni.filter(a => a.id % 2 === 0).length; // Demo: half active
+            countriesAlumni.textContent = '15+';
+            industriesAlumni.textContent = uniquePrograms.size;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">🔍</div>
+                        <h3 style="margin-bottom:0.5rem;">No alumni found</h3>
+                        <p>Try adjusting your search or filters.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(a => {
+                const initials = a.firstName.charAt(0) + a.lastName.charAt(0);
+                html += `
+                    <div class="alumni-card">
+                        <div class="header">
+                            <div class="avatar" style="background:${a.color}">${initials}</div>
+                            <div class="info">
+                                <div class="name">${a.firstName} ${a.lastName}</div>
+                                <div class="grad-year">🎓 Class of ${a.gradYear}</div>
+                            </div>
+                        </div>
+                        <div class="program">${a.program}</div>
+                        <div class="company">${a.company} · ${a.jobTitle}</div>
+                        <div class="bio">${a.bio || 'No bio provided.'}</div>
+                        <div class="social-links">
+                            ${a.linkedIn ? `<a href="https://${a.linkedIn}" target="_blank" title="LinkedIn">🔗</a>` : ''}
+                            ${a.twitter ? `<a href="https://${a.twitter}" target="_blank" title="Twitter">🐦</a>` : ''}
+                            <a href="mailto:${a.email}" title="Email">📧</a>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        }
+
+        // ===== MODAL =====
+        function openModal() {
+            modal.classList.add('open');
+            document.getElementById('alumniFirstName').value = '';
+            document.getElementById('alumniLastName').value = '';
+            document.getElementById('alumniEmail').value = '';
+            document.getElementById('alumniProgram').value = 'Computer Science';
+            document.getElementById('alumniGradYear').value = '2025';
+            document.getElementById('alumniCompany').value = '';
+            document.getElementById('alumniJobTitle').value = '';
+            document.getElementById('alumniBio').value = '';
+            document.getElementById('alumniLinkedIn').value = '';
+            document.getElementById('alumniTwitter').value = '';
+        }
+
+        function closeModal() {
+            modal.classList.remove('open');
+        }
+
+        // ===== SAVE ALUMNI =====
+        function saveAlumni() {
+            const firstName = document.getElementById('alumniFirstName').value.trim();
+            const lastName = document.getElementById('alumniLastName').value.trim();
+            const email = document.getElementById('alumniEmail').value.trim();
+            const program = document.getElementById('alumniProgram').value;
+            const gradYear = document.getElementById('alumniGradYear').value;
+            const company = document.getElementById('alumniCompany').value.trim();
+            const jobTitle = document.getElementById('alumniJobTitle').value.trim();
+            const bio = document.getElementById('alumniBio').value.trim();
+            const linkedIn = document.getElementById('alumniLinkedIn').value.trim();
+            const twitter = document.getElementById('alumniTwitter').value.trim();
+
+            if (!firstName || !lastName || !email) {
+                showToast('❌ Please fill in all required fields', 'error');
+                return;
+            }
+
+            if (!email.includes('@')) {
+                showToast('❌ Please enter a valid email address', 'error');
+                return;
+            }
+
+            // Check duplicate
+            if (alumni.some(a => a.email.toLowerCase() === email.toLowerCase())) {
+                showToast('❌ This email is already registered', 'error');
+                return;
+            }
+
+            const colors = ['#1a5cff', '#0e7b3a', '#d48c2c', '#b22234', '#6a9aff', '#2a7a3a'];
+            const newAlumni = {
+                id: nextId++,
+                firstName,
+                lastName,
+                email,
+                program,
+                gradYear,
+                company: company || 'N/A',
+                jobTitle: jobTitle || 'N/A',
+                bio: bio || 'New alumni registered.',
+                linkedIn: linkedIn || '',
+                twitter: twitter || '',
+                color: colors[nextId % colors.length]
+            };
+
+            alumni.push(newAlumni);
+            renderAlumni();
+            closeModal();
+            showToast(`✅ ${firstName} ${lastName} registered as alumni!`, 'success');
+        }
+
+        // ===== TOAST =====
+        const toast = document.getElementById('toast');
+        let toastTimer;
+
+        function showToast(msg, type = 'success') {
+            toast.textContent = msg;
+            toast.className = 'toast ' + type + ' show';
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ===== MOBILE NAV =====
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        navToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('open');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // ===== EVENT BINDING =====
+        searchInput.addEventListener('input', renderAlumni);
+        gradYearFilter.addEventListener('change', renderAlumni);
+        programFilter.addEventListener('change', renderAlumni);
+
+        // Modal close on overlay click
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // ===== INIT =====
+        renderAlumni();
+
+        console.log('✅ British Poly · Alumni Directory loaded');
+        console.log(`🎓 ${alumni.length} alumni loaded`);
+    </script>
+
+</body>
+</html>

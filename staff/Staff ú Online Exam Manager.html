@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff · Online Exam Manager</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #edf2f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+
+        .container {
+            max-width: 1280px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 36px;
+            box-shadow: 0 24px 56px -16px rgba(0, 20, 40, 0.18);
+            padding: 2rem 2.2rem;
+            transition: all 0.2s;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem 1.5rem;
+            border-bottom: 1px solid #e9eff6;
+            padding-bottom: 1.4rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .header-left .icon-box {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #1a4fbf, #2563eb);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.4rem;
+            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
+        }
+
+        .header-left h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0b1e2e;
+            letter-spacing: -0.02em;
+        }
+
+        .header-left h1 span { color: #2563eb; }
+
+        .header-left .badge {
+            background: #e5edf9;
+            color: #1f4f8a;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .header-right .date-badge {
+            background: #f2f6fc;
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            color: #1f3b57;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-outline {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #1f3f5c;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+
+        .btn-outline i { color: #2563eb; }
+        .btn-outline:hover { background: #f4f9ff; border-color: #b2c8dd; }
+
+        .btn-primary {
+            background: #0b1e2e;
+            border: 1px solid #0b1e2e;
+            color: white;
+        }
+        .btn-primary i { color: white; }
+        .btn-primary:hover { background: #1a3147; }
+
+        /* ===== STATS ===== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #f9fcff;
+            border-radius: 20px;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #e9f0f7;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: 0.15s;
+        }
+        .stat-card:hover { border-color: #c9d9ec; background: #fafdff; }
+
+        .stat-card .stat-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: #e5effb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .stat-card .stat-content .stat-number {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0b1e2e;
+            line-height: 1.2;
+        }
+
+        .stat-card .stat-content .stat-label {
+            font-size: 0.7rem;
+            color: #4d6a87;
+            font-weight: 500;
+        }
+
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.6rem;
+            border-bottom: 1px solid #e9eff6;
+            padding-bottom: 0.4rem;
+        }
+
+        .tab {
+            padding: 0.4rem 1.4rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #4d6a87;
+            background: transparent;
+            transition: 0.15s;
+            cursor: default;
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .tab.active {
+            background: #e5edf9;
+            color: #1f4f8a;
+            border-color: #c9d9ec;
+            font-weight: 600;
+        }
+
+        .tab i { font-size: 0.85rem; }
+        .tab .count {
+            background: #d7e2ed;
+            color: #1f3b57;
+            border-radius: 40px;
+            padding: 0.05rem 0.6rem;
+            font-size: 0.65rem;
+        }
+        .tab.active .count { background: #b8cee5; }
+
+        /* ===== 2-COLUMN ===== */
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.8rem;
+            margin-bottom: 1.8rem;
+        }
+
+        @media (max-width: 860px) {
+            .grid-2col { grid-template-columns: 1fr; }
+        }
+
+        /* ===== SECTION CARDS ===== */
+        .section-card {
+            background: #f9fcff;
+            border-radius: 24px;
+            padding: 1.2rem 1.4rem 1.4rem;
+            border: 1px solid #e9f0f7;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .section-title h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0b1e2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title h3 i { color: #2563eb; }
+
+        .section-title .badge-count {
+            background: #e5edf9;
+            color: #1f4f8a;
+            border-radius: 60px;
+            padding: 0.05rem 0.9rem;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        /* ===== FORM ===== */
+        .form-group {
+            margin-bottom: 0.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #3c5a79;
+            margin-bottom: 0.2rem;
+        }
+
+        .form-group label i { color: #2563eb; margin-right: 0.3rem; }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.6rem 0.9rem;
+            border: 1px solid #d7e2ed;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            color: #0b1e2e;
+            background: white;
+            transition: 0.15s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        @media (max-width: 500px) {
+            .form-row { grid-template-columns: 1fr; }
+        }
+
+        .btn-submit {
+            background: #2563eb;
+            border: none;
+            color: white;
+            border-radius: 60px;
+            padding: 0.5rem 2rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+        .btn-submit:hover { background: #1a4fbf; }
+
+        .btn-cancel {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.5rem 1.6rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1f3f5c;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+        .btn-cancel:hover { background: #f4f9ff; border-color: #b2c8dd; }
+
+        /* ===== EXAM TABLE ===== */
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid #e9f0f7;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 620px;
+        }
+
+        th {
+            background: #f7faff;
+            text-align: left;
+            padding: 0.7rem 1rem;
+            font-weight: 600;
+            color: #1f3b57;
+            border-bottom: 1px solid #e9f0f7;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        td {
+            padding: 0.6rem 1rem;
+            border-bottom: 1px solid #eef4fa;
+            color: #0b1e2e;
+            vertical-align: middle;
+        }
+
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #fafdff; }
+
+        .exam-status {
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 0.1rem 0.7rem;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .exam-status.active { background: #e2f0e6; color: #1a6d3b; }
+        .exam-status.upcoming { background: #fef3d7; color: #a7691a; }
+        .exam-status.ended { background: #f0f2f5; color: #5f7d9b; }
+        .exam-status.draft { background: #e5edf9; color: #1f4f8a; }
+
+        .action-icons {
+            display: flex;
+            gap: 0.2rem;
+            justify-content: center;
+        }
+
+        .action-icons .btn-icon {
+            background: transparent;
+            border: none;
+            color: #8aa5c2;
+            padding: 0.2rem 0.5rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+
+        .action-icons .btn-icon:hover { background: #eef4fa; color: #1f4f8a; }
+        .action-icons .btn-icon.danger:hover { background: #fde8e8; color: #b13e3e; }
+        .action-icons .btn-icon.primary:hover { background: #e5edf9; color: #2563eb; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .container { padding: 1.2rem; border-radius: 28px; }
+            .header-left h1 { font-size: 1.2rem; }
+            .stats-row { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 0.8rem; border-radius: 24px; }
+            .stats-row { grid-template-columns: 1fr; }
+            .header-left .icon-box { width: 40px; height: 40px; font-size: 1.2rem; }
+            .tab { font-size: 0.7rem; padding: 0.2rem 0.8rem; }
+            .grid-2col { gap: 1rem; }
+            .form-row { grid-template-columns: 1fr; }
+            table { font-size: 0.75rem; min-width: 500px; }
+            th, td { padding: 0.4rem 0.6rem; }
+        }
+
+        .footer-note {
+            margin-top: 1.2rem;
+            font-size: 0.7rem;
+            color: #7f99b5;
+            display: flex;
+            justify-content: flex-end;
+            border-top: 1px solid #e9eff6;
+            padding-top: 1rem;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Staff Home</a><a href="pag19.html">pag19</a><a href="page.10.html">page 10</a><a href="page.12.html">page 12</a><a href="page.14.html">page 14</a><a href="page.15.html">page 15</a><a href="page1.html">page1</a><a href="page11.html">page11</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a></div>
+<div class="container">
+
+    <!-- ===== HEADER ===== -->
+    <div class="header">
+        <div class="header-left">
+            <div class="icon-box"><i class="fas fa-pencil-alt"></i></div>
+            <div>
+                <h1>Exam <span>Manager</span></h1>
+                <div style="display: flex; gap: 0.5rem; margin-top: 0.1rem;">
+                    <span class="badge"><i class="fas fa-id-badge"></i> Staff Portal</span>
+                    <span class="badge" style="background: #e2f0e6; color: #1a6d3b;"><i class="fas fa-check-circle"></i> 3 active</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-right">
+            <span class="date-badge"><i class="far fa-calendar-alt"></i> Aug 14, 2026</span>
+            <span class="btn-outline"><i class="fas fa-download"></i> Export</span>
+            <span class="btn-outline"><i class="fas fa-print"></i> Print</span>
+        </div>
+    </div>
+
+    <!-- ===== STATS ===== -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Total Exams</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #1a6d3b;"><i class="fas fa-play-circle"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Active</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #a7691a;"><i class="fas fa-clock"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Upcoming</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #6b3f9e;"><i class="fas fa-users"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">156</div>
+                <div class="stat-label">Total Participants</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TABS ===== -->
+    <div class="tabs">
+        <span class="tab active"><i class="fas fa-list-ul"></i> All Exams <span class="count">8</span></span>
+        <span class="tab"><i class="fas fa-play-circle"></i> Active <span class="count">3</span></span>
+        <span class="tab"><i class="fas fa-clock"></i> Upcoming <span class="count">2</span></span>
+        <span class="tab"><i class="fas fa-check-circle"></i> Ended <span class="count">3</span></span>
+        <span class="tab"><i class="fas fa-plus-circle"></i> Create New</span>
+    </div>
+
+    <!-- ===== 2-COLUMN: CREATE EXAM + EXAM LIST ===== -->
+    <div class="grid-2col">
+
+        <!-- LEFT: CREATE EXAM FORM -->
+        <div class="section-card">
+            <div class="section-title">
+                <h3><i class="fas fa-plus-circle"></i> Create New Exam</h3>
+                <span class="badge-count">Required *</span>
+            </div>
+
+            <form>
+                <div class="form-group">
+                    <label><i class="fas fa-heading"></i> Exam Title *</label>
+                    <input type="text" placeholder="e.g. Midterm Examination - Data Structures" value="Advanced Algorithms - Final Exam" />
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-align-left"></i> Description</label>
+                    <textarea placeholder="Brief description of the exam...">Comprehensive assessment covering all topics from the Advanced Algorithms course.</textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-plus"></i> Start Date *</label>
+                        <input type="datetime-local" value="2026-08-20T09:00" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-minus"></i> End Date *</label>
+                        <input type="datetime-local" value="2026-08-20T12:00" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-clock"></i> Duration (minutes)</label>
+                        <input type="number" value="120" min="15" step="5" />
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-question-circle"></i> Total Questions</label>
+                        <input type="number" value="25" min="5" step="5" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-layer-group"></i> Department</label>
+                        <select>
+                            <option>Computer Science</option>
+                            <option>Engineering</option>
+                            <option>Mathematics</option>
+                            <option>Business</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-user-graduate"></i> Course</label>
+                        <select>
+                            <option>CS-301 · Data Structures</option>
+                            <option selected>CS-405 · Advanced Algorithms</option>
+                            <option>MATH-210 · Calculus II</option>
+                            <option>ENG-405 · Technical Writing</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-toggle-on"></i> Status</label>
+                    <select>
+                        <option>Draft</option>
+                        <option selected>Published</option>
+                        <option>Scheduled</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.4rem;">
+                    <span class="btn-submit"><i class="fas fa-save"></i> Create Exam</span>
+                    <span class="btn-cancel"><i class="fas fa-times"></i> Cancel</span>
+                    <span class="btn-outline" style="padding: 0.4rem 1.2rem;"><i class="fas fa-undo-alt"></i> Reset</span>
+                </div>
+            </form>
+        </div>
+
+        <!-- RIGHT: EXAM LIST -->
+        <div class="section-card">
+            <div class="section-title">
+                <h3><i class="fas fa-list-ul"></i> Exam List</h3>
+                <span class="badge-count">8 total</span>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Questions</th>
+                            <th>Status</th>
+                            <th style="text-align: center;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Advanced Algorithms Final</strong></td>
+                            <td>Aug 20, 2026</td>
+                            <td>25</td>
+                            <td><span class="exam-status active"><i class="fas fa-circle" style="font-size: 0.4rem;"></i> Active</span></td>
+                            <td style="text-align: center;">
+                                <div class="action-icons" style="justify-content: center;">
+                                    <span class="btn-icon primary"><i class="fas fa-edit"></i></span>
+                                    <span class="btn-icon"><i class="fas fa-eye"></i></span>
+                                    <span class="btn-icon danger"><i class="fas fa-trash-alt"></i></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Data Structures Midterm</strong></td>
+                            <td>Aug 15, 2026</td>
+                            <td>30</td>
+                            <td><span class="exam-status ended"><i class="fas fa-check-circle"></i> Ended</span></td>
+                            <td style="text-align: center;">
+                                <div class="action-icons" style="justify-content: center;">
+                                    <span class="btn-icon primary"><i class="fas fa-edit"></i></span>
+                                    <span class="btn-icon"><i class="fas fa-eye"></i></span>
+                                    <span class="btn-icon danger"><i class="fas fa-trash-alt"></i></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Calculus II - Quiz 3</strong></td>
+                            <td>Aug 22, 2026</td>
+                            <td>15</td>
+                            <td><span class="exam-status upcoming"><i class="fas fa-clock"></i> Upcoming</span></td>
+                            <td style="text-align: center;">
+                                <div class="action-icons" style="justify-content: center;">
+                                    <span class="btn-icon primary"><i class="fas fa-edit"></i></span>
+                                    <span class="btn-icon"><i class="fas fa-eye"></i></span>
+                                    <span class="btn-icon danger"><i class="fas fa-trash-alt"></i></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Technical Writing Final</strong></td>
+                            <td>Aug 25, 2026</td>
+                            <td>20</td>
+                            <td><span class="exam-status draft"><i class="fas fa-pencil-alt"></i> Draft</span></td>
+                            <td style="text-align: center;">
+                                <div class="action-icons" style="justify-content: center;">
+                                    <span class="btn-icon primary"><i class="fas fa-edit"></i></span>
+                                    <span class="btn-icon"><i class="fas fa-eye"></i></span>
+                                    <span class="btn-icon danger"><i class="fas fa-trash-alt"></i></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Algorithms Quiz 2</strong></td>
+                            <td>Aug 18, 2026</td>
+                            <td>10</td>
+                            <td><span class="exam-status active"><i class="fas fa-circle" style="font-size: 0.4rem;"></i> Active</span></td>
+                            <td style="text-align: center;">
+                                <div class="action-icons" style="justify-content: center;">
+                                    <span class="btn-icon primary"><i class="fas fa-edit"></i></span>
+                                    <span class="btn-icon"><i class="fas fa-eye"></i></span>
+                                    <span class="btn-icon danger"><i class="fas fa-trash-alt"></i></span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 0.8rem; display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                <span class="btn-outline" style="padding: 0.2rem 1rem; font-size: 0.7rem;"><i class="fas fa-chevron-down"></i> View All 8</span>
+                <span class="btn-outline" style="padding: 0.2rem 1rem; font-size: 0.7rem;"><i class="fas fa-filter"></i> Filter</span>
+                <span class="btn-primary" style="padding: 0.2rem 1rem; font-size: 0.7rem; background: #0b1e2e; border-color: #0b1e2e; color: white;"><i class="fas fa-plus"></i> Quick Add</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== EXAM SETTINGS & RULES (full width) ===== -->
+    <div class="section-card" style="margin-top: 0.2rem;">
+        <div class="section-title">
+            <h3><i class="fas fa-cog"></i> Exam Settings & Rules</h3>
+            <span class="badge-count">Global configuration</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem 1.5rem;">
+            <div>
+                <div style="font-size: 0.65rem; color: #6a86a3; text-transform: uppercase; letter-spacing: 0.04em;">Default Duration</div>
+                <div style="font-weight: 500; font-size: 0.9rem; color: #0b1e2e;">90 minutes</div>
+            </div>
+            <div>
+                <div style="font-size: 0.65rem; color: #6a86a3; text-transform: uppercase; letter-spacing: 0.04em;">Attempts Allowed</div>
+                <div style="font-weight: 500; font-size: 0.9rem; color: #0b1e2e;">1 attempt</div>
+            </div>
+            <div>
+                <div style="font-size: 0.65rem; color: #6a86a3; text-transform: uppercase; letter-spacing: 0.04em;">Proctoring</div>
+                <div style="font-weight: 500; font-size: 0.9rem; color: #0b1e2e;"><span class="exam-status active" style="font-size: 0.6rem;">Enabled</span></div>
+            </div>
+            <div>
+                <div style="font-size: 0.65rem; color: #6a86a3; text-transform: uppercase; letter-spacing: 0.04em;">Randomize Questions</div>
+                <div style="font-weight: 500; font-size: 0.9rem; color: #0b1e2e;"><span class="exam-status active" style="font-size: 0.6rem;">Yes</span></div>
+            </div>
+            <div>
+                <div style="font-size: 0.65rem; color: #6a86a3; text-transform: uppercase; letter-spacing: 0.04em;">Passing Score</div>
+                <div style="font-weight: 500; font-size: 0.9rem; color: #0b1e2e;">70%</div>
+            </div>
+            <div>
+                <div style="font-size: 0.65rem; color: #6a86a3; text-transform: uppercase; letter-spacing: 0.04em;">Results Visibility</div>
+                <div style="font-weight: 500; font-size: 0.9rem; color: #0b1e2e;">Immediate</div>
+            </div>
+        </div>
+
+        <div style="margin-top: 0.8rem; display: flex; gap: 0.6rem; flex-wrap: wrap;">
+            <span class="btn-outline" style="padding: 0.2rem 1rem; font-size: 0.7rem;"><i class="fas fa-edit"></i> Edit Settings</span>
+            <span class="btn-outline" style="padding: 0.2rem 1rem; font-size: 0.7rem;"><i class="fas fa-shield-alt"></i> Security</span>
+            <span class="btn-outline" style="padding: 0.2rem 1rem; font-size: 0.7rem;"><i class="fas fa-upload"></i> Import Questions</span>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="footer-note">
+        <span><i class="fas fa-sync-alt"></i> Last sync: 2 min ago</span>
+        <span><i class="fas fa-file-alt"></i> 8 exams · 3 active</span>
+        <span><i class="fas fa-chevron-right"></i> <a href="#" style="color: #2563eb; text-decoration: none;">view all exam analytics</a></span>
+        <span><i class="fas fa-print"></i> Exam Manager</span>
+    </div>
+</div>
+</body>
+</html>

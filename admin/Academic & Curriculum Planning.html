@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>Academic & Curriculum Planning · British Poly Admin</title>
+    <!-- Google Font + minimal reset -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f6faff;
+            color: #0a1e3c;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 260px;
+            background: #0a1e3c;
+            color: white;
+            min-height: 100vh;
+            padding: 1.8rem 1.2rem 2rem;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.25s ease;
+            z-index: 200;
+        }
+
+        .sidebar .logo {
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar .logo span {
+            color: #6a9aff;
+        }
+
+        .sidebar .logo small {
+            font-weight: 400;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.4);
+            display: block;
+            margin-top: 0.1rem;
+        }
+
+        .sidebar .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar .nav-section .label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .sidebar .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.6rem 0.8rem;
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: 0.15s ease;
+            margin-bottom: 0.15rem;
+            cursor: pointer;
+        }
+
+        .sidebar .nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .sidebar .nav-item.active {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+        }
+
+        .sidebar .nav-item .icon {
+            font-size: 1.1rem;
+            width: 28px;
+            text-align: center;
+        }
+
+        .sidebar .nav-item .badge {
+            margin-left: auto;
+            background: #1a5cff;
+            color: white;
+            font-size: 0.6rem;
+            padding: 0.05rem 0.6rem;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+
+        .sidebar .user-card {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 0.8rem 1rem;
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .sidebar .user-card .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1a5cff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .sidebar .user-card .info {
+            font-size: 0.8rem;
+        }
+
+        .sidebar .user-card .info .name {
+            font-weight: 600;
+            color: white;
+        }
+
+        .sidebar .user-card .info .role {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem 2rem 3rem;
+            max-width: calc(100% - 260px);
+            width: 100%;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            background: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eef2f8;
+            margin-bottom: 2rem;
+        }
+
+        .top-bar .greeting {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .top-bar .greeting small {
+            font-weight: 400;
+            color: #4a6a8a;
+            font-size: 0.8rem;
+        }
+
+        .top-bar .actions {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .top-bar .actions .btn {
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: 0.15s ease;
+            background: white;
+            color: #0a1e3c;
+            border-color: #c5d4ee;
+            text-decoration: none;
+        }
+
+        .top-bar .actions .btn-primary {
+            background: #0a1e3c;
+            color: white;
+            border-color: #0a1e3c;
+        }
+
+        .top-bar .actions .btn-primary:hover {
+            background: #17335c;
+            border-color: #17335c;
+        }
+
+        .top-bar .actions .btn-success {
+            background: #0e7b3a;
+            color: white;
+            border-color: #0e7b3a;
+        }
+
+        .top-bar .actions .btn-success:hover {
+            background: #1a934a;
+            border-color: #1a934a;
+        }
+
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 60px;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+        }
+
+        .tab-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 40px;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #4a6a8a;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .tab-btn:hover {
+            background: #f0f4fe;
+            color: #0a1e3c;
+        }
+
+        .tab-btn.active {
+            background: #0a1e3c;
+            color: white;
+            box-shadow: 0 4px 12px rgba(10, 30, 60, 0.15);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0a1e3c;
+        }
+
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: #4a6a8a;
+            font-weight: 500;
+        }
+
+        /* ===== FILTER BAR ===== */
+        .filter-bar {
+            background: white;
+            border-radius: 24px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.5rem;
+            align-items: center;
+        }
+
+        .filter-bar .search-group {
+            flex: 2;
+            min-width: 180px;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-bar .search-group input {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.85rem;
+            outline: none;
+            min-width: 100px;
+        }
+
+        .filter-bar .search-group input:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .filter-bar .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+            align-items: center;
+        }
+
+        .filter-bar .filter-group label {
+            font-weight: 500;
+            font-size: 0.7rem;
+            color: #1a3660;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .filter-bar .filter-group select {
+            padding: 0.3rem 1rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.8rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .filter-bar .filter-group select:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .filter-bar .result-count {
+            font-size: 0.8rem;
+            color: #4a6a8a;
+            margin-left: auto;
+        }
+
+        .filter-bar .result-count strong {
+            color: #0a1e3c;
+        }
+
+        /* ===== TABLE ===== */
+        .table-section {
+            background: white;
+            border-radius: 24px;
+            padding: 0.5rem 0 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            overflow-x: auto;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 1.5rem 0.3rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .table-header .actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+        }
+
+        .btn-sm {
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
+        }
+
+        .btn-primary {
+            background: #1a5cff;
+            color: white;
+            border-color: #1a5cff;
+        }
+
+        .btn-primary:hover {
+            background: #2a6cff;
+            border-color: #2a6cff;
+        }
+
+        .btn-success {
+            background: #0e7b3a;
+            color: white;
+            border-color: #0e7b3a;
+        }
+
+        .btn-success:hover {
+            background: #1a934a;
+            border-color: #1a934a;
+        }
+
+        .btn-danger {
+            background: #b22234;
+            color: white;
+            border-color: #b22234;
+        }
+
+        .btn-danger:hover {
+            background: #a01e2e;
+            border-color: #a01e2e;
+        }
+
+        .btn-warning {
+            background: #d48c2c;
+            color: white;
+            border-color: #d48c2c;
+        }
+
+        .btn-warning:hover {
+            background: #c07a1e;
+            border-color: #c07a1e;
+        }
+
+        .btn-outline-blue {
+            background: white;
+            color: #0a1e3c;
+            border-color: #0a1e3c;
+        }
+
+        .btn-outline-blue:hover {
+            background: #edf4ff;
+            border-color: #1a5cff;
+            color: #1a5cff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 800px;
+        }
+
+        th {
+            text-align: left;
+            padding: 0.6rem 1rem 0.4rem;
+            font-weight: 600;
+            color: #1a3660;
+            border-bottom: 2px solid #e6edf8;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        th .sort-icon {
+            opacity: 0.3;
+            margin-left: 0.2rem;
+        }
+
+        td {
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #ecf2fa;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #fafcff;
+        }
+
+        .status-badge {
+            padding: 0.1rem 0.7rem;
+            border-radius: 40px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background: #ddf0e6;
+            color: #0e7b3a;
+        }
+
+        .status-draft {
+            background: #f0ece6;
+            color: #d48c2c;
+        }
+
+        .status-archived {
+            background: #f0e6e6;
+            color: #b22234;
+        }
+
+        .status-approved {
+            background: #e6eeff;
+            color: #1a5cff;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 30, 60, 0.45);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            max-width: 600px;
+            width: 92%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem 2rem 2.2rem;
+            border-radius: 32px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            animation: modalIn 0.2s ease;
+        }
+
+        @keyframes modalIn {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .modal .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: #1a3660;
+            margin-bottom: 0.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .modal .form-group label .required {
+            color: #b22234;
+        }
+
+        .modal .form-group input,
+        .modal .form-group select,
+        .modal .form-group textarea {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.85rem;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .modal .form-group textarea {
+            border-radius: 20px;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .modal .form-group input:focus,
+        .modal .form-group select:focus,
+        .modal .form-group textarea:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .modal .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .modal .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .modal .modal-actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .modal .modal-actions .btn {
+            flex: 1;
+            justify-content: center;
+            min-width: 100px;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #0a1e3c;
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.25s, transform 0.25s;
+            pointer-events: none;
+            font-size: 0.9rem;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .toast.success {
+            background: #0e7b3a;
+        }
+
+        .toast.error {
+            background: #b22234;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 0.8rem;
+            left: 0.8rem;
+            z-index: 300;
+            background: #0a1e3c;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0.6rem 1rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 150;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: fixed;
+                transform: translateX(-100%);
+                width: 280px;
+                height: 100vh;
+                border-radius: 0 20px 20px 0;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+                box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+            }
+            .sidebar-toggle {
+                display: block;
+            }
+            .main-content {
+                padding: 1rem 1rem 2rem;
+                max-width: 100%;
+            }
+            .top-bar {
+                padding: 0.5rem 1rem;
+                border-radius: 20px;
+                margin-top: 0.5rem;
+            }
+            .tabs {
+                border-radius: 20px;
+                padding: 0.3rem;
+                gap: 0.3rem;
+            }
+            .tab-btn {
+                padding: 0.3rem 1rem;
+                font-size: 0.75rem;
+                flex: 1;
+                text-align: center;
+            }
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 0.8rem 1rem;
+            }
+            .filter-bar .result-count {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .top-bar .greeting {
+                font-size: 0.85rem;
+            }
+            .top-bar .actions {
+                width: 100%;
+            }
+            .top-bar .actions .btn {
+                flex: 1;
+                text-align: center;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .filter-bar .search-group {
+                flex-direction: column;
+            }
+            .filter-bar .filter-group {
+                width: 100%;
+            }
+            .filter-bar .filter-group select {
+                flex: 1;
+            }
+            .table-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .table-header .actions {
+                justify-content: stretch;
+            }
+            .table-header .actions .btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="British Poly · Home.html">Admin Home</a><a href="About Us · British Poly.html">About Us · British Poly</a><a href="Admin Profile · Account.html">Admin Profile · Account</a><a href="Admissions · British Poly.html">Admissions · British Poly</a><a href="British Poly · Home.html">British Poly · Home</a><a href="Contact Us.html">Contact Us</a><a href="Finance & Bursary Control .html">Finance & Bursary Control </a><a href="Notice Board.html">Notice Board</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page15.html">page15</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page21.html">page21</a><a href="page22.html">page22</a><a href="page23.html">page23</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a><a href="Parent & Guardian Portal.html">Parent & Guardian Portal</a><a href="Programs · British Poly.html">Programs · British Poly</a><a href="Staff Management.html">Staff Management</a><a href="Student Life.html">Student Life</a></div>
+
+    <!-- ===== SIDEBAR TOGGLE ===== -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            British<span>Poly</span>
+            <small>Administration</small>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Main</div>
+            <a href="#" class="nav-item">
+                <span class="icon">📊</span> Dashboard
+            </a>
+            <a href="#" class="nav-item active">
+                <span class="icon">📚</span> Curriculum
+                <span class="badge">48</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">🎓</span> Credentials
+                <span class="badge">156</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">👨‍🎓</span> Student Registry
+                <span class="badge">1,247</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Management</div>
+            <a href="#" class="nav-item">
+                <span class="icon">📅</span> Sessions
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📝</span> Results
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📋</span> Attendance
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Settings</div>
+            <a href="#" class="nav-item">
+                <span class="icon">🔐</span> Access Control
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">⚙️</span> System Settings
+            </a>
+        </div>
+
+        <div class="user-card">
+            <div class="avatar">AD</div>
+            <div class="info">
+                <div class="name">Admin User</div>
+                <div class="role">Administrator</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content">
+
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="greeting">
+                📚 Academic & Curriculum Planning
+                <small>| Manage programs, courses &amp; structures</small>
+            </div>
+            <div class="actions">
+                <button class="btn btn-primary" onclick="openModal('program')">➕ Add Program</button>
+                <button class="btn btn-success" onclick="exportCSV()">📥 Export CSV</button>
+                <button class="btn btn-outline" onclick="refreshData()">🔄 Refresh</button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="number" id="totalPrograms">0</div>
+                <div class="label">Programs</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="totalCourses">0</div>
+                <div class="label">Courses</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="activeCourses">0</div>
+                <div class="label">Active Courses</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="departmentsCount">0</div>
+                <div class="label">Departments</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tab-programs">📚 Programs</button>
+            <button class="tab-btn" data-tab="tab-courses">📖 Courses</button>
+            <button class="tab-btn" data-tab="tab-semesters">📅 Semesters</button>
+            <button class="tab-btn" data-tab="tab-curriculum">📋 Curriculum Structure</button>
+        </div>
+
+        <!-- ===== TAB 1: PROGRAMS ===== -->
+        <div class="tab-content active" id="tab-programs">
+            <div class="filter-bar">
+                <div class="search-group">
+                    <input type="text" id="programSearch" placeholder="🔎 Search programs...">
+                </div>
+                <div class="filter-group">
+                    <label for="programDeptFilter">Department</label>
+                    <select id="programDeptFilter">
+                        <option value="all">All Departments</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Business">Business</option>
+                        <option value="Health Sciences">Health Sciences</option>
+                        <option value="Creative Arts">Creative Arts</option>
+                        <option value="Social Sciences">Social Sciences</option>
+                    </select>
+                    <label for="programStatusFilter">Status</label>
+                    <select id="programStatusFilter">
+                        <option value="all">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="draft">Draft</option>
+                        <option value="archived">Archived</option>
+                    </select>
+                </div>
+                <span class="result-count">Showing <strong id="programResultCount">0</strong> programs</span>
+            </div>
+
+            <div class="table-section">
+                <div class="table-header">
+                    <span style="font-weight:600; font-size:0.9rem;">📋 Programs</span>
+                    <div class="actions">
+                        <button class="btn btn-sm btn-primary" onclick="openModal('program')">➕ Add Program</button>
+                    </div>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Program Name</th>
+                                <th>Department</th>
+                                <th>Duration</th>
+                                <th>Credits</th>
+                                <th>Status</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="programsBody">
+                            <!-- dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TAB 2: COURSES ===== -->
+        <div class="tab-content" id="tab-courses">
+            <div class="filter-bar">
+                <div class="search-group">
+                    <input type="text" id="courseSearch" placeholder="🔎 Search courses...">
+                </div>
+                <div class="filter-group">
+                    <label for="courseProgramFilter">Program</label>
+                    <select id="courseProgramFilter">
+                        <option value="all">All Programs</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Business">Business</option>
+                        <option value="Health Sciences">Health Sciences</option>
+                        <option value="Creative Arts">Creative Arts</option>
+                        <option value="Social Sciences">Social Sciences</option>
+                    </select>
+                    <label for="courseStatusFilter">Status</label>
+                    <select id="courseStatusFilter">
+                        <option value="all">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="draft">Draft</option>
+                        <option value="archived">Archived</option>
+                    </select>
+                </div>
+                <span class="result-count">Showing <strong id="courseResultCount">0</strong> courses</span>
+            </div>
+
+            <div class="table-section">
+                <div class="table-header">
+                    <span style="font-weight:600; font-size:0.9rem;">📖 Courses</span>
+                    <div class="actions">
+                        <button class="btn btn-sm btn-primary" onclick="openModal('course')">➕ Add Course</button>
+                    </div>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Course Name</th>
+                                <th>Program</th>
+                                <th>Credits</th>
+                                <th>Semester</th>
+                                <th>Status</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="coursesBody">
+                            <!-- dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TAB 3: SEMESTERS ===== -->
+        <div class="tab-content" id="tab-semesters">
+            <div class="filter-bar">
+                <div class="search-group">
+                    <input type="text" id="semesterSearch" placeholder="🔎 Search semesters...">
+                </div>
+                <div class="filter-group">
+                    <label for="semesterYearFilter">Year</label>
+                    <select id="semesterYearFilter">
+                        <option value="all">All Years</option>
+                        <option value="2024/2025">2024/2025</option>
+                        <option value="2025/2026">2025/2026</option>
+                        <option value="2026/2027">2026/2027</option>
+                    </select>
+                </div>
+                <span class="result-count">Showing <strong id="semesterResultCount">0</strong> semesters</span>
+            </div>
+
+            <div class="table-section">
+                <div class="table-header">
+                    <span style="font-weight:600; font-size:0.9rem;">📅 Semesters</span>
+                    <div class="actions">
+                        <button class="btn btn-sm btn-primary" onclick="openModal('semester')">➕ Add Semester</button>
+                    </div>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Academic Year</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="semestersBody">
+                            <!-- dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TAB 4: CURRICULUM STRUCTURE ===== -->
+        <div class="tab-content" id="tab-curriculum">
+            <div class="filter-bar">
+                <div class="search-group">
+                    <input type="text" id="curriculumSearch" placeholder="🔎 Search curriculum...">
+                </div>
+                <div class="filter-group">
+                    <label for="curriculumProgramFilter">Program</label>
+                    <select id="curriculumProgramFilter">
+                        <option value="all">All Programs</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Business">Business</option>
+                        <option value="Health Sciences">Health Sciences</option>
+                        <option value="Creative Arts">Creative Arts</option>
+                        <option value="Social Sciences">Social Sciences</option>
+                    </select>
+                </div>
+                <span class="result-count">Showing <strong id="curriculumResultCount">0</strong> items</span>
+            </div>
+
+            <div class="table-section">
+                <div class="table-header">
+                    <span style="font-weight:600; font-size:0.9rem;">📋 Curriculum Structure</span>
+                    <div class="actions">
+                        <button class="btn btn-sm btn-primary" onclick="openModal('curriculum')">➕ Add Structure</button>
+                    </div>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Program</th>
+                                <th>Semester</th>
+                                <th>Course</th>
+                                <th>Core/Elective</th>
+                                <th>Credits</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="curriculumBody">
+                            <!-- dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="mainModal">
+        <div class="modal">
+            <h2 id="modalTitle">Add New Item</h2>
+            <div id="modalBody">
+                <!-- dynamic -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast" class="toast">message</div>
+
+    <script>
+        // ===== DATA =====
+        let programs = [
+            { id: 1, code: 'CS-BSC', name: 'BSc Computer Science', department: 'Computer Science', duration: '3 Years',
+                credits: 120, status: 'active' },
+            { id: 2, code: 'ME-BENG', name: 'BEng Mechanical Engineering', department: 'Engineering', duration: '4 Years',
+                credits: 160, status: 'active' },
+            { id: 3, code: 'MBA-BA', name: 'MBA Business Administration', department: 'Business', duration: '2 Years',
+                credits: 90, status: 'active' },
+            { id: 4, code: 'PH-BSC', name: 'BSc Public Health', department: 'Health Sciences', duration: '3 Years',
+                credits: 120, status: 'active' },
+            { id: 5, code: 'DM-BA', name: 'BA Digital Media', department: 'Creative Arts', duration: '3 Years',
+                credits: 120, status: 'draft' },
+            { id: 6, code: 'PSY-BSC', name: 'BSc Psychology', department: 'Social Sciences', duration: '3 Years',
+                credits: 120, status: 'active' }
+        ];
+
+        let courses = [
+            { id: 1, code: 'CS101', name: 'Introduction to Programming', program: 'Computer Science', credits: 3,
+                semester: 'Spring 2025', status: 'active' },
+            { id: 2, code: 'CS201', name: 'Data Structures & Algorithms', program: 'Computer Science', credits: 3,
+                semester: 'Spring 2025', status: 'active' },
+            { id: 3, code: 'ME101', name: 'Engineering Mathematics', program: 'Engineering', credits: 3,
+                semester: 'Spring 2025', status: 'active' },
+            { id: 4, code: 'BUS101', name: 'Principles of Management', program: 'Business', credits: 3,
+                semester: 'Spring 2025', status: 'active' },
+            { id: 5, code: 'PH101', name: 'Introduction to Public Health', program: 'Health Sciences', credits: 3,
+                semester: 'Spring 2025', status: 'draft' },
+            { id: 6, code: 'DM101', name: 'Digital Media Fundamentals', program: 'Creative Arts', credits: 3,
+                semester: 'Spring 2025', status: 'active' },
+            { id: 7, code: 'PSY101', name: 'Introduction to Psychology', program: 'Social Sciences', credits: 3,
+                semester: 'Spring 2025', status: 'active' }
+        ];
+
+        let semesters = [
+            { id: 1, name: 'Spring 2025', academicYear: '2024/2025', startDate: '2025-01-15', endDate: '2025-05-30',
+                status: 'active' },
+            { id: 2, name: 'Summer 2025', academicYear: '2024/2025', startDate: '2025-06-01', endDate: '2025-08-30',
+                status: 'active' },
+            { id: 3, name: 'Autumn 2025', academicYear: '2025/2026', startDate: '2025-09-01', endDate: '2025-12-20',
+                status: 'draft' },
+            { id: 4, name: 'Spring 2026', academicYear: '2025/2026', startDate: '2026-01-15', endDate: '2026-05-30',
+                status: 'draft' }
+        ];
+
+        let curriculum = [
+            { id: 1, program: 'Computer Science', semester: 'Spring 2025', course: 'CS101', type: 'Core', credits: 3 },
+            { id: 2, program: 'Computer Science', semester: 'Spring 2025', course: 'CS201', type: 'Core', credits: 3 },
+            { id: 3, program: 'Engineering', semester: 'Spring 2025', course: 'ME101', type: 'Core', credits: 3 },
+            { id: 4, program: 'Business', semester: 'Spring 2025', course: 'BUS101', type: 'Core', credits: 3 },
+            { id: 5, program: 'Health Sciences', semester: 'Spring 2025', course: 'PH101', type: 'Elective',
+            credits: 3 },
+            { id: 6, program: 'Creative Arts', semester: 'Spring 2025', course: 'DM101', type: 'Core', credits: 3 },
+            { id: 7, program: 'Social Sciences', semester: 'Spring 2025', course: 'PSY101', type: 'Core', credits: 3 }
+        ];
+
+        let nextId = { program: 7, course: 8, semester: 5, curriculum: 8 };
+        let currentTab = 'programs';
+        let editingId = null;
+        let editingType = null;
+
+        // ===== DOM REFS =====
+        const modal = document.getElementById('mainModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const toast = document.getElementById('toast');
+
+        // ===== TAB SWITCHING =====
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab).classList.add('active');
+                renderAll();
+            });
+        });
+
+        // ===== RENDER ALL =====
+        function renderAll() {
+            renderPrograms();
+            renderCourses();
+            renderSemesters();
+            renderCurriculum();
+            updateStats();
+        }
+
+        // ===== UPDATE STATS =====
+        function updateStats() {
+            document.getElementById('totalPrograms').textContent = programs.length;
+            document.getElementById('totalCourses').textContent = courses.length;
+            document.getElementById('activeCourses').textContent = courses.filter(c => c.status === 'active').length;
+            document.getElementById('departmentsCount').textContent = new Set(programs.map(p => p.department)).size;
+        }
+
+        // ===== RENDER PROGRAMS =====
+        function renderPrograms() {
+            const searchTerm = document.getElementById('programSearch').value.toLowerCase().trim();
+            const dept = document.getElementById('programDeptFilter').value;
+            const status = document.getElementById('programStatusFilter').value;
+
+            let filtered = programs.filter(p => {
+                const matchSearch = p.name.toLowerCase().includes(searchTerm) || p.code.toLowerCase().includes(
+                searchTerm);
+                const matchDept = dept === 'all' || p.department === dept;
+                const matchStatus = status === 'all' || p.status === status;
+                return matchSearch && matchDept && matchStatus;
+            });
+
+            document.getElementById('programResultCount').textContent = filtered.length;
+
+            let html = '';
+            filtered.forEach(p => {
+                const statusClass = 'status-' + p.status;
+                html += `
+                    <tr>
+                        <td><strong>${p.code}</strong></td>
+                        <td>${p.name}</td>
+                        <td>${p.department}</td>
+                        <td>${p.duration}</td>
+                        <td>${p.credits}</td>
+                        <td><span class="status-badge ${statusClass}">${p.status.charAt(0).toUpperCase() + p.status.slice(1)}</span></td>
+                        <td style="text-align:right;">
+                            <div class="action-btns">
+                                <button class="btn btn-sm btn-primary" onclick="editItem('program', ${p.id})">✎</button>
+                                <button class="btn btn-sm btn-warning" onclick="toggleStatus('program', ${p.id})">↻</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteItem('program', ${p.id})">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            document.getElementById('programsBody').innerHTML = html || `<tr><td colspan="7" style="text-align:center; padding:1.5rem; color:#6a7f9e;">No programs found.</td></tr>`;
+        }
+
+        // ===== RENDER COURSES =====
+        function renderCourses() {
+            const searchTerm = document.getElementById('courseSearch').value.toLowerCase().trim();
+            const program = document.getElementById('courseProgramFilter').value;
+            const status = document.getElementById('courseStatusFilter').value;
+
+            let filtered = courses.filter(c => {
+                const matchSearch = c.name.toLowerCase().includes(searchTerm) || c.code.toLowerCase().includes(
+                searchTerm);
+                const matchProgram = program === 'all' || c.program === program;
+                const matchStatus = status === 'all' || c.status === status;
+                return matchSearch && matchProgram && matchStatus;
+            });
+
+            document.getElementById('courseResultCount').textContent = filtered.length;
+
+            let html = '';
+            filtered.forEach(c => {
+                const statusClass = 'status-' + c.status;
+                html += `
+                    <tr>
+                        <td><strong>${c.code}</strong></td>
+                        <td>${c.name}</td>
+                        <td>${c.program}</td>
+                        <td>${c.credits}</td>
+                        <td>${c.semester}</td>
+                        <td><span class="status-badge ${statusClass}">${c.status.charAt(0).toUpperCase() + c.status.slice(1)}</span></td>
+                        <td style="text-align:right;">
+                            <div class="action-btns">
+                                <button class="btn btn-sm btn-primary" onclick="editItem('course', ${c.id})">✎</button>
+                                <button class="btn btn-sm btn-warning" onclick="toggleStatus('course', ${c.id})">↻</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteItem('course', ${c.id})">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            document.getElementById('coursesBody').innerHTML = html || `<tr><td colspan="7" style="text-align:center; padding:1.5rem; color:#6a7f9e;">No courses found.</td></tr>`;
+        }
+
+        // ===== RENDER SEMESTERS =====
+        function renderSemesters() {
+            const searchTerm = document.getElementById('semesterSearch').value.toLowerCase().trim();
+            const year = document.getElementById('semesterYearFilter').value;
+
+            let filtered = semesters.filter(s => {
+                const matchSearch = s.name.toLowerCase().includes(searchTerm);
+                const matchYear = year === 'all' || s.academicYear === year;
+                return matchSearch && matchYear;
+            });
+
+            document.getElementById('semesterResultCount').textContent = filtered.length;
+
+            let html = '';
+            filtered.forEach(s => {
+                const statusClass = 'status-' + s.status;
+                html += `
+                    <tr>
+                        <td><strong>${s.name}</strong></td>
+                        <td>${s.academicYear}</td>
+                        <td>${formatDate(s.startDate)}</td>
+                        <td>${formatDate(s.endDate)}</td>
+                        <td><span class="status-badge ${statusClass}">${s.status.charAt(0).toUpperCase() + s.status.slice(1)}</span></td>
+                        <td style="text-align:right;">
+                            <div class="action-btns">
+                                <button class="btn btn-sm btn-primary" onclick="editItem('semester', ${s.id})">✎</button>
+                                <button class="btn btn-sm btn-warning" onclick="toggleStatus('semester', ${s.id})">↻</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteItem('semester', ${s.id})">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            document.getElementById('semestersBody').innerHTML = html || `<tr><td colspan="6" style="text-align:center; padding:1.5rem; color:#6a7f9e;">No semesters found.</td></tr>`;
+        }
+
+        // ===== RENDER CURRICULUM =====
+        function renderCurriculum() {
+            const searchTerm = document.getElementById('curriculumSearch').value.toLowerCase().trim();
+            const program = document.getElementById('curriculumProgramFilter').value;
+
+            let filtered = curriculum.filter(c => {
+                const matchSearch = c.program.toLowerCase().includes(searchTerm) ||
+                    c.course.toLowerCase().includes(searchTerm) ||
+                    c.semester.toLowerCase().includes(searchTerm);
+                const matchProgram = program === 'all' || c.program === program;
+                return matchSearch && matchProgram;
+            });
+
+            document.getElementById('curriculumResultCount').textContent = filtered.length;
+
+            let html = '';
+            filtered.forEach(c => {
+                html += `
+                    <tr>
+                        <td>${c.program}</td>
+                        <td>${c.semester}</td>
+                        <td><strong>${c.course}</strong></td>
+                        <td><span class="status-badge status-active">${c.type}</span></td>
+                        <td>${c.credits}</td>
+                        <td style="text-align:right;">
+                            <div class="action-btns">
+                                <button class="btn btn-sm btn-primary" onclick="editItem('curriculum', ${c.id})">✎</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteItem('curriculum', ${c.id})">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            document.getElementById('curriculumBody').innerHTML = html || `<tr><td colspan="6" style="text-align:center; padding:1.5rem; color:#6a7f9e;">No curriculum items found.</td></tr>`;
+        }
+
+        // ===== FORMAT DATE =====
+        function formatDate(dateStr) {
+            if (!dateStr) return 'N/A';
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        // ===== MODAL =====
+        function openModal(type, item) {
+            editingType = type;
+            let html = '';
+
+            if (type === 'program') {
+                editingId = item ? item.id : null;
+                modalTitle.textContent = item ? '✎ Edit Program' : '➕ Add New Program';
+                html = `
+                    <div class="form-group">
+                        <label>Program Code <span class="required">*</span></label>
+                        <input type="text" id="progCode" value="${item ? item.code : ''}" placeholder="e.g. CS-BSC">
+                    </div>
+                    <div class="form-group">
+                        <label>Program Name <span class="required">*</span></label>
+                        <input type="text" id="progName" value="${item ? item.name : ''}" placeholder="e.g. BSc Computer Science">
+                    </div>
+                    <div class="form-group">
+                        <label>Department <span class="required">*</span></label>
+                        <select id="progDept">
+                            <option value="Computer Science" ${item && item.department === 'Computer Science' ? 'selected' : ''}>Computer Science</option>
+                            <option value="Engineering" ${item && item.department === 'Engineering' ? 'selected' : ''}>Engineering</option>
+                            <option value="Business" ${item && item.department === 'Business' ? 'selected' : ''}>Business</option>
+                            <option value="Health Sciences" ${item && item.department === 'Health Sciences' ? 'selected' : ''}>Health Sciences</option>
+                            <option value="Creative Arts" ${item && item.department === 'Creative Arts' ? 'selected' : ''}>Creative Arts</option>
+                            <option value="Social Sciences" ${item && item.department === 'Social Sciences' ? 'selected' : ''}>Social Sciences</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Duration</label>
+                            <input type="text" id="progDuration" value="${item ? item.duration : '3 Years'}" placeholder="e.g. 3 Years">
+                        </div>
+                        <div class="form-group">
+                            <label>Credits</label>
+                            <input type="number" id="progCredits" value="${item ? item.credits : 120}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="progStatus">
+                            <option value="active" ${item && item.status === 'active' ? 'selected' : ''}>Active</option>
+                            <option value="draft" ${item && item.status === 'draft' ? 'selected' : ''}>Draft</option>
+                            <option value="archived" ${item && item.status === 'archived' ? 'selected' : ''}>Archived</option>
+                        </select>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" onclick="saveItem('program')">💾 Save</button>
+                        <button class="btn btn-outline-blue" onclick="closeModal()">Cancel</button>
+                    </div>
+                `;
+            } else if (type === 'course') {
+                editingId = item ? item.id : null;
+                modalTitle.textContent = item ? '✎ Edit Course' : '➕ Add New Course';
+                html = `
+                    <div class="form-group">
+                        <label>Course Code <span class="required">*</span></label>
+                        <input type="text" id="crsCode" value="${item ? item.code : ''}" placeholder="e.g. CS101">
+                    </div>
+                    <div class="form-group">
+                        <label>Course Name <span class="required">*</span></label>
+                        <input type="text" id="crsName" value="${item ? item.name : ''}" placeholder="e.g. Introduction to Programming">
+                    </div>
+                    <div class="form-group">
+                        <label>Program <span class="required">*</span></label>
+                        <select id="crsProgram">
+                            ${programs.map(p => `<option value="${p.name}" ${item && item.program === p.name ? 'selected' : ''}>${p.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Credits</label>
+                            <input type="number" id="crsCredits" value="${item ? item.credits : 3}">
+                        </div>
+                        <div class="form-group">
+                            <label>Semester</label>
+                            <select id="crsSemester">
+                                ${semesters.map(s => `<option value="${s.name}" ${item && item.semester === s.name ? 'selected' : ''}>${s.name}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="crsStatus">
+                            <option value="active" ${item && item.status === 'active' ? 'selected' : ''}>Active</option>
+                            <option value="draft" ${item && item.status === 'draft' ? 'selected' : ''}>Draft</option>
+                            <option value="archived" ${item && item.status === 'archived' ? 'selected' : ''}>Archived</option>
+                        </select>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" onclick="saveItem('course')">💾 Save</button>
+                        <button class="btn btn-outline-blue" onclick="closeModal()">Cancel</button>
+                    </div>
+                `;
+            } else if (type === 'semester') {
+                editingId = item ? item.id : null;
+                modalTitle.textContent = item ? '✎ Edit Semester' : '➕ Add New Semester';
+                html = `
+                    <div class="form-group">
+                        <label>Semester Name <span class="required">*</span></label>
+                        <input type="text" id="semName" value="${item ? item.name : ''}" placeholder="e.g. Spring 2025">
+                    </div>
+                    <div class="form-group">
+                        <label>Academic Year <span class="required">*</span></label>
+                        <select id="semYear">
+                            <option value="2024/2025" ${item && item.academicYear === '2024/2025' ? 'selected' : ''}>2024/2025</option>
+                            <option value="2025/2026" ${item && item.academicYear === '2025/2026' ? 'selected' : ''}>2025/2026</option>
+                            <option value="2026/2027" ${item && item.academicYear === '2026/2027' ? 'selected' : ''}>2026/2027</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input type="date" id="semStart" value="${item ? item.startDate : ''}">
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <input type="date" id="semEnd" value="${item ? item.endDate : ''}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="semStatus">
+                            <option value="active" ${item && item.status === 'active' ? 'selected' : ''}>Active</option>
+                            <option value="draft" ${item && item.status === 'draft' ? 'selected' : ''}>Draft</option>
+                            <option value="archived" ${item && item.status === 'archived' ? 'selected' : ''}>Archived</option>
+                        </select>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" onclick="saveItem('semester')">💾 Save</button>
+                        <button class="btn btn-outline-blue" onclick="closeModal()">Cancel</button>
+                    </div>
+                `;
+            } else if (type === 'curriculum') {
+                editingId = item ? item.id : null;
+                modalTitle.textContent = item ? '✎ Edit Curriculum Item' : '➕ Add Curriculum Structure';
+                html = `
+                    <div class="form-group">
+                        <label>Program <span class="required">*</span></label>
+                        <select id="curProgram">
+                            ${programs.map(p => `<option value="${p.name}" ${item && item.program === p.name ? 'selected' : ''}>${p.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Semester <span class="required">*</span></label>
+                        <select id="curSemester">
+                            ${semesters.map(s => `<option value="${s.name}" ${item && item.semester === s.name ? 'selected' : ''}>${s.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Course <span class="required">*</span></label>
+                        <select id="curCourse">
+                            ${courses.map(c => `<option value="${c.code}" ${item && item.course === c.code ? 'selected' : ''}>${c.code} - ${c.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Type</label>
+                            <select id="curType">
+                                <option value="Core" ${item && item.type === 'Core' ? 'selected' : ''}>Core</option>
+                                <option value="Elective" ${item && item.type === 'Elective' ? 'selected' : ''}>Elective</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Credits</label>
+                            <input type="number" id="curCredits" value="${item ? item.credits : 3}">
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" onclick="saveItem('curriculum')">💾 Save</button>
+                        <button class="btn btn-outline-blue" onclick="closeModal()">Cancel</button>
+                    </div>
+                `;
+            }
+
+            modalBody.innerHTML = html;
+            modal.classList.add('open');
+        }
+
+        // ===== EDIT ITEM =====
+        function editItem(type, id) {
+            let item = null;
+            if (type === 'program') item = programs.find(p => p.id === id);
+            else if (type === 'course') item = courses.find(c => c.id === id);
+            else if (type === 'semester') item = semesters.find(s => s.id === id);
+            else if (type === 'curriculum') item = curriculum.find(c => c.id === id);
+            if (item) openModal(type, item);
+        }
+
+        // ===== SAVE ITEM =====
+        function saveItem(type) {
+            let item = {};
+
+            if (type === 'program') {
+                const code = document.getElementById('progCode').value.trim();
+                const name = document.getElementById('progName').value.trim();
+                const department = document.getElementById('progDept').value;
+                const duration = document.getElementById('progDuration').value.trim();
+                const credits = parseInt(document.getElementById('progCredits').value) || 0;
+                const status = document.getElementById('progStatus').value;
+
+                if (!code || !name) {
+                    showToast('❌ Please fill in all required fields', 'error');
+                    return;
+                }
+
+                item = { id: editingId || nextId.program++, code, name, department, duration, credits, status };
+
+                if (editingId) {
+                    const idx = programs.findIndex(p => p.id === editingId);
+                    if (idx !== -1) programs[idx] = item;
+                } else {
+                    programs.push(item);
+                }
+                showToast('✅ Program saved successfully', 'success');
+            } else if (type === 'course') {
+                const code = document.getElementById('crsCode').value.trim();
+                const name = document.getElementById('crsName').value.trim();
+                const program = document.getElementById('crsProgram').value;
+                const credits = parseInt(document.getElementById('crsCredits').value) || 0;
+                const semester = document.getElementById('crsSemester').value;
+                const status = document.getElementById('crsStatus').value;
+
+                if (!code || !name) {
+                    showToast('❌ Please fill in all required fields', 'error');
+                    return;
+                }
+
+                item = { id: editingId || nextId.course++, code, name, program, credits, semester, status };
+
+                if (editingId) {
+                    const idx = courses.findIndex(c => c.id === editingId);
+                    if (idx !== -1) courses[idx] = item;
+                } else {
+                    courses.push(item);
+                }
+                showToast('✅ Course saved successfully', 'success');
+            } else if (type === 'semester') {
+                const name = document.getElementById('semName').value.trim();
+                const academicYear = document.getElementById('semYear').value;
+                const startDate = document.getElementById('semStart').value;
+                const endDate = document.getElementById('semEnd').value;
+                const status = document.getElementById('semStatus').value;
+
+                if (!name || !startDate || !endDate) {
+                    showToast('❌ Please fill in all required fields', 'error');
+                    return;
+                }
+
+                item = { id: editingId || nextId.semester++, name, academicYear, startDate, endDate, status };
+
+                if (editingId) {
+                    const idx = semesters.findIndex(s => s.id === editingId);
+                    if (idx !== -1) semesters[idx] = item;
+                } else {
+                    semesters.push(item);
+                }
+                showToast('✅ Semester saved successfully', 'success');
+            } else if (type === 'curriculum') {
+                const program = document.getElementById('curProgram').value;
+                const semester = document.getElementById('curSemester').value;
+                const course = document.getElementById('curCourse').value;
+                const typeVal = document.getElementById('curType').value;
+                const credits = parseInt(document.getElementById('curCredits').value) || 0;
+
+                if (!program || !semester || !course) {
+                    showToast('❌ Please fill in all required fields', 'error');
+                    return;
+                }
+
+                item = { id: editingId || nextId.curriculum++, program, semester, course, type: typeVal, credits };
+
+                if (editingId) {
+                    const idx = curriculum.findIndex(c => c.id === editingId);
+                    if (idx !== -1) curriculum[idx] = item;
+                } else {
+                    curriculum.push(item);
+                }
+                showToast('✅ Curriculum item saved successfully', 'success');
+            }
+
+            closeModal();
+            renderAll();
+        }
+
+        // ===== TOGGLE STATUS =====
+        function toggleStatus(type, id) {
+            let item = null;
+            let list = [];
+            if (type === 'program') { item = programs.find(p => p.id === id);
+                list = programs; } else if (type === 'course') { item = courses.find(c => c.id === id);
+                list = courses; } else if (type === 'semester') { item = semesters.find(s => s.id === id);
+                list = semesters; }
+            if (!item) return;
+
+            const statuses = ['active', 'draft', 'archived'];
+            const currentIdx = statuses.indexOf(item.status);
+            const nextIdx = (currentIdx + 1) % statuses.length;
+            item.status = statuses[nextIdx];
+            renderAll();
+            showToast(`↻ Status changed to "${item.status}"`, 'success');
+        }
+
+        // ===== DELETE ITEM =====
+        function deleteItem(type, id) {
+            let name = '';
+            if (type === 'program') { const item = programs.find(p => p.id === id); if (!item) return;
+                name = item.name; if (confirm(`Delete program "${name}"?`)) { programs = programs.filter(p => p.id !== id); } } else if (
+                type === 'course') { const item = courses.find(c => c.id === id); if (!item) return;
+                name = item.name; if (confirm(`Delete course "${name}"?`)) { courses = courses.filter(c => c.id !== id); } } else if (
+                type === 'semester') { const item = semesters.find(s => s.id === id); if (!item) return;
+                name = item.name; if (confirm(`Delete semester "${name}"?`)) { semesters = semesters.filter(s => s.id !== id); } } else if (
+                type === 'curriculum') { const item = curriculum.find(c => c.id === id); if (!item) return;
+                name = item.course; if (confirm(`Delete curriculum item "${name}"?`)) { curriculum = curriculum.filter(c => c.id !==
+                        id); } }
+            renderAll();
+            showToast('🗑️ Item deleted', 'success');
+        }
+
+        // ===== CLOSE MODAL =====
+        function closeModal() {
+            modal.classList.remove('open');
+            editingId = null;
+            editingType = null;
+        }
+
+        // ===== REFRESH =====
+        function refreshData() {
+            renderAll();
+            showToast('↻ Data refreshed', 'success');
+        }
+
+        // ===== EXPORT CSV =====
+        function exportCSV() {
+            const headers = ['Type', 'Code', 'Name', 'Program/Department', 'Credits', 'Status'];
+            let rows = [];
+
+            programs.forEach(p => {
+                rows.push(['Program', p.code, p.name, p.department, p.credits, p.status]);
+            });
+            courses.forEach(c => {
+                rows.push(['Course', c.code, c.name, c.program, c.credits, c.status]);
+            });
+
+            let csv = headers.join(',') + '\n';
+            rows.forEach(row => {
+                csv += row.map(cell => `"${cell}"`).join(',') + '\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download',
+                `academic_curriculum_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showToast(`✅ Exported ${rows.length} items`, 'success');
+        }
+
+        // ===== TOAST =====
+        let toastTimer;
+
+        function showToast(msg, type = 'success') {
+            toast.textContent = msg;
+            toast.className = 'toast ' + type + ' show';
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ===== SIDEBAR TOGGLE =====
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const toggleBtn = document.getElementById('sidebarToggle');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        toggleBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (sidebar.classList.contains('open')) toggleSidebar();
+                if (modal.classList.contains('open')) closeModal();
+            }
+        });
+
+        // ===== EVENT BINDING =====
+        document.getElementById('programSearch').addEventListener('input', renderPrograms);
+        document.getElementById('programDeptFilter').addEventListener('change', renderPrograms);
+        document.getElementById('programStatusFilter').addEventListener('change', renderPrograms);
+
+        document.getElementById('courseSearch').addEventListener('input', renderCourses);
+        document.getElementById('courseProgramFilter').addEventListener('change', renderCourses);
+        document.getElementById('courseStatusFilter').addEventListener('change', renderCourses);
+
+        document.getElementById('semesterSearch').addEventListener('input', renderSemesters);
+        document.getElementById('semesterYearFilter').addEventListener('change', renderSemesters);
+
+        document.getElementById('curriculumSearch').addEventListener('input', renderCurriculum);
+        document.getElementById('curriculumProgramFilter').addEventListener('change', renderCurriculum);
+
+        // ===== INIT =====
+        renderAll();
+        console.log('✅ British Poly · Academic & Curriculum Planning loaded');
+        console.log(`📚 ${programs.length} programs, ${courses.length} courses, ${semesters.length} semesters loaded`);
+    </script>
+
+</body>
+</html>

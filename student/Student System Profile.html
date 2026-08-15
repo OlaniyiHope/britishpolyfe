@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <title>Student System Profile</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #eef3fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .system-profile {
+            max-width: 1200px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 44px;
+            box-shadow: 0 30px 60px -18px rgba(0, 20, 40, 0.18);
+            padding: 28px 32px 32px;
+            transition: all 0.2s;
+        }
+
+        /* header */
+        .profile-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            gap: 14px;
+        }
+
+        .profile-header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #0a1e32;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .profile-header h1 i {
+            color: #2563eb;
+            font-size: 2rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .live-badge {
+            background: #dc3545;
+            color: white;
+            font-weight: 600;
+            font-size: 0.7rem;
+            padding: 6px 16px 6px 14px;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            animation: livePulse 1.8s infinite;
+        }
+
+        @keyframes livePulse {
+            0% { opacity: 0.75; transform: scale(0.97); }
+            50% { opacity: 1; transform: scale(1.02); }
+            100% { opacity: 0.75; transform: scale(0.97); }
+        }
+
+        /* tabs */
+        .tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #e8eff8;
+            padding-bottom: 2px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px 40px 0 0;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #4a6b8f;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -4px;
+        }
+
+        .tab-btn i {
+            color: #6a8bb0;
+        }
+
+        .tab-btn:hover {
+            color: #1a3a6b;
+            background: #f0f6fe;
+        }
+
+        .tab-btn.active {
+            color: #1a3a6b;
+            font-weight: 600;
+            border-bottom-color: #2563eb;
+            background: #f0f6fe;
+        }
+
+        .tab-btn.active i {
+            color: #2563eb;
+        }
+
+        /* tab content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(6px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ----- PROFILE TAB ----- */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 28px;
+        }
+
+        .profile-card {
+            background: linear-gradient(145deg, #f8fbff, #ffffff);
+            border-radius: 28px;
+            padding: 24px 22px;
+            border: 1px solid #dce8f5;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(26, 58, 107, 0.04);
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(145deg, #dce8f5, #c5d7ed);
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            font-size: 3.5rem;
+            color: #1a3a6b;
+            border: 4px solid #ffffff;
+            box-shadow: 0 4px 16px rgba(26, 58, 107, 0.10);
+        }
+
+        .profile-card .full-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0a1e3a;
+        }
+
+        .profile-card .student-id {
+            font-size: 0.85rem;
+            color: #4a6b8f;
+            font-weight: 500;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+
+        .profile-card .status-badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 4px 18px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: #d1fae5;
+            color: #0b6e4f;
+        }
+
+        .profile-card .divider {
+            margin: 16px 0 14px;
+            border-top: 1px solid #e8eff8;
+        }
+
+        .profile-card .quick-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 12px;
+            text-align: left;
+        }
+
+        .profile-card .quick-info .qi-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-card .quick-info .qi-label {
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: #4a6b8f;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .profile-card .quick-info .qi-value {
+            font-weight: 500;
+            color: #0a1e3a;
+            font-size: 0.85rem;
+        }
+
+        .bio-details {
+            background: #f8fbff;
+            border-radius: 28px;
+            padding: 24px 26px;
+            border: 1px solid #dce8f5;
+        }
+
+        .bio-details h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0a1e3a;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bio-details h3 i {
+            color: #2563eb;
+        }
+
+        .bio-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 24px;
+        }
+
+        .bio-item {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e8eff8;
+        }
+
+        .bio-item .bio-label {
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: #4a6b8f;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .bio-item .bio-value {
+            font-weight: 500;
+            color: #0a1e3a;
+            font-size: 0.9rem;
+            margin-top: 2px;
+        }
+
+        .bio-item.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .bio-item .bio-value .tag {
+            display: inline-block;
+            background: #e8eff8;
+            padding: 2px 14px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #1a3a6b;
+            margin-right: 4px;
+            margin-top: 4px;
+        }
+
+        /* ----- ACADEMICS TAB ----- */
+        .academics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .academics-card {
+            background: #f8fbff;
+            border-radius: 28px;
+            padding: 22px 24px;
+            border: 1px solid #dce8f5;
+        }
+
+        .academics-card h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #0a1e3a;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .academics-card h3 i {
+            color: #2563eb;
+        }
+
+        .academics-card .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e8eff8;
+            font-size: 0.85rem;
+        }
+
+        .academics-card .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .academics-card .stat-row .label {
+            color: #4a6b8f;
+        }
+
+        .academics-card .stat-row .value {
+            font-weight: 600;
+            color: #0a1e3a;
+        }
+
+        .academics-card .stat-row .value.gpa {
+            color: #059669;
+            font-size: 1.1rem;
+        }
+
+        /* ----- SETTINGS TAB ----- */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .settings-card {
+            background: #f8fbff;
+            border-radius: 28px;
+            padding: 22px 24px;
+            border: 1px solid #dce8f5;
+        }
+
+        .settings-card h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #0a1e3a;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .settings-card h3 i {
+            color: #2563eb;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e8eff8;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-item .set-label {
+            font-size: 0.85rem;
+            color: #0a1e3a;
+        }
+
+        .setting-item .set-label .sub {
+            font-size: 0.7rem;
+            color: #4a6b8f;
+            display: block;
+        }
+
+        .toggle {
+            width: 44px;
+            height: 24px;
+            background: #b8cfe5;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .toggle.active {
+            background: #2563eb;
+        }
+
+        .toggle .toggle-knob {
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            transition: 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .toggle.active .toggle-knob {
+            left: 23px;
+        }
+
+        .settings-card .action-btn {
+            background: #1a3a6b;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-card .action-btn:hover {
+            background: #0e2a4f;
+        }
+
+        .settings-card .action-btn.danger {
+            background: #b91c1c;
+        }
+
+        .settings-card .action-btn.danger:hover {
+            background: #991b1b;
+        }
+
+        /* footer */
+        .profile-footer {
+            margin-top: 28px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 0.78rem;
+            color: #577392;
+            border-top: 1px solid #e7eef8;
+            padding-top: 20px;
+        }
+
+        .profile-footer i {
+            margin-right: 4px;
+        }
+
+        /* responsive */
+        @media (max-width: 900px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .academics-grid {
+                grid-template-columns: 1fr;
+            }
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            .system-profile { padding: 20px 16px 24px; }
+            .profile-header h1 { font-size: 1.5rem; }
+            .bio-grid { grid-template-columns: 1fr; }
+            .bio-item.full-width { grid-column: 1; }
+        }
+
+        @media (max-width: 480px) {
+            .profile-card .quick-info { grid-template-columns: 1fr; }
+            .profile-avatar { width: 90px; height: 90px; font-size: 2.8rem; }
+            .bio-details { padding: 18px 16px; }
+            .profile-card { padding: 18px 16px; }
+            .tabs { gap: 4px; }
+            .tab-btn { padding: 8px 14px; font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Student Home</a><a href="page1.html">page1</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page9.html">page9</a></div>
+
+<div class="system-profile" id="systemProfile">
+    <!-- header -->
+    <div class="profile-header">
+        <h1><i class="fas fa-cog"></i> System Profile</h1>
+        <div class="header-right">
+            <span class="live-badge"><i class="fas fa-circle" style="font-size:0.45rem;"></i> LIVE</span>
+        </div>
+    </div>
+
+    <!-- tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="profile"><i class="fas fa-user"></i> Profile</button>
+        <button class="tab-btn" data-tab="academics"><i class="fas fa-graduation-cap"></i> Academics</button>
+        <button class="tab-btn" data-tab="settings"><i class="fas fa-sliders-h"></i> Settings</button>
+    </div>
+
+    <!-- TAB 1: Profile -->
+    <div class="tab-content active" id="tab-profile">
+        <div class="profile-grid">
+            <!-- left card -->
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="full-name" id="displayName">Sarah Chen</div>
+                <div class="student-id" id="displayId">S-2026-014</div>
+                <span class="status-badge"><i class="fas fa-check-circle"></i> Active</span>
+                <div class="divider"></div>
+                <div class="quick-info">
+                    <div class="qi-item">
+                        <span class="qi-label">Program</span>
+                        <span class="qi-value" id="displayProgram">B.S. CS</span>
+                    </div>
+                    <div class="qi-item">
+                        <span class="qi-label">Department</span>
+                        <span class="qi-value" id="displayDept">CS</span>
+                    </div>
+                    <div class="qi-item">
+                        <span class="qi-label">Batch</span>
+                        <span class="qi-value" id="displayBatch">2026</span>
+                    </div>
+                    <div class="qi-item">
+                        <span class="qi-label">Semester</span>
+                        <span class="qi-value" id="displaySemester">Spring 2026</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- right bio -->
+            <div class="bio-details">
+                <h3><i class="fas fa-address-card"></i> Bio Data</h3>
+                <div class="bio-grid" id="bioGrid">
+                    <div class="bio-item">
+                        <span class="bio-label">Full Name</span>
+                        <span class="bio-value" id="bioName">Sarah Chen</span>
+                    </div>
+                    <div class="bio-item">
+                        <span class="bio-label">Date of Birth</span>
+                        <span class="bio-value" id="bioDob">March 15, 2004</span>
+                    </div>
+                    <div class="bio-item">
+                        <span class="bio-label">Gender</span>
+                        <span class="bio-value" id="bioGender">Female</span>
+                    </div>
+                    <div class="bio-item">
+                        <span class="bio-label">Nationality</span>
+                        <span class="bio-value" id="bioNationality">British</span>
+                    </div>
+                    <div class="bio-item">
+                        <span class="bio-label">Email</span>
+                        <span class="bio-value" id="bioEmail">sarah.chen@student.bp.ac.uk</span>
+                    </div>
+                    <div class="bio-item">
+                        <span class="bio-label">Phone</span>
+                        <span class="bio-value" id="bioPhone">+44 7700 123456</span>
+                    </div>
+                    <div class="bio-item full-width">
+                        <span class="bio-label">Address</span>
+                        <span class="bio-value" id="bioAddress">42 Academic Hall, British Poly, London</span>
+                    </div>
+                    <div class="bio-item full-width">
+                        <span class="bio-label">Skills</span>
+                        <span class="bio-value" id="bioSkills">
+                            <span class="tag">Python</span>
+                            <span class="tag">Web Dev</span>
+                            <span class="tag">SQL</span>
+                            <span class="tag">AI</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: Academics -->
+    <div class="tab-content" id="tab-academics">
+        <div class="academics-grid">
+            <div class="academics-card">
+                <h3><i class="fas fa-chart-line"></i> Academic Summary</h3>
+                <div class="stat-row">
+                    <span class="label">Semester GPA</span>
+                    <span class="value gpa" id="semesterGpa">3.67</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">Cumulative GPA</span>
+                    <span class="value gpa" id="cumulativeGpa">3.52</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">Credits Earned</span>
+                    <span class="value" id="creditsEarned">17</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">Credits Enrolled</span>
+                    <span class="value" id="creditsEnrolled">19</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">Academic Standing</span>
+                    <span class="value" style="color:#059669;" id="academicStanding">Good Standing</span>
+                </div>
+            </div>
+
+            <div class="academics-card">
+                <h3><i class="fas fa-book"></i> Current Courses</h3>
+                <div class="stat-row">
+                    <span class="label">CS 201 · Data Structures</span>
+                    <span class="value" style="color:#059669;">A</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">CS 260 · Web Development</span>
+                    <span class="value" style="color:#059669;">B+</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">MATH 220 · Linear Algebra</span>
+                    <span class="value" style="color:#059669;">A-</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">PHYS 101 · Intro to Physics</span>
+                    <span class="value" style="color:#059669;">B</span>
+                </div>
+                <div class="stat-row">
+                    <span class="label">ENG 110 · Composition I</span>
+                    <span class="value" style="color:#059669;">A</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: Settings -->
+    <div class="tab-content" id="tab-settings">
+        <div class="settings-grid">
+            <div class="settings-card">
+                <h3><i class="fas fa-bell"></i> Notifications</h3>
+                <div class="setting-item">
+                    <span class="set-label">Email Notifications <span class="sub">Course updates, announcements</span></span>
+                    <div class="toggle active" data-toggle="email"><div class="toggle-knob"></div></div>
+                </div>
+                <div class="setting-item">
+                    <span class="set-label">SMS Alerts <span class="sub">Urgent notices</span></span>
+                    <div class="toggle" data-toggle="sms"><div class="toggle-knob"></div></div>
+                </div>
+                <div class="setting-item">
+                    <span class="set-label">Push Notifications <span class="sub">In-app alerts</span></span>
+                    <div class="toggle active" data-toggle="push"><div class="toggle-knob"></div></div>
+                </div>
+            </div>
+
+            <div class="settings-card">
+                <h3><i class="fas fa-lock"></i> Account & Security</h3>
+                <div class="setting-item">
+                    <span class="set-label">Two-Factor Authentication</span>
+                    <div class="toggle" data-toggle="2fa"><div class="toggle-knob"></div></div>
+                </div>
+                <div class="setting-item">
+                    <span class="set-label">Session Management</span>
+                    <button class="action-btn"><i class="fas fa-sign-out-alt"></i> Logout All</button>
+                </div>
+                <div class="setting-item">
+                    <span class="set-label">Data & Privacy</span>
+                    <button class="action-btn danger"><i class="fas fa-trash"></i> Delete Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+    <div class="profile-footer">
+        <span><i class="far fa-clock"></i> updated: <span id="updateTime">just now</span></span>
+        <span><i class="fas fa-shield-alt"></i> secure · v2.4</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // ----- student data -----
+        let student = {
+            name: 'Sarah Chen',
+            id: 'S-2026-014',
+            program: 'B.S. Computer Science',
+            dept: 'Computer Science',
+            batch: '2026',
+            semester: 'Spring 2026',
+            dob: 'March 15, 2004',
+            gender: 'Female',
+            nationality: 'British',
+            email: 'sarah.chen@student.bp.ac.uk',
+            phone: '+44 7700 123456',
+            address: '42 Academic Hall, British Poly, London',
+            skills: ['Python', 'Web Dev', 'SQL', 'AI']
+        };
+
+        // DOM refs - profile tab
+        const displayName = document.getElementById('displayName');
+        const displayId = document.getElementById('displayId');
+        const displayProgram = document.getElementById('displayProgram');
+        const displayDept = document.getElementById('displayDept');
+        const displayBatch = document.getElementById('displayBatch');
+        const displaySemester = document.getElementById('displaySemester');
+
+        const bioName = document.getElementById('bioName');
+        const bioDob = document.getElementById('bioDob');
+        const bioGender = document.getElementById('bioGender');
+        const bioNationality = document.getElementById('bioNationality');
+        const bioEmail = document.getElementById('bioEmail');
+        const bioPhone = document.getElementById('bioPhone');
+        const bioAddress = document.getElementById('bioAddress');
+        const bioSkills = document.getElementById('bioSkills');
+
+        const updateTimeSpan = document.getElementById('updateTime');
+
+        // ----- update timestamp -----
+        function updateTimestamp() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2,'0');
+            const m = String(now.getMinutes()).padStart(2,'0');
+            updateTimeSpan.textContent = `${h}:${m}`;
+        }
+
+        // ----- render profile -----
+        function renderProfile() {
+            displayName.textContent = student.name;
+            displayId.textContent = student.id;
+            displayProgram.textContent = student.program;
+            displayDept.textContent = student.dept;
+            displayBatch.textContent = student.batch;
+            displaySemester.textContent = student.semester;
+
+            bioName.textContent = student.name;
+            bioDob.textContent = student.dob;
+            bioGender.textContent = student.gender;
+            bioNationality.textContent = student.nationality;
+            bioEmail.textContent = student.email;
+            bioPhone.textContent = student.phone;
+            bioAddress.textContent = student.address;
+
+            let skillsHtml = '';
+            student.skills.forEach(s => {
+                skillsHtml += `<span class="tag">${s}</span>`;
+            });
+            bioSkills.innerHTML = skillsHtml;
+
+            updateTimestamp();
+        }
+
+        // ----- tabs -----
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const target = btn.dataset.tab;
+                tabContents.forEach(c => c.classList.remove('active'));
+                document.getElementById(`tab-${target}`).classList.add('active');
+            });
+        });
+
+        // ----- toggles (settings) -----
+        document.querySelectorAll('.toggle').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+
+        // ----- init -----
+        renderProfile();
+
+        // ----- live timestamp update -----
+        setInterval(() => {
+            updateTimestamp();
+        }, 30000);
+
+        // update on print
+        window.addEventListener('beforeprint', function() {
+            updateTimestamp();
+        });
+
+    })();
+</script>
+</body>
+</html>

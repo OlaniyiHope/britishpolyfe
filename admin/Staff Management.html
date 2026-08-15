@@ -1,0 +1,2029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>Staff Management · British Poly Admin</title>
+    <!-- Google Font + minimal reset -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f6faff;
+            color: #0a1e3c;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: #0a1e3c;
+            color: white;
+            min-height: 100vh;
+            padding: 1.8rem 1.2rem 2rem;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.25s ease;
+            z-index: 200;
+        }
+
+        .sidebar .logo {
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar .logo span {
+            color: #6a9aff;
+        }
+
+        .sidebar .logo small {
+            font-weight: 400;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.4);
+            display: block;
+            margin-top: 0.1rem;
+        }
+
+        .sidebar .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar .nav-section .label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .sidebar .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.6rem 0.8rem;
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: 0.15s ease;
+            margin-bottom: 0.15rem;
+            cursor: pointer;
+        }
+
+        .sidebar .nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .sidebar .nav-item.active {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+        }
+
+        .sidebar .nav-item .icon {
+            font-size: 1.1rem;
+            width: 28px;
+            text-align: center;
+        }
+
+        .sidebar .nav-item .badge {
+            margin-left: auto;
+            background: #1a5cff;
+            color: white;
+            font-size: 0.6rem;
+            padding: 0.05rem 0.6rem;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+
+        .sidebar .user-card {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 0.8rem 1rem;
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .sidebar .user-card .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1a5cff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .sidebar .user-card .info {
+            font-size: 0.8rem;
+        }
+
+        .sidebar .user-card .info .name {
+            font-weight: 600;
+            color: white;
+        }
+
+        .sidebar .user-card .info .role {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 1.5rem 2rem 3rem;
+            max-width: calc(100% - 260px);
+            width: 100%;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            background: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eef2f8;
+            margin-bottom: 2rem;
+        }
+
+        .top-bar .greeting {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .top-bar .greeting small {
+            font-weight: 400;
+            color: #4a6a8a;
+            font-size: 0.8rem;
+        }
+
+        .top-bar .actions {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .top-bar .actions .btn {
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: 0.15s ease;
+            background: white;
+            color: #0a1e3c;
+            border-color: #c5d4ee;
+            text-decoration: none;
+        }
+
+        .top-bar .actions .btn-primary {
+            background: #0a1e3c;
+            color: white;
+            border-color: #0a1e3c;
+        }
+
+        .top-bar .actions .btn-primary:hover {
+            background: #17335c;
+            border-color: #17335c;
+        }
+
+        .top-bar .actions .btn-success {
+            background: #0e7b3a;
+            color: white;
+            border-color: #0e7b3a;
+        }
+
+        .top-bar .actions .btn-success:hover {
+            background: #1a934a;
+            border-color: #1a934a;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0a1e3c;
+        }
+
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: #4a6a8a;
+            font-weight: 500;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 60px;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+        }
+
+        .tab-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 40px;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #4a6a8a;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .tab-btn:hover {
+            background: #f0f4fe;
+            color: #0a1e3c;
+        }
+
+        .tab-btn.active {
+            background: #0a1e3c;
+            color: white;
+            box-shadow: 0 4px 12px rgba(10, 30, 60, 0.15);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .filter-bar {
+            background: white;
+            border-radius: 24px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.5rem;
+            align-items: center;
+        }
+
+        .filter-bar .search-group {
+            flex: 2;
+            min-width: 180px;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-bar .search-group input {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.85rem;
+            outline: none;
+            min-width: 100px;
+        }
+
+        .filter-bar .search-group input:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .filter-bar .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+            align-items: center;
+        }
+
+        .filter-bar .filter-group label {
+            font-weight: 500;
+            font-size: 0.7rem;
+            color: #1a3660;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .filter-bar .filter-group select {
+            padding: 0.3rem 1rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.8rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .filter-bar .filter-group select:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .filter-bar .result-count {
+            font-size: 0.8rem;
+            color: #4a6a8a;
+            margin-left: auto;
+        }
+
+        .filter-bar .result-count strong {
+            color: #0a1e3c;
+        }
+
+        .table-section {
+            background: white;
+            border-radius: 24px;
+            padding: 0.5rem 0 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            overflow-x: auto;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 1.5rem 0.3rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .table-header .actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+        }
+
+        .btn-sm {
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
+        }
+
+        .btn-primary {
+            background: #1a5cff;
+            color: white;
+            border-color: #1a5cff;
+        }
+
+        .btn-primary:hover {
+            background: #2a6cff;
+            border-color: #2a6cff;
+        }
+
+        .btn-success {
+            background: #0e7b3a;
+            color: white;
+            border-color: #0e7b3a;
+        }
+
+        .btn-success:hover {
+            background: #1a934a;
+            border-color: #1a934a;
+        }
+
+        .btn-danger {
+            background: #b22234;
+            color: white;
+            border-color: #b22234;
+        }
+
+        .btn-danger:hover {
+            background: #a01e2e;
+            border-color: #a01e2e;
+        }
+
+        .btn-warning {
+            background: #d48c2c;
+            color: white;
+            border-color: #d48c2c;
+        }
+
+        .btn-warning:hover {
+            background: #c07a1e;
+            border-color: #c07a1e;
+        }
+
+        .btn-outline-blue {
+            background: white;
+            color: #0a1e3c;
+            border-color: #0a1e3c;
+        }
+
+        .btn-outline-blue:hover {
+            background: #edf4ff;
+            border-color: #1a5cff;
+            color: #1a5cff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 800px;
+        }
+
+        th {
+            text-align: left;
+            padding: 0.6rem 1rem 0.4rem;
+            font-weight: 600;
+            color: #1a3660;
+            border-bottom: 2px solid #e6edf8;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #ecf2fa;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #fafcff;
+        }
+
+        .status-badge {
+            padding: 0.1rem 0.7rem;
+            border-radius: 40px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background: #ddf0e6;
+            color: #0e7b3a;
+        }
+        .status-inactive {
+            background: #f0e6e6;
+            color: #b22234;
+        }
+        .status-pending {
+            background: #f0ece6;
+            color: #d48c2c;
+        }
+
+        .role-badge {
+            padding: 0.1rem 0.7rem;
+            border-radius: 40px;
+            font-size: 0.6rem;
+            font-weight: 600;
+        }
+
+        .role-teacher {
+            background: #e6eeff;
+            color: #1a5cff;
+        }
+        .role-lecturer {
+            background: #ddf0e6;
+            color: #0e7b3a;
+        }
+        .role-admin {
+            background: #0a1e3c;
+            color: white;
+        }
+        .role-staff {
+            background: #f0ece6;
+            color: #d48c2c;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 30, 60, 0.45);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            max-width: 580px;
+            width: 92%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem 2rem 2.2rem;
+            border-radius: 32px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            animation: modalIn 0.2s ease;
+        }
+
+        @keyframes modalIn {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .modal .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: #1a3660;
+            margin-bottom: 0.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .modal .form-group label .required {
+            color: #b22234;
+        }
+
+        .modal .form-group input,
+        .modal .form-group select,
+        .modal .form-group textarea {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.85rem;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .modal .form-group textarea {
+            border-radius: 20px;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .modal .form-group input:focus,
+        .modal .form-group select:focus,
+        .modal .form-group textarea:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .modal .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .modal .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .modal .modal-actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .modal .modal-actions .btn {
+            flex: 1;
+            justify-content: center;
+            min-width: 100px;
+        }
+
+        .notice-toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #0a1e3c;
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.25s, transform 0.25s;
+            pointer-events: none;
+            font-size: 0.9rem;
+            max-width: 400px;
+        }
+
+        .notice-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .notice-toast.success {
+            background: #0e7b3a;
+        }
+
+        .notice-toast.error {
+            background: #b22234;
+        }
+
+        .notice-toast .title {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #0a1e3c;
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.25s, transform 0.25s;
+            pointer-events: none;
+            font-size: 0.9rem;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .toast.success {
+            background: #0e7b3a;
+        }
+
+        .toast.error {
+            background: #b22234;
+        }
+
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 0.8rem;
+            left: 0.8rem;
+            z-index: 300;
+            background: #0a1e3c;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0.6rem 1rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 150;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: fixed;
+                transform: translateX(-100%);
+                width: 280px;
+                height: 100vh;
+                border-radius: 0 20px 20px 0;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+                box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+            }
+            .sidebar-toggle {
+                display: block;
+            }
+            .main-content {
+                padding: 1rem 1rem 2rem;
+                max-width: 100%;
+            }
+            .top-bar {
+                padding: 0.5rem 1rem;
+                border-radius: 20px;
+                margin-top: 0.5rem;
+            }
+            .tabs {
+                border-radius: 20px;
+                padding: 0.3rem;
+                gap: 0.3rem;
+            }
+            .tab-btn {
+                padding: 0.3rem 1rem;
+                font-size: 0.75rem;
+                flex: 1;
+                text-align: center;
+            }
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 0.8rem 1rem;
+            }
+            .filter-bar .result-count {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .top-bar .greeting {
+                font-size: 0.85rem;
+            }
+            .top-bar .actions {
+                width: 100%;
+            }
+            .top-bar .actions .btn {
+                flex: 1;
+                text-align: center;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .filter-bar .search-group {
+                flex-direction: column;
+            }
+            .filter-bar .filter-group {
+                width: 100%;
+            }
+            .filter-bar .filter-group select {
+                flex: 1;
+            }
+            .table-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .table-header .actions {
+                justify-content: stretch;
+            }
+            .table-header .actions .btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="British Poly · Home.html">Admin Home</a><a href="About Us · British Poly.html">About Us · British Poly</a><a href="Admin Profile · Account.html">Admin Profile · Account</a><a href="Admissions · British Poly.html">Admissions · British Poly</a><a href="British Poly · Home.html">British Poly · Home</a><a href="Contact Us.html">Contact Us</a><a href="Finance & Bursary Control .html">Finance & Bursary Control </a><a href="Notice Board.html">Notice Board</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page15.html">page15</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page19.html">page19</a><a href="page21.html">page21</a><a href="page22.html">page22</a><a href="page23.html">page23</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a><a href="Parent & Guardian Portal.html">Parent & Guardian Portal</a><a href="Programs · British Poly.html">Programs · British Poly</a><a href="Student Life.html">Student Life</a></div>
+
+    <!-- ===== SIDEBAR TOGGLE ===== -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            British<span>Poly</span>
+            <small>Administration</small>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Main</div>
+            <a href="#" class="nav-item">
+                <span class="icon">📊</span> Dashboard
+            </a>
+            <a href="#" class="nav-item active">
+                <span class="icon">👨‍🏫</span> Staff Management
+                <span class="badge">24</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📢</span> Notice Board
+                <span class="badge">12</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">👨‍🎓</span> Student Registry
+                <span class="badge">1,247</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Management</div>
+            <a href="#" class="nav-item">
+                <span class="icon">📚</span> Curriculum
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">💰</span> Finance
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📝</span> Results
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Settings</div>
+            <a href="#" class="nav-item">
+                <span class="icon">🔐</span> Access Control
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">⚙️</span> System Settings
+            </a>
+        </div>
+
+        <div class="user-card">
+            <div class="avatar">AD</div>
+            <div class="info">
+                <div class="name">Admin User</div>
+                <div class="role">Administrator</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content">
+
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="greeting">
+                👨‍🏫 Staff Management
+                <small>| Manage teachers, lecturers &amp; staff</small>
+            </div>
+            <div class="actions">
+                <button class="btn btn-primary" onclick="openModal()">➕ Add Staff</button>
+                <button class="btn btn-success" onclick="exportCSV()">📥 Export CSV</button>
+                <button class="btn btn-outline" onclick="refreshData()">🔄 Refresh</button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="number" id="totalStaff">0</div>
+                <div class="label">Total Staff</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="teachersCount">0</div>
+                <div class="label">Teachers</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="lecturersCount">0</div>
+                <div class="label">Lecturers</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="classesCount">0</div>
+                <div class="label">Classes</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tab-staff">👨‍🏫 All Staff</button>
+            <button class="tab-btn" data-tab="tab-teachers">📚 Teachers</button>
+            <button class="tab-btn" data-tab="tab-lecturers">🎓 Lecturers</button>
+            <button class="tab-btn" data-tab="tab-classes">🏫 Class Assignments</button>
+        </div>
+
+        <!-- ===== TAB 1: ALL STAFF ===== -->
+        <div class="tab-content active" id="tab-staff">
+            <div class="filter-bar">
+                <div class="search-group">
+                    <input type="text" id="staffSearch" placeholder="🔎 Search staff...">
+                </div>
+                <div class="filter-group">
+                    <label for="staffRoleFilter">Role</label>
+                    <select id="staffRoleFilter">
+                        <option value="all">All Roles</option>
+                        <option value="Teacher">Teacher</option>
+                        <option value="Lecturer">Lecturer</option>
+                        <option value="Administrator">Administrator</option>
+                        <option value="Support Staff">Support Staff</option>
+                    </select>
+                    <label for="staffStatusFilter">Status</label>
+                    <select id="staffStatusFilter">
+                        <option value="all">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                </div>
+                <span class="result-count">Showing <strong id="staffResultCount">0</strong> staff</span>
+            </div>
+
+            <div class="table-section">
+                <div class="table-header">
+                    <span style="font-weight:600; font-size:0.9rem;">👨‍🏫 Staff Directory</span>
+                    <div class="actions">
+                        <button class="btn btn-sm btn-primary" onclick="openModal()">➕ Add Staff</button>
+                    </div>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Department</th>
+                                <th>Class</th>
+                                <th>Status</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="staffBody">
+                            <!-- dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TAB 2: TEACHERS ===== -->
+        <div class="tab-content" id="tab-teachers">
+            <div class="filter-bar">
+                <div class="search-group">
+                    <input type="text" id="teacherSearch" placeholder="🔎 Search teachers...">
+                </div>
+                <div class="filter-group">
+                    <label for="teacherDeptFilter">Department</label>
+                    <select id="teacherDeptFilter">
+                        <option value="all">All Departments</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Business">Business</option>
+                        <option value="Health Sciences">Health Sciences</option>
+                        <option value="Creative Arts">Creative Arts</option>
+                    </select>
+                </div>
+                <span class="result-count">Showing <strong id="teacherResultCount">0</strong> teachers</span>
+            </div>
+
+            <div class="table-section">
+                <div class="table-header">
+                    <span style="font-weight:600; font-size:0.9rem;">📚 Teachers</span>
+                    <div class="actions">
+                        <button class="btn btn-sm btn-primary" onclick="openModal('Teacher')">➕ Add Teacher</button>
+                    </div>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Department</th>
+                                <th>Class</th>
+                                <th>Subjects</th>
+                                <th>Status</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teachersBody">
+                            <!-- dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TAB 3: LECTURERS ===== -->
+        <div class="tab-content" id="tab-lecturers">
+            <div class="filter-bar">
+                <div class="search-group">
+                    <input type="text" id="lecturerSearch" placeholder="🔎 Search lecturers...">
+                </div>
+                <div class="filter-group">
+                    <label for="lecturerDeptFilter">Department</label>
+                    <select id="lecturerDeptFilter">
+                        <option value="all">All Departments</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Business">Business</option>
+                        <option value="Health Sciences">Health Sciences</option>
+                        <option value="Creative Arts">Creative Arts</option>
+                    </select>
+                </div>
+                <span class="result-count">Showing <strong id="lecturerResultCount">0</strong> lecturers</span>
+            </div>
+
+            <div class="table-section">
+                <div class="table-header">
+                    <span style="font-weight:600; font-size:0.9rem;">🎓 Lecturers</span>
+                    <div class="actions">
+                        <button class="btn btn-sm btn-primary" onclick="openModal('Lecturer')">➕ Add Lecturer</button>
+                    </div>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Department</th>
+                                <th>Class</th>
+                                <th>Courses</th>
+                                <th>Status</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lecturersBody">
+                            <!-- dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TAB 4: CLASS ASSIGNMENTS ===== -->
+        <div class="tab-content" id="tab-classes">
+            <div class="filter-bar">
+                <div class="search-group">
+                    <input type="text" id="classSearch" placeholder="🔎 Search classes...">
+                </div>
+                <div class="filter-group">
+                    <label for="classDeptFilter">Department</label>
+                    <select id="classDeptFilter">
+                        <option value="all">All Departments</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Business">Business</option>
+                        <option value="Health Sciences">Health Sciences</option>
+                        <option value="Creative Arts">Creative Arts</option>
+                    </select>
+                </div>
+                <span class="result-count">Showing <strong id="classResultCount">0</strong> classes</span>
+            </div>
+
+            <div class="table-section">
+                <div class="table-header">
+                    <span style="font-weight:600; font-size:0.9rem;">🏫 Class Assignments</span>
+                    <div class="actions">
+                        <button class="btn btn-sm btn-primary" onclick="openClassAssignment()">➕ Assign Class</button>
+                    </div>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Class Name</th>
+                                <th>Department</th>
+                                <th>Assigned Staff</th>
+                                <th>Role</th>
+                                <th>Students</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="classesBody">
+                            <!-- dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="staffModal">
+        <div class="modal">
+            <h2 id="modalTitle">Add Staff Member</h2>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>First Name <span class="required">*</span></label>
+                    <input type="text" id="staffFirstName" placeholder="John">
+                </div>
+                <div class="form-group">
+                    <label>Last Name <span class="required">*</span></label>
+                    <input type="text" id="staffLastName" placeholder="Doe">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Email <span class="required">*</span></label>
+                <input type="email" id="staffEmail" placeholder="staff@britishpoly.org">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" id="staffPhone" placeholder="+44 20 7946 0100">
+                </div>
+                <div class="form-group">
+                    <label>Role <span class="required">*</span></label>
+                    <select id="staffRole">
+                        <option value="Teacher">Teacher</option>
+                        <option value="Lecturer">Lecturer</option>
+                        <option value="Administrator">Administrator</option>
+                        <option value="Support Staff">Support Staff</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Department <span class="required">*</span></label>
+                    <select id="staffDepartment">
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Business">Business</option>
+                        <option value="Health Sciences">Health Sciences</option>
+                        <option value="Creative Arts">Creative Arts</option>
+                        <option value="Administration">Administration</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="staffStatus">
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Assigned Class</label>
+                <input type="text" id="staffClass" placeholder="e.g. CS101 - Introduction to Programming">
+            </div>
+
+            <div class="form-group">
+                <label>Subjects/Courses</label>
+                <input type="text" id="staffSubjects" placeholder="e.g. Mathematics, Physics, Chemistry">
+            </div>
+
+            <div class="form-group">
+                <label>Notes</label>
+                <textarea id="staffNotes" rows="2" placeholder="Additional information..."></textarea>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="saveStaff()">💾 Save Staff</button>
+                <button class="btn btn-outline-blue" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CLASS ASSIGNMENT MODAL ===== -->
+    <div class="modal-overlay" id="classModal">
+        <div class="modal">
+            <h2>Assign Class</h2>
+
+            <div class="form-group">
+                <label>Class Name <span class="required">*</span></label>
+                <input type="text" id="className" placeholder="e.g. CS101 - Introduction to Programming">
+            </div>
+
+            <div class="form-group">
+                <label>Department <span class="required">*</span></label>
+                <select id="classDepartment">
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Business">Business</option>
+                    <option value="Health Sciences">Health Sciences</option>
+                    <option value="Creative Arts">Creative Arts</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Assign Staff <span class="required">*</span></label>
+                <select id="classStaff">
+                    <option value="">Select staff member...</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Role in Class</label>
+                <select id="classRole">
+                    <option value="Teacher">Teacher</option>
+                    <option value="Lecturer">Lecturer</option>
+                    <option value="Assistant">Assistant</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Number of Students</label>
+                <input type="number" id="classStudents" placeholder="e.g. 30" value="30">
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="saveClassAssignment()">💾 Assign Class</button>
+                <button class="btn btn-outline-blue" onclick="closeClassModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== NOTIFICATION TOAST ===== -->
+    <div id="noticeToast" class="notice-toast">
+        <span class="title">📢 Notice Board Update</span>
+        <span id="noticeToastMsg"></span>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast" class="toast">message</div>
+
+    <script>
+        // ===== DATA =====
+        let staff = [
+            { id: 1, firstName: 'Sarah', lastName: 'Johnson', email: 'sarah.johnson@britishpoly.org',
+                phone: '+44 20 7946 0110', role: 'Teacher', department: 'Computer Science', class: 'CS101 - Programming',
+                subjects: 'Python, Java, Web Development', status: 'active', notes: '' },
+            { id: 2, firstName: 'Michael', lastName: 'Okafor', email: 'michael.okafor@britishpoly.org',
+                phone: '+44 20 7946 0111', role: 'Lecturer', department: 'Business', class: 'MBA101 - Management',
+                subjects: 'Strategic Management, Finance', status: 'active', notes: '' },
+            { id: 3, firstName: 'Aisha', lastName: 'Labana', email: 'aisha.labana@britishpoly.org',
+                phone: '+44 20 7946 0112', role: 'Teacher', department: 'Health Sciences', class: 'PH101 - Public Health',
+                subjects: 'Epidemiology, Health Policy', status: 'active', notes: '' },
+            { id: 4, firstName: 'David', lastName: 'Chen', email: 'david.chen@britishpoly.org', phone: '+44 20 7946 0113',
+                role: 'Lecturer', department: 'Engineering', class: 'ME101 - Engineering Math',
+                subjects: 'Calculus, Physics, Mechanics', status: 'active', notes: '' },
+            { id: 5, firstName: 'Emma', lastName: 'Williams', email: 'emma.williams@britishpoly.org',
+                phone: '+44 20 7946 0114', role: 'Administrator', department: 'Administration', class: '',
+                subjects: '', status: 'active', notes: '' },
+            { id: 6, firstName: 'James', lastName: 'Kofi', email: 'james.kofi@britishpoly.org', phone: '+44 20 7946 0115',
+                role: 'Teacher', department: 'Creative Arts', class: 'DM101 - Digital Media',
+                subjects: 'Graphic Design, Video Production', status: 'pending', notes: '' }
+        ];
+
+        let classes = [
+            { id: 1, name: 'CS101 - Introduction to Programming', department: 'Computer Science',
+                staffId: 1, staffName: 'Sarah Johnson', role: 'Teacher', students: 30 },
+            { id: 2, name: 'MBA101 - Management Principles', department: 'Business', staffId: 2,
+                staffName: 'Michael Okafor', role: 'Lecturer', students: 25 },
+            { id: 3, name: 'PH101 - Public Health', department: 'Health Sciences', staffId: 3,
+                staffName: 'Aisha Labana', role: 'Teacher', students: 28 },
+            { id: 4, name: 'ME101 - Engineering Mathematics', department: 'Engineering', staffId: 4,
+                staffName: 'David Chen', role: 'Lecturer', students: 32 }
+        ];
+
+        let nextId = { staff: 7, class: 5 };
+        let editingId = null;
+        let editingClassId = null;
+
+        // ===== DOM REFS =====
+        const staffBody = document.getElementById('staffBody');
+        const teachersBody = document.getElementById('teachersBody');
+        const lecturersBody = document.getElementById('lecturersBody');
+        const classesBody = document.getElementById('classesBody');
+
+        const staffSearch = document.getElementById('staffSearch');
+        const staffRoleFilter = document.getElementById('staffRoleFilter');
+        const staffStatusFilter = document.getElementById('staffStatusFilter');
+
+        const teacherSearch = document.getElementById('teacherSearch');
+        const teacherDeptFilter = document.getElementById('teacherDeptFilter');
+
+        const lecturerSearch = document.getElementById('lecturerSearch');
+        const lecturerDeptFilter = document.getElementById('lecturerDeptFilter');
+
+        const classSearch = document.getElementById('classSearch');
+        const classDeptFilter = document.getElementById('classDeptFilter');
+
+        const modal = document.getElementById('staffModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const classModal = document.getElementById('classModal');
+        const classStaffSelect = document.getElementById('classStaff');
+
+        // Stats
+        const totalStaff = document.getElementById('totalStaff');
+        const teachersCount = document.getElementById('teachersCount');
+        const lecturersCount = document.getElementById('lecturersCount');
+        const classesCount = document.getElementById('classesCount');
+
+        // ===== TAB SWITCHING =====
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab).classList.add('active');
+                renderAll();
+            });
+        });
+
+        // ===== RENDER ALL =====
+        function renderAll() {
+            renderStaff();
+            renderTeachers();
+            renderLecturers();
+            renderClasses();
+            updateStats();
+            populateClassStaffSelect();
+        }
+
+        // ===== UPDATE STATS =====
+        function updateStats() {
+            totalStaff.textContent = staff.length;
+            teachersCount.textContent = staff.filter(s => s.role === 'Teacher').length;
+            lecturersCount.textContent = staff.filter(s => s.role === 'Lecturer').length;
+            classesCount.textContent = classes.length;
+        }
+
+        // ===== RENDER STAFF =====
+        function renderStaff() {
+            const searchTerm = staffSearch.value.toLowerCase().trim();
+            const role = staffRoleFilter.value;
+            const status = staffStatusFilter.value;
+
+            let filtered = staff.filter(s => {
+                const fullName = (s.firstName + ' ' + s.lastName).toLowerCase();
+                const matchSearch = fullName.includes(searchTerm) || s.email.toLowerCase().includes(searchTerm);
+                const matchRole = role === 'all' || s.role === role;
+                const matchStatus = status === 'all' || s.status === status;
+                return matchSearch && matchRole && matchStatus;
+            });
+
+            document.getElementById('staffResultCount').textContent = filtered.length;
+
+            let html = '';
+            filtered.forEach(s => {
+                const statusClass = 'status-' + s.status;
+                const roleClass = 'role-' + (s.role === 'Teacher' ? 'teacher' : s.role === 'Lecturer' ? 'lecturer' : s
+                    .role === 'Administrator' ? 'admin' : 'staff');
+                const fullName = s.firstName + ' ' + s.lastName;
+
+                html += `
+                    <tr>
+                        <td><strong>${fullName}</strong></td>
+                        <td><a href="mailto:${s.email}" style="color:#1a5cff; text-decoration:none;">${s.email}</a></td>
+                        <td><span class="role-badge ${roleClass}">${s.role}</span></td>
+                        <td>${s.department}</td>
+                        <td>${s.class || 'N/A'}</td>
+                        <td><span class="status-badge ${statusClass}">${s.status.charAt(0).toUpperCase() + s.status.slice(1)}</span></td>
+                        <td style="text-align:right;">
+                            <div class="action-btns">
+                                <button class="btn btn-sm btn-primary" onclick="editStaff(${s.id})">✎</button>
+                                <button class="btn btn-sm btn-warning" onclick="toggleStatus(${s.id})">↻</button>
+                                <button class="btn btn-sm btn-success" onclick="assignToClass(${s.id})">📋 Assign</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteStaff(${s.id})">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            staffBody.innerHTML = html || `<tr><td colspan="7" style="text-align:center; padding:1.5rem; color:#6a7f9e;">No staff found.</td></tr>`;
+        }
+
+        // ===== RENDER TEACHERS =====
+        function renderTeachers() {
+            const searchTerm = teacherSearch.value.toLowerCase().trim();
+            const dept = teacherDeptFilter.value;
+
+            let filtered = staff.filter(s => {
+                const fullName = (s.firstName + ' ' + s.lastName).toLowerCase();
+                const matchSearch = fullName.includes(searchTerm) || s.email.toLowerCase().includes(searchTerm);
+                const matchDept = dept === 'all' || s.department === dept;
+                return s.role === 'Teacher' && matchSearch && matchDept;
+            });
+
+            document.getElementById('teacherResultCount').textContent = filtered.length;
+
+            let html = '';
+            filtered.forEach(s => {
+                const statusClass = 'status-' + s.status;
+                const fullName = s.firstName + ' ' + s.lastName;
+
+                html += `
+                    <tr>
+                        <td><strong>${fullName}</strong></td>
+                        <td>${s.email}</td>
+                        <td>${s.department}</td>
+                        <td>${s.class || 'N/A'}</td>
+                        <td>${s.subjects || 'N/A'}</td>
+                        <td><span class="status-badge ${statusClass}">${s.status.charAt(0).toUpperCase() + s.status.slice(1)}</span></td>
+                        <td style="text-align:right;">
+                            <div class="action-btns">
+                                <button class="btn btn-sm btn-primary" onclick="editStaff(${s.id})">✎</button>
+                                <button class="btn btn-sm btn-warning" onclick="toggleStatus(${s.id})">↻</button>
+                                <button class="btn btn-sm btn-success" onclick="assignToClass(${s.id})">📋 Assign</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            teachersBody.innerHTML = html || `<tr><td colspan="7" style="text-align:center; padding:1.5rem; color:#6a7f9e;">No teachers found.</td></tr>`;
+        }
+
+        // ===== RENDER LECTURERS =====
+        function renderLecturers() {
+            const searchTerm = lecturerSearch.value.toLowerCase().trim();
+            const dept = lecturerDeptFilter.value;
+
+            let filtered = staff.filter(s => {
+                const fullName = (s.firstName + ' ' + s.lastName).toLowerCase();
+                const matchSearch = fullName.includes(searchTerm) || s.email.toLowerCase().includes(searchTerm);
+                const matchDept = dept === 'all' || s.department === dept;
+                return s.role === 'Lecturer' && matchSearch && matchDept;
+            });
+
+            document.getElementById('lecturerResultCount').textContent = filtered.length;
+
+            let html = '';
+            filtered.forEach(s => {
+                const statusClass = 'status-' + s.status;
+                const fullName = s.firstName + ' ' + s.lastName;
+
+                html += `
+                    <tr>
+                        <td><strong>${fullName}</strong></td>
+                        <td>${s.email}</td>
+                        <td>${s.department}</td>
+                        <td>${s.class || 'N/A'}</td>
+                        <td>${s.subjects || 'N/A'}</td>
+                        <td><span class="status-badge ${statusClass}">${s.status.charAt(0).toUpperCase() + s.status.slice(1)}</span></td>
+                        <td style="text-align:right;">
+                            <div class="action-btns">
+                                <button class="btn btn-sm btn-primary" onclick="editStaff(${s.id})">✎</button>
+                                <button class="btn btn-sm btn-warning" onclick="toggleStatus(${s.id})">↻</button>
+                                <button class="btn btn-sm btn-success" onclick="assignToClass(${s.id})">📋 Assign</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            lecturersBody.innerHTML = html || `<tr><td colspan="7" style="text-align:center; padding:1.5rem; color:#6a7f9e;">No lecturers found.</td></tr>`;
+        }
+
+        // ===== RENDER CLASSES =====
+        function renderClasses() {
+            const searchTerm = classSearch.value.toLowerCase().trim();
+            const dept = classDeptFilter.value;
+
+            let filtered = classes.filter(c => {
+                const matchSearch = c.name.toLowerCase().includes(searchTerm);
+                const matchDept = dept === 'all' || c.department === dept;
+                return matchSearch && matchDept;
+            });
+
+            document.getElementById('classResultCount').textContent = filtered.length;
+
+            let html = '';
+            filtered.forEach(c => {
+                html += `
+                    <tr>
+                        <td><strong>${c.name}</strong></td>
+                        <td>${c.department}</td>
+                        <td>${c.staffName || 'Unassigned'}</td>
+                        <td>${c.role || 'N/A'}</td>
+                        <td>${c.students}</td>
+                        <td style="text-align:right;">
+                            <div class="action-btns">
+                                <button class="btn btn-sm btn-primary" onclick="editClass(${c.id})">✎</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteClass(${c.id})">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            classesBody.innerHTML = html || `<tr><td colspan="6" style="text-align:center; padding:1.5rem; color:#6a7f9e;">No classes found.</td></tr>`;
+        }
+
+        // ===== POPULATE CLASS STAFF SELECT =====
+        function populateClassStaffSelect() {
+            const select = document.getElementById('classStaff');
+            const currentValue = select.value;
+            select.innerHTML = '<option value="">Select staff member...</option>';
+            staff.filter(s => s.status === 'active').forEach(s => {
+                const option = document.createElement('option');
+                option.value = s.id;
+                option.textContent = s.firstName + ' ' + s.lastName + ' (' + s.role + ')';
+                select.appendChild(option);
+            });
+            select.value = currentValue;
+        }
+
+        // ===== MODAL =====
+        function openModal(role) {
+            editingId = null;
+            modalTitle.textContent = 'Add Staff Member';
+            document.getElementById('staffFirstName').value = '';
+            document.getElementById('staffLastName').value = '';
+            document.getElementById('staffEmail').value = '';
+            document.getElementById('staffPhone').value = '';
+            document.getElementById('staffRole').value = role || 'Teacher';
+            document.getElementById('staffDepartment').value = 'Computer Science';
+            document.getElementById('staffStatus').value = 'active';
+            document.getElementById('staffClass').value = '';
+            document.getElementById('staffSubjects').value = '';
+            document.getElementById('staffNotes').value = '';
+            modal.classList.add('open');
+        }
+
+        function closeModal() {
+            modal.classList.remove('open');
+            editingId = null;
+        }
+
+        function editStaff(id) {
+            const s = staff.find(st => st.id === id);
+            if (!s) return;
+            editingId = id;
+            modalTitle.textContent = '✎ Edit Staff Member';
+            document.getElementById('staffFirstName').value = s.firstName;
+            document.getElementById('staffLastName').value = s.lastName;
+            document.getElementById('staffEmail').value = s.email;
+            document.getElementById('staffPhone').value = s.phone || '';
+            document.getElementById('staffRole').value = s.role;
+            document.getElementById('staffDepartment').value = s.department;
+            document.getElementById('staffStatus').value = s.status;
+            document.getElementById('staffClass').value = s.class || '';
+            document.getElementById('staffSubjects').value = s.subjects || '';
+            document.getElementById('staffNotes').value = s.notes || '';
+            modal.classList.add('open');
+        }
+
+        // ===== SAVE STAFF =====
+        function saveStaff() {
+            const firstName = document.getElementById('staffFirstName').value.trim();
+            const lastName = document.getElementById('staffLastName').value.trim();
+            const email = document.getElementById('staffEmail').value.trim();
+            const phone = document.getElementById('staffPhone').value.trim();
+            const role = document.getElementById('staffRole').value;
+            const department = document.getElementById('staffDepartment').value;
+            const status = document.getElementById('staffStatus').value;
+            const assignedClass = document.getElementById('staffClass').value.trim();
+            const subjects = document.getElementById('staffSubjects').value.trim();
+            const notes = document.getElementById('staffNotes').value.trim();
+
+            if (!firstName || !lastName || !email) {
+                showToast('❌ Please fill in all required fields', 'error');
+                return;
+            }
+
+            if (!email.includes('@')) {
+                showToast('❌ Please enter a valid email address', 'error');
+                return;
+            }
+
+            const duplicate = staff.some(s => s.email.toLowerCase() === email.toLowerCase() && s.id !== editingId);
+            if (duplicate) {
+                showToast('❌ A staff member with this email already exists', 'error');
+                return;
+            }
+
+            let isNew = false;
+            if (editingId) {
+                const idx = staff.findIndex(s => s.id === editingId);
+                if (idx !== -1) {
+                    const oldStaff = staff[idx];
+                    staff[idx] = { ...staff[idx], firstName, lastName, email, phone, role, department, status,
+                        class: assignedClass, subjects, notes };
+                    // Update class assignments if staff name changed
+                    classes.forEach(c => {
+                        if (c.staffId === editingId) {
+                            c.staffName = firstName + ' ' + lastName;
+                        }
+                    });
+                    showToast('✅ Staff updated successfully', 'success');
+                }
+            } else {
+                const newStaff = {
+                    id: nextId.staff++,
+                    firstName,
+                    lastName,
+                    email,
+                    phone: phone || 'N/A',
+                    role,
+                    department,
+                    status,
+                    class: assignedClass,
+                    subjects,
+                    notes
+                };
+                staff.push(newStaff);
+                isNew = true;
+                showToast('✅ Staff added successfully', 'success');
+            }
+
+            // If class assigned, update or create class assignment
+            if (assignedClass) {
+                const staffId = editingId || staff[staff.length - 1].id;
+                const staffName = firstName + ' ' + lastName;
+                const existingClass = classes.find(c => c.staffId === staffId && c.name === assignedClass);
+                if (!existingClass) {
+                    const newClass = {
+                        id: nextId.class++,
+                        name: assignedClass,
+                        department: department,
+                        staffId: staffId,
+                        staffName: staffName,
+                        role: role === 'Teacher' ? 'Teacher' : 'Lecturer',
+                        students: 0
+                    };
+                    classes.push(newClass);
+                    // Post to notice board
+                    postToNoticeBoard(staffName, role, assignedClass);
+                }
+            } else if (isNew) {
+                // If new staff with no class, just post general notice
+                postToNoticeBoard(firstName + ' ' + lastName, role, 'No class assigned');
+            }
+
+            closeModal();
+            renderAll();
+        }
+
+        // ===== POST TO NOTICE BOARD =====
+        function postToNoticeBoard(staffName, role, className) {
+            const now = new Date();
+            const timestamp = now.toISOString().replace('T', ' ').slice(0, 16);
+
+            const title = `👨‍🏫 New Staff Assignment: ${staffName}`;
+            const content = `${staffName} has been assigned as a ${role} to the class: ${className}. Please welcome them to the British Polytechnic community.`;
+
+            const newNotice = {
+                id: Date.now(),
+                title: title,
+                content: content,
+                category: 'Administrative',
+                priority: 'high',
+                audience: 'All',
+                status: 'published',
+                publishDate: now.toISOString().slice(0, 10),
+                expiryDate: '',
+                createdAt: timestamp
+            };
+
+            // Show notification toast
+            const noticeToast = document.getElementById('noticeToast');
+            const noticeMsg = document.getElementById('noticeToastMsg');
+            noticeMsg.textContent = `${staffName} assigned to ${className}`;
+            noticeToast.className = 'notice-toast success show';
+            setTimeout(() => {
+                noticeToast.classList.remove('show');
+            }, 5000);
+
+            // Also show regular toast
+            showToast(`📢 Notice posted: ${staffName} assigned to ${className}`, 'success');
+
+            console.log('📢 Notice board updated:', newNotice);
+        }
+
+        // ===== TOGGLE STATUS =====
+        function toggleStatus(id) {
+            const s = staff.find(st => st.id === id);
+            if (!s) return;
+            const statuses = ['active', 'inactive', 'pending'];
+            const currentIdx = statuses.indexOf(s.status);
+            const nextIdx = (currentIdx + 1) % statuses.length;
+            s.status = statuses[nextIdx];
+            renderAll();
+            showToast(`↻ Status changed to "${s.status}"`, 'success');
+        }
+
+        // ===== DELETE STAFF =====
+        function deleteStaff(id) {
+            const s = staff.find(st => st.id === id);
+            if (!s) return;
+            if (confirm(`Delete staff member "${s.firstName} ${s.lastName}"? This cannot be undone.`)) {
+                staff = staff.filter(st => st.id !== id);
+                classes = classes.filter(c => c.staffId !== id);
+                renderAll();
+                showToast('🗑️ Staff deleted', 'success');
+            }
+        }
+
+        // ===== ASSIGN TO CLASS =====
+        function assignToClass(id) {
+            const s = staff.find(st => st.id === id);
+            if (!s) return;
+            openClassAssignment(id);
+        }
+
+        // ===== CLASS ASSIGNMENT =====
+        function openClassAssignment(staffId) {
+            editingClassId = null;
+            document.getElementById('className').value = '';
+            document.getElementById('classDepartment').value = 'Computer Science';
+            document.getElementById('classRole').value = 'Teacher';
+            document.getElementById('classStudents').value = '30';
+
+            populateClassStaffSelect();
+            if (staffId) {
+                document.getElementById('classStaff').value = staffId;
+            }
+            classModal.classList.add('open');
+        }
+
+        function closeClassModal() {
+            classModal.classList.remove('open');
+            editingClassId = null;
+        }
+
+        function editClass(id) {
+            const c = classes.find(cls => cls.id === id);
+            if (!c) return;
+            editingClassId = id;
+            document.getElementById('className').value = c.name;
+            document.getElementById('classDepartment').value = c.department;
+            document.getElementById('classRole').value = c.role || 'Teacher';
+            document.getElementById('classStudents').value = c.students || 30;
+
+            populateClassStaffSelect();
+            document.getElementById('classStaff').value = c.staffId || '';
+            classModal.classList.add('open');
+        }
+
+        function saveClassAssignment() {
+            const name = document.getElementById('className').value.trim();
+            const department = document.getElementById('classDepartment').value;
+            const staffId = parseInt(document.getElementById('classStaff').value);
+            const role = document.getElementById('classRole').value;
+            const students = parseInt(document.getElementById('classStudents').value) || 0;
+
+            if (!name || !staffId) {
+                showToast('❌ Please fill in all required fields', 'error');
+                return;
+            }
+
+            const staffMember = staff.find(s => s.id === staffId);
+            if (!staffMember) {
+                showToast('❌ Selected staff not found', 'error');
+                return;
+            }
+
+            // Check duplicate class name
+            const duplicate = classes.some(c => c.name.toLowerCase() === name.toLowerCase() && c.id !== editingClassId);
+            if (duplicate) {
+                showToast('❌ A class with this name already exists', 'error');
+                return;
+            }
+
+            if (editingClassId) {
+                const idx = classes.findIndex(c => c.id === editingClassId);
+                if (idx !== -1) {
+                    classes[idx] = { ...classes[idx], name, department, staffId, staffName: staffMember.firstName + ' ' +
+                            staffMember.lastName, role, students };
+                    showToast('✅ Class updated successfully', 'success');
+                    // Post update to notice board
+                    postToNoticeBoard(staffMember.firstName + ' ' + staffMember.lastName, staffMember.role, name);
+                }
+            } else {
+                const newClass = {
+                    id: nextId.class++,
+                    name,
+                    department,
+                    staffId,
+                    staffName: staffMember.firstName + ' ' + staffMember.lastName,
+                    role,
+                    students
+                };
+                classes.push(newClass);
+                showToast('✅ Class assigned successfully', 'success');
+                // Post to notice board
+                postToNoticeBoard(staffMember.firstName + ' ' + staffMember.lastName, staffMember.role, name);
+            }
+
+            // Update staff's class field
+            const staffIdx = staff.findIndex(s => s.id === staffId);
+            if (staffIdx !== -1) {
+                staff[staffIdx].class = name;
+            }
+
+            closeClassModal();
+            renderAll();
+        }
+
+        function deleteClass(id) {
+            const c = classes.find(cls => cls.id === id);
+            if (!c) return;
+            if (confirm(`Delete class "${c.name}"? This will unassign the staff member.`)) {
+                // Remove class from staff
+                const staffIdx = staff.findIndex(s => s.id === c.staffId);
+                if (staffIdx !== -1) {
+                    staff[staffIdx].class = '';
+                }
+                classes = classes.filter(cls => cls.id !== id);
+                renderAll();
+                showToast('🗑️ Class deleted', 'success');
+            }
+        }
+
+        // ===== EXPORT CSV =====
+        function exportCSV() {
+            const headers = ['First Name', 'Last Name', 'Email', 'Phone', 'Role', 'Department', 'Class', 'Subjects',
+                'Status'
+            ];
+            const rows = staff.map(s => [
+                s.firstName, s.lastName, s.email, s.phone || 'N/A',
+                s.role, s.department, s.class || 'N/A', s.subjects || 'N/A', s.status
+            ]);
+
+            let csv = headers.join(',') + '\n';
+            rows.forEach(row => {
+                csv += row.map(cell => `"${cell}"`).join(',') + '\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download',
+                `staff_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showToast(`✅ Exported ${staff.length} staff records`, 'success');
+        }
+
+        // ===== REFRESH =====
+        function refreshData() {
+            renderAll();
+            showToast('↻ Data refreshed', 'success');
+        }
+
+        // ===== TOAST =====
+        const toast = document.getElementById('toast');
+        let toastTimer;
+
+        function showToast(msg, type = 'success') {
+            toast.textContent = msg;
+            toast.className = 'toast ' + type + ' show';
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ===== SIDEBAR TOGGLE =====
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const toggleBtn = document.getElementById('sidebarToggle');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        toggleBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (sidebar.classList.contains('open')) toggleSidebar();
+                if (modal.classList.contains('open')) closeModal();
+                if (classModal.classList.contains('open')) closeClassModal();
+            }
+        });
+
+        // ===== EVENT BINDING =====
+        staffSearch.addEventListener('input', renderStaff);
+        staffRoleFilter.addEventListener('change', renderStaff);
+        staffStatusFilter.addEventListener('change', renderStaff);
+
+        teacherSearch.addEventListener('input', renderTeachers);
+        teacherDeptFilter.addEventListener('change', renderTeachers);
+
+        lecturerSearch.addEventListener('input', renderLecturers);
+        lecturerDeptFilter.addEventListener('change', renderLecturers);
+
+        classSearch.addEventListener('input', renderClasses);
+        classDeptFilter.addEventListener('change', renderClasses);
+
+        // ===== INIT =====
+        renderAll();
+        console.log('✅ British Poly · Staff Management loaded');
+        console.log(`👨‍🏫 ${staff.length} staff, ${classes.length} classes loaded`);
+    </script>
+
+</body>
+</html>

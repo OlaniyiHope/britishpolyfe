@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+  <title>Student · Payment History & Receipt</title>
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: #f0f6fe;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .history-portal {
+      max-width: 1300px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 44px;
+      box-shadow: 0 30px 60px -18px rgba(0, 20, 40, 0.18);
+      padding: 28px 30px 32px;
+      transition: all 0.2s;
+    }
+
+    /* header */
+    .portal-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+      gap: 14px;
+    }
+
+    .portal-header h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #0a1e32;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .portal-header h1 i {
+      color: #2563eb;
+      font-size: 2rem;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .student-badge {
+      background: #e6edf8;
+      padding: 8px 20px;
+      border-radius: 60px;
+      font-weight: 500;
+      color: #1c3857;
+      font-size: 0.9rem;
+    }
+
+    .student-badge i {
+      margin-right: 6px;
+      color: #2563eb;
+    }
+
+    .live-badge {
+      background: #dc3545;
+      color: white;
+      font-weight: 600;
+      font-size: 0.7rem;
+      padding: 6px 16px 6px 14px;
+      border-radius: 40px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      animation: livePulse 1.8s infinite;
+    }
+
+    @keyframes livePulse {
+      0% { opacity: 0.75; transform: scale(0.97); }
+      50% { opacity: 1; transform: scale(1.02); }
+      100% { opacity: 0.75; transform: scale(0.97); }
+    }
+
+    /* summary cards */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .summary-card {
+      background: #f8fbff;
+      border-radius: 28px;
+      padding: 16px 18px;
+      border: 1px solid #e7eef9;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .summary-icon {
+      width: 44px;
+      height: 44px;
+      background: #e2ebf9;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2563eb;
+      font-size: 1.2rem;
+    }
+
+    .summary-content .label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #4f6e8e;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .summary-content .value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #0b1e31;
+      line-height: 1.3;
+    }
+
+    /* toolbar: search + filter */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+      gap: 16px;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: #f2f7fd;
+      border-radius: 60px;
+      padding: 0 8px 0 20px;
+      flex: 1 1 220px;
+      min-width: 160px;
+      border: 1px solid transparent;
+      transition: 0.15s;
+    }
+
+    .search-box:focus-within {
+      background: #ffffff;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+    }
+
+    .search-box i {
+      color: #6f8aa8;
+    }
+
+    .search-box input {
+      border: none;
+      background: transparent;
+      padding: 12px 12px;
+      font-size: 0.95rem;
+      width: 100%;
+      outline: none;
+      color: #11273f;
+    }
+
+    .search-box input::placeholder {
+      color: #8da3bd;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      background: white;
+      border: 1px solid #d8e2ef;
+      padding: 7px 18px;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 0.8rem;
+      color: #1d3957;
+      cursor: pointer;
+      transition: 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-btn i {
+      font-size: 0.7rem;
+      color: #617e9e;
+    }
+
+    .filter-btn:hover {
+      background: #e9f0fa;
+      border-color: #a6bdd9;
+    }
+
+    .filter-btn.active {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: white;
+    }
+
+    .filter-btn.active i {
+      color: white;
+    }
+
+    /* ----- history table ----- */
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 24px;
+      border: 1px solid #e7eef9;
+      background: #fafdff;
+    }
+
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      min-width: 640px;
+    }
+
+    .history-table th {
+      text-align: left;
+      padding: 16px 14px;
+      background: #f2f8ff;
+      font-weight: 600;
+      color: #1a3652;
+      border-bottom: 2px solid #dce6f2;
+    }
+
+    .history-table td {
+      padding: 16px 14px;
+      border-bottom: 1px solid #eaf0f8;
+      color: #1d3957;
+      vertical-align: middle;
+    }
+
+    .history-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .history-table .status-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 4px 14px;
+      border-radius: 40px;
+      display: inline-block;
+    }
+
+    .status-badge.success {
+      background: #d1fae5;
+      color: #0b6e4f;
+    }
+
+    .status-badge.pending {
+      background: #fef3c7;
+      color: #8b6914;
+    }
+
+    .status-badge.failed {
+      background: #fee9e7;
+      color: #b91c1c;
+    }
+
+    .history-table .amount {
+      font-weight: 600;
+    }
+
+    .receipt-btn {
+      background: transparent;
+      border: 1px solid #b8cfe5;
+      padding: 4px 14px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #1d3957;
+      cursor: pointer;
+      transition: 0.1s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .receipt-btn:hover {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: white;
+    }
+
+    .receipt-btn i {
+      font-size: 0.7rem;
+    }
+
+    /* ----- receipt modal ----- */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 20, 40, 0.5);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 24px;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .receipt-modal {
+      background: #ffffff;
+      max-width: 520px;
+      width: 100%;
+      border-radius: 40px;
+      padding: 32px 30px 28px;
+      box-shadow: 0 40px 80px -20px rgba(0,0,0,0.3);
+      animation: modalIn 0.25s ease;
+    }
+
+    @keyframes modalIn {
+      0% { opacity: 0; transform: scale(0.96) translateY(12px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .receipt-modal .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .receipt-modal .modal-header h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #0a1e32;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .receipt-modal .modal-header h2 i {
+      color: #2563eb;
+    }
+
+    .close-modal {
+      background: #eef3fa;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 40px;
+      font-size: 1rem;
+      cursor: pointer;
+      color: #1f3a5a;
+      transition: 0.1s;
+    }
+
+    .close-modal:hover {
+      background: #dce6f2;
+    }
+
+    .receipt-content .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #eef3fa;
+      font-size: 0.9rem;
+    }
+
+    .receipt-content .receipt-row:last-child {
+      border-bottom: none;
+    }
+
+    .receipt-content .receipt-label {
+      color: #4f6e8e;
+      font-weight: 500;
+    }
+
+    .receipt-content .receipt-value {
+      font-weight: 600;
+      color: #0b1e31;
+      text-align: right;
+    }
+
+    .receipt-content .receipt-total {
+      font-size: 1.1rem;
+      padding-top: 14px;
+      margin-top: 8px;
+      border-top: 2px solid #dce6f2;
+    }
+
+    .receipt-content .receipt-total .receipt-value {
+      font-size: 1.3rem;
+      color: #059669;
+    }
+
+    .receipt-footer {
+      margin-top: 20px;
+      font-size: 0.7rem;
+      color: #5f7d9c;
+      text-align: center;
+      border-top: 1px dashed #dce6f2;
+      padding-top: 16px;
+    }
+
+    /* footer */
+    .portal-footer {
+      margin-top: 26px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: #577392;
+      border-top: 1px solid #e7eef8;
+      padding-top: 20px;
+    }
+
+    .portal-footer i {
+      margin-right: 4px;
+    }
+
+    /* empty state */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #4b6a89;
+    }
+
+    .empty-state i {
+      font-size: 2.5rem;
+      color: #b0c8e0;
+      margin-bottom: 8px;
+    }
+
+    /* responsive */
+    @media (max-width: 700px) {
+      .history-portal { padding: 20px 16px 28px; }
+      .portal-header h1 { font-size: 1.5rem; }
+      .summary-grid { grid-template-columns: 1fr 1fr; }
+      .toolbar { flex-direction: column; align-items: stretch; }
+    }
+
+    @media (max-width: 480px) {
+      .summary-grid { grid-template-columns: 1fr; }
+      .history-table { font-size: 0.8rem; min-width: 500px; }
+      .history-table th, .history-table td { padding: 10px 8px; }
+      .receipt-modal { padding: 24px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Student Home</a><a href="page1.html">page1</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page15.html">page15</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page9.html">page9</a></div>
+<div class="history-portal" id="historyApp">
+  <!-- header -->
+  <div class="portal-header">
+    <h1><i class="fas fa-history"></i> Payment History</h1>
+    <div class="header-right">
+      <span class="student-badge"><i class="fas fa-id-badge"></i> S-2026-014 · Sarah Chen</span>
+      <span class="live-badge"><i class="fas fa-circle" style="font-size:0.45rem;"></i> LIVE</span>
+    </div>
+  </div>
+
+  <!-- summary -->
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-icon"><i class="fas fa-check-circle"></i></div>
+      <div class="summary-content">
+        <div class="label">Total paid</div>
+        <div class="value" id="totalPaid">$0</div>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon"><i class="fas fa-receipt"></i></div>
+      <div class="summary-content">
+        <div class="label">Transactions</div>
+        <div class="value" id="transactionCount">0</div>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon"><i class="fas fa-calendar-alt"></i></div>
+      <div class="summary-content">
+        <div class="label">Last payment</div>
+        <div class="value" id="lastPayment" style="font-size:1rem;">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- toolbar -->
+  <div class="toolbar">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Search by description..." />
+    </div>
+    <div class="filter-group">
+      <button class="filter-btn active" data-filter="all"><i class="fas fa-th"></i> All</button>
+      <button class="filter-btn" data-filter="success"><i class="fas fa-check-circle" style="color:#0b6e4f;"></i> Success</button>
+      <button class="filter-btn" data-filter="pending"><i class="fas fa-clock" style="color:#8b6914;"></i> Pending</button>
+      <button class="filter-btn" data-filter="failed"><i class="fas fa-times-circle" style="color:#b91c1c;"></i> Failed</button>
+    </div>
+  </div>
+
+  <!-- table -->
+  <div class="table-wrapper">
+    <table class="history-table">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Date</th>
+          <th>Method</th>
+          <th>Status</th>
+          <th style="text-align:right;">Amount</th>
+          <th style="text-align:center;">Receipt</th>
+        </tr>
+      </thead>
+      <tbody id="historyBody">
+        <!-- injected by js -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- footer -->
+  <div class="portal-footer">
+    <span><i class="far fa-clock"></i> updated: <span id="updateTime">just now</span></span>
+    <span><i class="fas fa-sync-alt fa-fw"></i> auto‑sync</span>
+  </div>
+</div>
+
+<!-- ----- RECEIPT MODAL ----- -->
+<div class="modal-overlay" id="receiptModal">
+  <div class="receipt-modal">
+    <div class="modal-header">
+      <h2><i class="fas fa-receipt"></i> Receipt</h2>
+      <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="receipt-content" id="receiptContent">
+      <!-- dynamic -->
+    </div>
+    <div class="receipt-footer">
+      <i class="fas fa-print"></i> receipt · generated on <span id="receiptDate"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    "use strict";
+
+    // ----- payment history data -----
+    let payments = [
+      { id: 1, description: 'Tuition - Spring 2026', date: '2026-03-15', method: 'Visa **** 4321', status: 'success', amount: 3250.00 },
+      { id: 2, description: 'Lab fee - Computer Science', date: '2026-03-10', method: 'Mastercard **** 7890', status: 'success', amount: 150.00 },
+      { id: 3, description: 'Library fee', date: '2026-02-28', method: 'PayPal', status: 'success', amount: 45.00 },
+      { id: 4, description: 'Student activity fee', date: '2026-02-20', method: 'Visa **** 4321', status: 'pending', amount: 80.00 },
+      { id: 5, description: 'Health insurance', date: '2026-02-15', method: 'Bank transfer', status: 'failed', amount: 220.00 },
+      { id: 6, description: 'Tuition - Fall 2025', date: '2025-12-10', method: 'Visa **** 4321', status: 'success', amount: 3100.00 },
+      { id: 7, description: 'Sports facility fee', date: '2025-11-05', method: 'Mastercard **** 7890', status: 'success', amount: 60.00 },
+    ];
+
+    // ----- state -----
+    let currentFilter = 'all';
+    let searchTerm = '';
+
+    // DOM refs
+    const tbody = document.getElementById('historyBody');
+    const searchInput = document.getElementById('searchInput');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const totalPaidEl = document.getElementById('totalPaid');
+    const transactionCountEl = document.getElementById('transactionCount');
+    const lastPaymentEl = document.getElementById('lastPayment');
+    const updateTimeSpan = document.getElementById('updateTime');
+
+    // modal
+    const modal = document.getElementById('receiptModal');
+    const receiptContent = document.getElementById('receiptContent');
+    const receiptDate = document.getElementById('receiptDate');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+
+    // ----- helpers -----
+    function updateTimestamp() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2,'0');
+      const m = String(now.getMinutes()).padStart(2,'0');
+      updateTimeSpan.textContent = `${h}:${m}`;
+    }
+
+    function formatCurrency(amount) {
+      return '$' + amount.toFixed(2);
+    }
+
+    function formatDate(dateStr) {
+      const d = new Date(dateStr + 'T00:00:00');
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function getStatusBadge(status) {
+      const map = {
+        'success': '<span class="status-badge success"><i class="fas fa-check-circle"></i> Success</span>',
+        'pending': '<span class="status-badge pending"><i class="fas fa-clock"></i> Pending</span>',
+        'failed': '<span class="status-badge failed"><i class="fas fa-times-circle"></i> Failed</span>'
+      };
+      return map[status] || map.pending;
+    }
+
+    // ----- render -----
+    function render() {
+      // filter + search
+      let filtered = payments.filter(p => {
+        if (currentFilter !== 'all' && p.status !== currentFilter) return false;
+        if (searchTerm.trim() !== '') {
+          const term = searchTerm.trim().toLowerCase();
+          return p.description.toLowerCase().includes(term);
+        }
+        return true;
+      });
+
+      // sort by date descending (newest first)
+      filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      // summary
+      const totalPaid = payments.filter(p => p.status === 'success').reduce((sum, p) => sum + p.amount, 0);
+      totalPaidEl.textContent = formatCurrency(totalPaid);
+      transactionCountEl.textContent = payments.length;
+      const last = payments.filter(p => p.status === 'success').sort((a,b) => new Date(b.date) - new Date(a.date))[0];
+      lastPaymentEl.textContent = last ? formatDate(last.date) : '—';
+
+      // table rows
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr><td colspan="6">
+            <div class="empty-state">
+              <i class="fas fa-search-minus"></i>
+              <p style="font-weight:500;">No transactions match</p>
+              <p style="font-size:0.8rem;">Try adjusting filters</p>
+            </div>
+          </td></tr>
+        `;
+        updateTimestamp();
+        return;
+      }
+
+      let html = '';
+      filtered.forEach(p => {
+        html += `
+          <tr>
+            <td><strong>${p.description}</strong></td>
+            <td>${formatDate(p.date)}</td>
+            <td><i class="fas fa-credit-card" style="color:#4f6e8e;margin-right:4px;"></i>${p.method}</td>
+            <td>${getStatusBadge(p.status)}</td>
+            <td style="text-align:right; font-weight:600;">${formatCurrency(p.amount)}</td>
+            <td style="text-align:center;">
+              <button class="receipt-btn" data-id="${p.id}"><i class="fas fa-file-invoice"></i> Receipt</button>
+            </td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+      updateTimestamp();
+    }
+
+    // ----- show receipt modal -----
+    function showReceipt(id) {
+      const payment = payments.find(p => p.id === id);
+      if (!payment) return;
+
+      const now = new Date();
+      receiptDate.textContent = now.toLocaleString('en-US', { 
+        month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' 
+      });
+
+      receiptContent.innerHTML = `
+        <div class="receipt-row">
+          <span class="receipt-label">Receipt #</span>
+          <span class="receipt-value">RCP-${String(payment.id).padStart(4,'0')}</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-label">Description</span>
+          <span class="receipt-value">${payment.description}</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-label">Date</span>
+          <span class="receipt-value">${formatDate(payment.date)}</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-label">Method</span>
+          <span class="receipt-value">${payment.method}</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-label">Status</span>
+          <span class="receipt-value">${payment.status.charAt(0).toUpperCase() + payment.status.slice(1)}</span>
+        </div>
+        <div class="receipt-row receipt-total">
+          <span class="receipt-label" style="font-weight:600;">Total</span>
+          <span class="receipt-value">${formatCurrency(payment.amount)}</span>
+        </div>
+        <div style="margin-top:12px; text-align:center; font-size:0.75rem; color:#4f6e8e;">
+          <i class="fas fa-check-circle" style="color:#059669;"></i> Payment confirmed
+        </div>
+      `;
+
+      modal.classList.add('show');
+    }
+
+    // ----- close modal -----
+    function closeModal() {
+      modal.classList.remove('show');
+    }
+
+    // ----- event delegation for receipt buttons -----
+    tbody.addEventListener('click', (e) => {
+      const btn = e.target.closest('.receipt-btn');
+      if (!btn) return;
+      const id = parseInt(btn.dataset.id);
+      if (!isNaN(id)) showReceipt(id);
+    });
+
+    // ----- modal close -----
+    closeModalBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // ----- filter & search -----
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        render();
+      });
+    });
+
+    searchInput.addEventListener('input', (e) => {
+      searchTerm = e.target.value;
+      render();
+    });
+
+    // ----- init -----
+    render();
+
+    // ----- live simulation: update timestamps & add random new transaction occasionally -----
+    setInterval(() => {
+      updateTimestamp();
+
+      // simulate a new successful payment (only if we have less than 12 items)
+      if (payments.length < 12 && Math.random() > 0.75) {
+        const descriptions = ['Course materials', 'Graduation fee', 'Transcript fee', 'Late registration'];
+        const methods = ['Visa **** 4321', 'Mastercard **** 7890', 'PayPal', 'Bank transfer'];
+        const newId = payments.length ? Math.max(...payments.map(p => p.id)) + 1 : 1;
+        const newPayment = {
+          id: newId,
+          description: descriptions[Math.floor(Math.random() * descriptions.length)],
+          date: new Date().toISOString().slice(0,10),
+          method: methods[Math.floor(Math.random() * methods.length)],
+          status: 'success',
+          amount: Math.round((20 + Math.random() * 180) * 100) / 100,
+        };
+        payments.push(newPayment);
+        render();
+        // show a subtle notification? we just re-render.
+      }
+    }, 25000);
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>Contact Us · British Poly</title>
+    <!-- Google Font + minimal reset -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f6faff;
+            color: #0a1e3c;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1320px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            background: #0a1e3c;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 0.4rem 0;
+            font-size: 0.75rem;
+        }
+
+        .top-bar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+        }
+
+        .top-bar .contact-info {
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .top-bar .contact-info span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .top-bar .quick-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .top-bar .quick-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .top-bar .quick-links a:hover {
+            color: white;
+        }
+
+        .top-bar .quick-links .apply-btn {
+            background: #1a5cff;
+            color: white;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.7rem;
+        }
+
+        .top-bar .quick-links .apply-btn:hover {
+            background: #2a6cff;
+        }
+
+        /* ===== MAIN NAV ===== */
+        .main-nav {
+            background: white;
+            padding: 0.8rem 0;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+            border-bottom: 1px solid #eef2f8;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .main-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.5rem;
+        }
+
+        .main-nav .logo {
+            font-weight: 800;
+            font-size: 1.6rem;
+            letter-spacing: -0.02em;
+            color: #0a1e3c;
+            text-decoration: none;
+        }
+
+        .main-nav .logo span {
+            color: #1a5cff;
+        }
+
+        .main-nav .logo small {
+            font-weight: 400;
+            font-size: 0.7rem;
+            color: #4a6a8a;
+            margin-left: 0.3rem;
+        }
+
+        .main-nav .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .main-nav .nav-links a {
+            color: #2a3a5a;
+            text-decoration: none;
+            transition: color 0.15s;
+            position: relative;
+        }
+
+        .main-nav .nav-links a:hover {
+            color: #1a5cff;
+        }
+
+        .main-nav .nav-links a.active {
+            color: #1a5cff;
+            font-weight: 600;
+        }
+
+        .main-nav .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #1a5cff;
+            border-radius: 4px;
+        }
+
+        .main-nav .nav-links .dropdown {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .main-nav .nav-links .dropdown .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 16px;
+            padding: 0.5rem 0;
+            min-width: 200px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid #eef2f8;
+            margin-top: 0.5rem;
+        }
+
+        .main-nav .nav-links .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .main-nav .nav-links .dropdown .dropdown-menu a {
+            display: block;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.85rem;
+        }
+
+        .main-nav .nav-links .dropdown .dropdown-menu a:hover {
+            background: #f0f6ff;
+        }
+
+        .main-nav .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #0a1e3c;
+        }
+
+        /* ===== PAGE HEADER ===== */
+        .page-header {
+            background: linear-gradient(135deg, #0a1e3c 0%, #1a3a6a 100%);
+            color: white;
+            padding: 3rem 0 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 60%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(26, 92, 255, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .page-header .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header .breadcrumb {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .page-header .breadcrumb a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+        }
+
+        .page-header .breadcrumb a:hover {
+            color: white;
+        }
+
+        .page-header .breadcrumb .sep {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .page-header .subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin-top: 0.5rem;
+        }
+
+        /* ===== CONTACT GRID ===== */
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0a1e3c;
+        }
+
+        .section-header p {
+            color: #4a6a8a;
+            max-width: 600px;
+            margin: 0.5rem auto 0;
+            font-size: 1.05rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        /* ===== CONTACT FORM ===== */
+        .contact-form {
+            background: white;
+            border-radius: 28px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 28px rgba(0, 20, 50, 0.06);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+        }
+
+        .contact-form h3 {
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            font-size: 0.75rem;
+            color: #1a3660;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 0.3rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.1s ease;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            border-radius: 20px;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #1a5cff;
+            color: white;
+            border-color: #1a5cff;
+        }
+
+        .btn-primary:hover {
+            background: #2a6cff;
+            border-color: #2a6cff;
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(26, 92, 255, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .btn-outline-blue {
+            background: white;
+            color: #0a1e3c;
+            border-color: #0a1e3c;
+        }
+
+        .btn-outline-blue:hover {
+            background: #edf4ff;
+            border-color: #1a5cff;
+            color: #1a5cff;
+        }
+
+        /* ===== CONTACT INFO ===== */
+        .contact-info-side {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 8px 28px rgba(0, 20, 50, 0.06);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+        }
+
+        .info-card h3 {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #eef2f8;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #f0f4fa;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-item .icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            width: 36px;
+            text-align: center;
+        }
+
+        .info-item .details {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .info-item .details .label {
+            font-weight: 600;
+            color: #0a1e3c;
+        }
+
+        .info-item .details .value {
+            color: #1a3660;
+        }
+
+        .info-item .details a {
+            color: #1a5cff;
+            text-decoration: none;
+        }
+
+        .info-item .details a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== MAP ===== */
+        .map-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 8px 28px rgba(0, 20, 50, 0.06);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+        }
+
+        .map-card h3 {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .map-placeholder {
+            background: #e6eeff;
+            border-radius: 16px;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a5cff;
+            border: 1px solid rgba(26, 92, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .map-placeholder .icon {
+            font-size: 2.5rem;
+            margin-right: 0.5rem;
+        }
+
+        /* ===== DEPARTMENT CONTACTS ===== */
+        .dept-section {
+            background: white;
+            border-top: 1px solid #eef2f8;
+            border-bottom: 1px solid #eef2f8;
+        }
+
+        .dept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .dept-card {
+            background: #f8faff;
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid #eef2f8;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .dept-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 20, 50, 0.06);
+        }
+
+        .dept-card .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dept-card h5 {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .dept-card .phone {
+            font-size: 0.85rem;
+            color: #1a5cff;
+            font-weight: 500;
+        }
+
+        .dept-card .email {
+            font-size: 0.8rem;
+            color: #4a6a8a;
+        }
+
+        .dept-card .email a {
+            color: #4a6a8a;
+            text-decoration: none;
+        }
+
+        .dept-card .email a:hover {
+            color: #1a5cff;
+        }
+
+        /* ===== FAQ ===== */
+        .faq-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid #eef2f8;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .faq-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 20, 50, 0.08);
+        }
+
+        .faq-item .q {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .faq-item .q .icon {
+            font-size: 1.2rem;
+        }
+
+        .faq-item .a {
+            font-size: 0.9rem;
+            color: #4a6a8a;
+            line-height: 1.5;
+        }
+
+        /* ===== CTA ===== */
+        .cta-banner {
+            background: linear-gradient(135deg, #0a1e3c, #1a3a6a);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 28px;
+            text-align: center;
+            margin: 2rem 0 1rem;
+        }
+
+        .cta-banner h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .cta-banner p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .btn-outline-white {
+            background: transparent;
+            color: white;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-outline-white:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #0a1e3c;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 3rem 0 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .footer .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 2.5rem;
+        }
+
+        .footer .brand {
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: white;
+        }
+
+        .footer .brand span {
+            color: #6a9aff;
+        }
+
+        .footer .brand-desc {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-top: 0.5rem;
+            max-width: 280px;
+        }
+
+        .footer h4 {
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .footer ul {
+            list-style: none;
+        }
+
+        .footer ul li {
+            margin-bottom: 0.4rem;
+        }
+
+        .footer ul li a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.15s;
+        }
+
+        .footer ul li a:hover {
+            color: white;
+        }
+
+        .footer .bottom {
+            grid-column: 1 / -1;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 1.5rem;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #0a1e3c;
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.25s, transform 0.25s;
+            pointer-events: none;
+            font-size: 0.9rem;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .toast.success {
+            background: #0e7b3a;
+        }
+
+        .toast.error {
+            background: #b22234;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer .container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar .container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.3rem;
+            }
+
+            .top-bar .contact-info {
+                gap: 0.6rem;
+            }
+
+            .main-nav .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: 0.8rem;
+                padding: 1rem 0;
+            }
+
+            .main-nav .nav-links.open {
+                display: flex;
+            }
+
+            .main-nav .nav-toggle {
+                display: block;
+            }
+
+            .main-nav .nav-links .dropdown .dropdown-menu {
+                position: static;
+                box-shadow: none;
+                border: none;
+                padding-left: 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .footer .container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .footer .bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .contact-form {
+                padding: 1.5rem;
+            }
+
+            .dept-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .dept-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .map-placeholder {
+                height: 160px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="British Poly · Home.html">Admin Home</a><a href="About Us · British Poly.html">About Us · British Poly</a><a href="Admin Profile · Account.html">Admin Profile · Account</a><a href="Admissions · British Poly.html">Admissions · British Poly</a><a href="British Poly · Home.html">British Poly · Home</a><a href="Finance & Bursary Control .html">Finance & Bursary Control </a><a href="Notice Board.html">Notice Board</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page15.html">page15</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page19.html">page19</a><a href="page21.html">page21</a><a href="page22.html">page22</a><a href="page23.html">page23</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a><a href="Parent & Guardian Portal.html">Parent & Guardian Portal</a><a href="Programs · British Poly.html">Programs · British Poly</a><a href="Staff Management.html">Staff Management</a><a href="Student Life.html">Student Life</a></div>
+
+    <!-- ===== TOP BAR ===== -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="contact-info">
+                <span>📞 +44 20 7946 0100</span>
+                <span>✉️ info@britishpoly.org</span>
+                <span>📍 London, UK</span>
+            </div>
+            <div class="quick-links">
+                <a href="#">Staff Portal</a>
+                <a href="#">Student Portal</a>
+                <a href="#" class="apply-btn">Apply Now</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN NAV ===== -->
+    <nav class="main-nav">
+        <div class="container">
+            <a href="#" class="logo">British<span>Poly</span><small>· since 1987</small></a>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+
+            <div class="nav-links" id="navLinks">
+                <a href="#">Home</a>
+                <a href="#">About</a>
+                <a href="#">Programs</a>
+                <a href="#">Admissions</a>
+                <a href="#">Student Life</a>
+                <a href="#" class="active">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="#">Home</a>
+                <span class="sep">/</span>
+                <span>Contact</span>
+            </div>
+            <h1>Contact Us</h1>
+            <p class="subtitle">We're here to help. Get in touch with us through any of the channels below.</p>
+        </div>
+    </section>
+
+    <!-- ===== CONTACT SECTION ===== -->
+    <section class="section">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- LEFT: Contact Form -->
+                <div class="contact-form">
+                    <h3>Send Us a Message</h3>
+                    <form id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" placeholder="John" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" placeholder="Doe" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="you@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <select id="subject">
+                                <option value="">Select a subject...</option>
+                                <option value="admissions">Admissions Enquiry</option>
+                                <option value="programs">Program Information</option>
+                                <option value="international">International Student Support</option>
+                                <option value="finance">Fees &amp; Finance</option>
+                                <option value="general">General Enquiry</option>
+                                <option value="feedback">Feedback / Complaints</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" placeholder="Write your message here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width:100%;">Send Message →</button>
+                    </form>
+                </div>
+
+                <!-- RIGHT: Contact Info -->
+                <div class="contact-info-side">
+                    <div class="info-card">
+                        <h3>Get in Touch</h3>
+                        <div class="info-item">
+                            <div class="icon">📍</div>
+                            <div class="details">
+                                <div class="label">Address</div>
+                                <div class="value">British Polytechnic<br>123 Education Road<br>London, UK</div>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="icon">📞</div>
+                            <div class="details">
+                                <div class="label">Phone</div>
+                                <div class="value"><a href="tel:+442079460100">+44 20 7946 0100</a></div>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="icon">✉️</div>
+                            <div class="details">
+                                <div class="label">Email</div>
+                                <div class="value"><a href="mailto:info@britishpoly.org">info@britishpoly.org</a></div>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="icon">🕐</div>
+                            <div class="details">
+                                <div class="label">Office Hours</div>
+                                <div class="value">Monday – Friday: 9:00 AM – 6:00 PM<br>Saturday: 10:00 AM – 2:00 PM</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map -->
+                    <div class="map-card">
+                        <h3>Find Us</h3>
+                        <div class="map-placeholder">
+                            <span class="icon">🗺️</span>
+                            <span>Interactive Map<br><small style="color:#6a8aaa;">(Google Maps integration)</small></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== DEPARTMENT CONTACTS ===== -->
+    <section class="section dept-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Department Contacts</h2>
+                <p>Reach out directly to the department you need.</p>
+            </div>
+            <div class="dept-grid">
+                <div class="dept-card">
+                    <div class="icon">💻</div>
+                    <h5>Computer Science</h5>
+                    <div class="phone">📞 +44 20 7946 0110</div>
+                    <div class="email"><a href="mailto:cs@britishpoly.org">cs@britishpoly.org</a></div>
+                </div>
+                <div class="dept-card">
+                    <div class="icon">⚙️</div>
+                    <h5>Engineering</h5>
+                    <div class="phone">📞 +44 20 7946 0111</div>
+                    <div class="email"><a href="mailto:eng@britishpoly.org">eng@britishpoly.org</a></div>
+                </div>
+                <div class="dept-card">
+                    <div class="icon">📊</div>
+                    <h5>Business</h5>
+                    <div class="phone">📞 +44 20 7946 0112</div>
+                    <div class="email"><a href="mailto:business@britishpoly.org">business@britishpoly.org</a></div>
+                </div>
+                <div class="dept-card">
+                    <div class="icon">🏥</div>
+                    <h5>Health Sciences</h5>
+                    <div class="phone">📞 +44 20 7946 0113</div>
+                    <div class="email"><a href="mailto:health@britishpoly.org">health@britishpoly.org</a></div>
+                </div>
+                <div class="dept-card">
+                    <div class="icon">🎨</div>
+                    <h5>Creative Arts</h5>
+                    <div class="phone">📞 +44 20 7946 0114</div>
+                    <div class="email"><a href="mailto:arts@britishpoly.org">arts@britishpoly.org</a></div>
+                </div>
+                <div class="dept-card">
+                    <div class="icon">🌍</div>
+                    <h5>Social Sciences</h5>
+                    <div class="phone">📞 +44 20 7946 0115</div>
+                    <div class="email"><a href="mailto:socsci@britishpoly.org">socsci@britishpoly.org</a></div>
+                </div>
+                <div class="dept-card">
+                    <div class="icon">🎓</div>
+                    <h5>Admissions</h5>
+                    <div class="phone">📞 +44 20 7946 0120</div>
+                    <div class="email"><a href="mailto:admissions@britishpoly.org">admissions@britishpoly.org</a></div>
+                </div>
+                <div class="dept-card">
+                    <div class="icon">💰</div>
+                    <h5>Finance</h5>
+                    <div class="phone">📞 +44 20 7946 0121</div>
+                    <div class="email"><a href="mailto:finance@britishpoly.org">finance@britishpoly.org</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FAQ SECTION ===== -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Quick answers to common questions about British Polytechnic.</p>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="q"><span class="icon">❓</span> How do I apply?</div>
+                    <div class="a">You can apply online through our admissions portal. Visit the Admissions page for detailed instructions and deadlines.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="q"><span class="icon">❓</span> What are the entry requirements?</div>
+                    <div class="a">Entry requirements vary by program. Generally, we require a high school diploma with a minimum GPA of 2.5 and English language proficiency (IELTS 6.0 or equivalent).</div>
+                </div>
+                <div class="faq-item">
+                    <div class="q"><span class="icon">❓</span> What scholarships are available?</div>
+                    <div class="a">We offer a range of scholarships including merit-based, need-based, and international student scholarships. Contact our finance department for details.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="q"><span class="icon">❓</span> Can I study part-time or online?</div>
+                    <div class="a">Yes, we offer flexible learning options including part-time, online, and hybrid programs. Check the program pages for specific delivery modes.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="q"><span class="icon">❓</span> What support is available for international students?</div>
+                    <div class="a">We provide comprehensive support including visa assistance, language support, cultural integration programs, and dedicated international student advisors.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="q"><span class="icon">❓</span> How do I get a transcript?</div>
+                    <div class="a">Official transcripts can be requested through the Student Portal or by contacting the Registrar's Office. Processing takes 3-5 working days.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA BANNER ===== -->
+    <section class="section" style="padding-top:0;">
+        <div class="container">
+            <div class="cta-banner">
+                <h2>Ready to Start Your Journey?</h2>
+                <p>Take the first step toward a rewarding career at British Polytechnic.</p>
+                <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+                    <a href="#" class="btn btn-primary" style="background:#1a5cff; border-color:#1a5cff;">Apply Now →</a>
+                    <a href="#" class="btn btn-outline-white">Request Information</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div>
+                <div class="brand">British<span>Poly</span></div>
+                <div class="brand-desc">Excellence in polytechnic education since 1987. Empowering students with practical skills, industry knowledge, and a global perspective.</div>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Programs</a></li>
+                    <li><a href="#">Admissions</a></li>
+                    <li><a href="#">Student Life</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Student Portal</a></li>
+                    <li><a href="#">Staff Portal</a></li>
+                    <li><a href="#">Library</a></li>
+                    <li><a href="#">Events Calendar</a></li>
+                    <li><a href="#">News &amp; Blog</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="#">📞 +44 20 7946 0100</a></li>
+                    <li><a href="#">✉️ info@britishpoly.org</a></li>
+                    <li><a href="#">📍 London, UK</a></li>
+                    <li><a href="#">📱 Social Media</a></li>
+                </ul>
+            </div>
+            <div class="bottom">
+                <span>© 2025 British Polytechnic. All rights reserved.</span>
+                <span>
+                    <a href="#" style="color:rgba(255,255,255,0.5); text-decoration:none; margin-right:1rem;">Privacy Policy</a>
+                    <a href="#" style="color:rgba(255,255,255,0.5); text-decoration:none;">Terms &amp; Conditions</a>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast" class="toast">message</div>
+
+    <script>
+        // ===== MOBILE NAV =====
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        navToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('open');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // ===== CONTACT FORM =====
+        const contactForm = document.getElementById('contactForm');
+        const toast = document.getElementById('toast');
+        let toastTimer;
+
+        function showToast(msg, type = 'success') {
+            toast.textContent = msg;
+            toast.className = 'toast ' + type + ' show';
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value.trim();
+
+            if (!firstName || !lastName || !email || !subject || !message) {
+                showToast('❌ Please fill in all fields', 'error');
+                return;
+            }
+
+            if (!email.includes('@')) {
+                showToast('❌ Please enter a valid email address', 'error');
+                return;
+            }
+
+            // Simulate sending
+            const btn = this.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.textContent = '⏳ Sending...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                showToast('✅ Message sent! We\'ll get back to you within 24 hours.', 'success');
+                btn.textContent = originalText;
+                btn.disabled = false;
+                contactForm.reset();
+            }, 1500);
+        });
+
+        console.log('✅ British Poly · Contact Us page loaded');
+    </script>
+
+</body>
+</html>

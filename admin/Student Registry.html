@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>Student Registry · British Poly Admin</title>
+    <!-- Google Font + minimal reset -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f6faff;
+            color: #0a1e3c;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 260px;
+            background: #0a1e3c;
+            color: white;
+            min-height: 100vh;
+            padding: 1.8rem 1.2rem 2rem;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.25s ease;
+            z-index: 200;
+        }
+
+        .sidebar .logo {
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar .logo span {
+            color: #6a9aff;
+        }
+
+        .sidebar .logo small {
+            font-weight: 400;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.4);
+            display: block;
+            margin-top: 0.1rem;
+        }
+
+        .sidebar .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar .nav-section .label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .sidebar .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.6rem 0.8rem;
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: 0.15s ease;
+            margin-bottom: 0.15rem;
+            cursor: pointer;
+        }
+
+        .sidebar .nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .sidebar .nav-item.active {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+        }
+
+        .sidebar .nav-item .icon {
+            font-size: 1.1rem;
+            width: 28px;
+            text-align: center;
+        }
+
+        .sidebar .nav-item .badge {
+            margin-left: auto;
+            background: #1a5cff;
+            color: white;
+            font-size: 0.6rem;
+            padding: 0.05rem 0.6rem;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+
+        .sidebar .user-card {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 0.8rem 1rem;
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .sidebar .user-card .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1a5cff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .sidebar .user-card .info {
+            font-size: 0.8rem;
+        }
+
+        .sidebar .user-card .info .name {
+            font-weight: 600;
+            color: white;
+        }
+
+        .sidebar .user-card .info .role {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem 2rem 3rem;
+            max-width: calc(100% - 260px);
+            width: 100%;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            background: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eef2f8;
+            margin-bottom: 2rem;
+        }
+
+        .top-bar .greeting {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .top-bar .greeting small {
+            font-weight: 400;
+            color: #4a6a8a;
+            font-size: 0.8rem;
+        }
+
+        .top-bar .actions {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .top-bar .actions .btn {
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: 0.15s ease;
+            background: white;
+            color: #0a1e3c;
+            border-color: #c5d4ee;
+            text-decoration: none;
+        }
+
+        .top-bar .actions .btn-primary {
+            background: #0a1e3c;
+            color: white;
+            border-color: #0a1e3c;
+        }
+
+        .top-bar .actions .btn-primary:hover {
+            background: #17335c;
+            border-color: #17335c;
+        }
+
+        .top-bar .actions .btn-success {
+            background: #0e7b3a;
+            color: white;
+            border-color: #0e7b3a;
+        }
+
+        .top-bar .actions .btn-success:hover {
+            background: #1a934a;
+            border-color: #1a934a;
+        }
+
+        .top-bar .actions .btn-danger {
+            background: #b22234;
+            color: white;
+            border-color: #b22234;
+        }
+
+        .top-bar .actions .btn-danger:hover {
+            background: #a01e2e;
+            border-color: #a01e2e;
+        }
+
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0a1e3c;
+        }
+
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: #4a6a8a;
+            font-weight: 500;
+        }
+
+        /* ===== FILTER BAR ===== */
+        .filter-bar {
+            background: white;
+            border-radius: 24px;
+            padding: 1.2rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 1.5rem;
+            align-items: center;
+        }
+
+        .filter-bar .search-group {
+            flex: 2;
+            min-width: 200px;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .filter-bar .search-group input {
+            flex: 1;
+            padding: 0.6rem 1.2rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.9rem;
+            outline: none;
+            min-width: 120px;
+        }
+
+        .filter-bar .search-group input:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .filter-bar .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem 1rem;
+            align-items: center;
+        }
+
+        .filter-bar .filter-group label {
+            font-weight: 500;
+            font-size: 0.7rem;
+            color: #1a3660;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .filter-bar .filter-group select {
+            padding: 0.4rem 1rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.85rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .filter-bar .filter-group select:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .filter-bar .result-count {
+            font-size: 0.85rem;
+            color: #4a6a8a;
+            margin-left: auto;
+        }
+
+        .filter-bar .result-count strong {
+            color: #0a1e3c;
+        }
+
+        /* ===== TABLE ===== */
+        .table-section {
+            background: white;
+            border-radius: 24px;
+            padding: 0.5rem 0 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            overflow-x: auto;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1.5rem 0.5rem;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .table-header .actions {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.8rem;
+            font-size: 0.7rem;
+        }
+
+        .btn-primary {
+            background: #1a5cff;
+            color: white;
+            border-color: #1a5cff;
+        }
+
+        .btn-primary:hover {
+            background: #2a6cff;
+            border-color: #2a6cff;
+        }
+
+        .btn-success {
+            background: #0e7b3a;
+            color: white;
+            border-color: #0e7b3a;
+        }
+
+        .btn-success:hover {
+            background: #1a934a;
+            border-color: #1a934a;
+        }
+
+        .btn-danger {
+            background: #b22234;
+            color: white;
+            border-color: #b22234;
+        }
+
+        .btn-danger:hover {
+            background: #a01e2e;
+            border-color: #a01e2e;
+        }
+
+        .btn-warning {
+            background: #d48c2c;
+            color: white;
+            border-color: #d48c2c;
+        }
+
+        .btn-warning:hover {
+            background: #c07a1e;
+            border-color: #c07a1e;
+        }
+
+        .btn-outline-blue {
+            background: white;
+            color: #0a1e3c;
+            border-color: #0a1e3c;
+        }
+
+        .btn-outline-blue:hover {
+            background: #edf4ff;
+            border-color: #1a5cff;
+            color: #1a5cff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 1100px;
+        }
+
+        th {
+            text-align: left;
+            padding: 0.8rem 1.2rem 0.6rem;
+            font-weight: 600;
+            color: #1a3660;
+            border-bottom: 2px solid #e6edf8;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        th .sort-icon {
+            opacity: 0.3;
+            margin-left: 0.2rem;
+        }
+
+        th .sort-icon:hover {
+            opacity: 1;
+        }
+
+        td {
+            padding: 0.7rem 1.2rem;
+            border-bottom: 1px solid #ecf2fa;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #fafcff;
+        }
+
+        .status-badge {
+            padding: 0.1rem 0.7rem;
+            border-radius: 40px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-enrolled {
+            background: #ddf0e6;
+            color: #0e7b3a;
+        }
+
+        .status-graduated {
+            background: #e6eeff;
+            color: #1a5cff;
+        }
+
+        .status-suspended {
+            background: #f0ece6;
+            color: #d48c2c;
+        }
+
+        .status-withdrawn {
+            background: #f0e6e6;
+            color: #b22234;
+        }
+
+        .mode-badge {
+            padding: 0.1rem 0.7rem;
+            border-radius: 40px;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        .mode-online {
+            background: #e6eeff;
+            color: #1a5cff;
+        }
+        .mode-physical {
+            background: #ddf0e6;
+            color: #0e7b3a;
+        }
+        .mode-hybrid {
+            background: #f0ece6;
+            color: #d48c2c;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 30, 60, 0.45);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            max-width: 600px;
+            width: 92%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem 2rem 2.2rem;
+            border-radius: 32px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            animation: modalIn 0.2s ease;
+        }
+
+        @keyframes modalIn {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .modal .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #1a3660;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .modal .form-group label .required {
+            color: #b22234;
+        }
+
+        .modal .form-group input,
+        .modal .form-group select {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.9rem;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .modal .form-group input:focus,
+        .modal .form-group select:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .modal .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .modal .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .modal .modal-actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .modal .modal-actions .btn {
+            flex: 1;
+            justify-content: center;
+            min-width: 100px;
+        }
+
+        /* ===== BULK ACTION BAR ===== */
+        .bulk-bar {
+            display: none;
+            background: #e6eeff;
+            border-radius: 16px;
+            padding: 0.8rem 1.2rem;
+            margin: 0.5rem 1.5rem;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .bulk-bar.show {
+            display: flex;
+        }
+
+        .bulk-bar .count {
+            font-weight: 600;
+            color: #1a5cff;
+        }
+
+        .bulk-bar .btn {
+            padding: 0.3rem 1rem;
+            font-size: 0.75rem;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #0a1e3c;
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.25s, transform 0.25s;
+            pointer-events: none;
+            font-size: 0.9rem;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .toast.success {
+            background: #0e7b3a;
+        }
+
+        .toast.error {
+            background: #b22234;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 0.8rem;
+            left: 0.8rem;
+            z-index: 300;
+            background: #0a1e3c;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0.6rem 1rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 150;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: fixed;
+                transform: translateX(-100%);
+                width: 280px;
+                height: 100vh;
+                border-radius: 0 20px 20px 0;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+                box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+            }
+            .sidebar-toggle {
+                display: block;
+            }
+            .main-content {
+                padding: 1rem 1rem 2rem;
+                max-width: 100%;
+            }
+            .top-bar {
+                padding: 0.5rem 1rem;
+                border-radius: 20px;
+                margin-top: 0.5rem;
+            }
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 1rem;
+            }
+            .filter-bar .result-count {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .top-bar .greeting {
+                font-size: 0.85rem;
+            }
+            .top-bar .actions {
+                width: 100%;
+            }
+            .top-bar .actions .btn {
+                flex: 1;
+                text-align: center;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .filter-bar .search-group {
+                flex-direction: column;
+            }
+            .filter-bar .filter-group {
+                width: 100%;
+            }
+            .filter-bar .filter-group select {
+                flex: 1;
+            }
+            .table-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .table-header .actions {
+                justify-content: stretch;
+            }
+            .table-header .actions .btn {
+                flex: 1;
+                text-align: center;
+            }
+            .bulk-bar {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="British Poly · Home.html">Admin Home</a><a href="About Us · British Poly.html">About Us · British Poly</a><a href="Admin Profile · Account.html">Admin Profile · Account</a><a href="Admissions · British Poly.html">Admissions · British Poly</a><a href="British Poly · Home.html">British Poly · Home</a><a href="Contact Us.html">Contact Us</a><a href="Finance & Bursary Control .html">Finance & Bursary Control </a><a href="Notice Board.html">Notice Board</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page15.html">page15</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page19.html">page19</a><a href="page21.html">page21</a><a href="page22.html">page22</a><a href="page23.html">page23</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a><a href="Parent & Guardian Portal.html">Parent & Guardian Portal</a><a href="Programs · British Poly.html">Programs · British Poly</a><a href="Staff Management.html">Staff Management</a><a href="Student Life.html">Student Life</a></div>
+
+    <!-- ===== SIDEBAR TOGGLE ===== -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            British<span>Poly</span>
+            <small>Administration</small>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Main</div>
+            <a href="#" class="nav-item">
+                <span class="icon">📊</span> Dashboard
+            </a>
+            <a href="#" class="nav-item active">
+                <span class="icon">👨‍🎓</span> Student Registry
+                <span class="badge">1,247</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">👥</span> User Records
+                <span class="badge">24</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">🎓</span> Admission Batches
+                <span class="badge">6</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Management</div>
+            <a href="#" class="nav-item">
+                <span class="icon">📚</span> Courses
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📅</span> Sessions
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📝</span> Results
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📋</span> Attendance
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Settings</div>
+            <a href="#" class="nav-item">
+                <span class="icon">🔐</span> Access Control
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">⚙️</span> System Settings
+            </a>
+        </div>
+
+        <div class="user-card">
+            <div class="avatar">AD</div>
+            <div class="info">
+                <div class="name">Admin User</div>
+                <div class="role">Administrator</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content">
+
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="greeting">
+                👨‍🎓 Student Registry
+                <small>| Manage all student records</small>
+            </div>
+            <div class="actions">
+                <button class="btn btn-primary" onclick="openModal()">➕ Add Student</button>
+                <button class="btn btn-success" onclick="exportCSV()">📥 Export CSV</button>
+                <button class="btn btn-outline" onclick="refreshStudents()">🔄 Refresh</button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="number" id="totalStudents">0</div>
+                <div class="label">Total Students</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="enrolledStudents">0</div>
+                <div class="label">Enrolled</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="graduatedStudents">0</div>
+                <div class="label">Graduated</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="onlineStudents">0</div>
+                <div class="label">Online Students</div>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <div class="search-group">
+                <input type="text" id="searchInput" placeholder="🔎 Search by name, ID, or email...">
+            </div>
+            <div class="filter-group">
+                <label for="statusFilter">Status</label>
+                <select id="statusFilter">
+                    <option value="all">All Status</option>
+                    <option value="enrolled">Enrolled</option>
+                    <option value="graduated">Graduated</option>
+                    <option value="suspended">Suspended</option>
+                    <option value="withdrawn">Withdrawn</option>
+                </select>
+                <label for="modeFilter">Mode</label>
+                <select id="modeFilter">
+                    <option value="all">All Modes</option>
+                    <option value="online">Online</option>
+                    <option value="physical">Physical</option>
+                    <option value="hybrid">Hybrid</option>
+                </select>
+                <label for="programFilter">Program</label>
+                <select id="programFilter">
+                    <option value="all">All Programs</option>
+                    <option value="BSc Computer Science">BSc Computer Science</option>
+                    <option value="BEng Mechanical Engineering">BEng Mechanical Engineering</option>
+                    <option value="MBA Business Administration">MBA Business Administration</option>
+                    <option value="BSc Public Health">BSc Public Health</option>
+                    <option value="BA Digital Media">BA Digital Media</option>
+                    <option value="BSc Psychology">BSc Psychology</option>
+                    <option value="BEng Electrical & Electronic Engineering">BEng Electrical & Electronic Engineering</option>
+                    <option value="BSc Data Science">BSc Data Science</option>
+                </select>
+            </div>
+            <span class="result-count">Showing <strong id="resultCount">0</strong> students</span>
+        </div>
+
+        <!-- Table -->
+        <div class="table-section">
+            <div class="table-header">
+                <span style="font-weight:600; font-size:0.9rem;">📋 All Students</span>
+                <div class="actions">
+                    <button class="btn btn-sm btn-outline-blue" onclick="resetFilters()">↻ Reset Filters</button>
+                </div>
+            </div>
+
+            <!-- Bulk Action Bar -->
+            <div class="bulk-bar" id="bulkBar">
+                <span class="count" id="selectedCount">0</span> students selected
+                <button class="btn btn-sm btn-success" onclick="bulkAction('enrolled')">✅ Enroll</button>
+                <button class="btn btn-sm btn-warning" onclick="bulkAction('suspended')">⏸️ Suspend</button>
+                <button class="btn btn-sm btn-danger" onclick="bulkAction('withdrawn')">🚫 Withdraw</button>
+                <button class="btn btn-sm btn-outline-blue" onclick="clearSelection()">✕ Clear</button>
+            </div>
+
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:30px;">
+                                <input type="checkbox" id="selectAll" onchange="toggleAll()">
+                            </th>
+                            <th onclick="sortTable('id')">ID <span class="sort-icon">⇅</span></th>
+                            <th onclick="sortTable('name')">Name <span class="sort-icon">⇅</span></th>
+                            <th onclick="sortTable('program')">Program <span class="sort-icon">⇅</span></th>
+                            <th onclick="sortTable('mode')">Mode <span class="sort-icon">⇅</span></th>
+                            <th onclick="sortTable('status')">Status <span class="sort-icon">⇅</span></th>
+                            <th onclick="sortTable('batch')">Batch <span class="sort-icon">⇅</span></th>
+                            <th style="text-align:right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsBody">
+                        <!-- dynamic -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="studentModal">
+        <div class="modal">
+            <h2 id="modalTitle">Add New Student</h2>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>First Name <span class="required">*</span></label>
+                    <input type="text" id="studentFirstName" placeholder="John">
+                </div>
+                <div class="form-group">
+                    <label>Last Name <span class="required">*</span></label>
+                    <input type="text" id="studentLastName" placeholder="Doe">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Email <span class="required">*</span></label>
+                <input type="email" id="studentEmail" placeholder="student@britishpoly.org">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Student ID <span class="required">*</span></label>
+                    <input type="text" id="studentId" placeholder="e.g. STU-2025-001">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" id="studentPhone" placeholder="+44 20 7946 0100">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Program <span class="required">*</span></label>
+                    <select id="studentProgram">
+                        <option value="BSc Computer Science">BSc Computer Science</option>
+                        <option value="BEng Mechanical Engineering">BEng Mechanical Engineering</option>
+                        <option value="MBA Business Administration">MBA Business Administration</option>
+                        <option value="BSc Public Health">BSc Public Health</option>
+                        <option value="BA Digital Media">BA Digital Media</option>
+                        <option value="BSc Psychology">BSc Psychology</option>
+                        <option value="BEng Electrical & Electronic Engineering">BEng Electrical & Electronic Engineering</option>
+                        <option value="BSc Data Science">BSc Data Science</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Mode <span class="required">*</span></label>
+                    <select id="studentMode">
+                        <option value="physical">Physical</option>
+                        <option value="online">Online</option>
+                        <option value="hybrid">Hybrid</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Batch</label>
+                    <select id="studentBatch">
+                        <option value="SEP2025">September 2025 Intake</option>
+                        <option value="JAN2026">January 2026 Intake</option>
+                        <option value="SUM2025">Summer 2025 Short Courses</option>
+                        <option value="APR2025">April 2025 Intake</option>
+                        <option value="OCT2025-PG">October 2025 Postgraduate</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="studentStatus">
+                        <option value="enrolled">Enrolled</option>
+                        <option value="graduated">Graduated</option>
+                        <option value="suspended">Suspended</option>
+                        <option value="withdrawn">Withdrawn</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="saveStudent()">💾 Save Student</button>
+                <button class="btn btn-outline-blue" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast" class="toast">message</div>
+
+    <script>
+        // ===== DATA =====
+        let students = [
+            { id: 1, studentId: 'STU-2025-001', firstName: 'John', lastName: 'Doe', email: 'john.doe@britishpoly.org',
+                phone: '+44 20 7946 0101', program: 'BSc Computer Science', mode: 'physical', status: 'enrolled',
+                batch: 'SEP2025' },
+            { id: 2, studentId: 'STU-2025-002', firstName: 'Sarah', lastName: 'Johnson', email: 'sarah.j@britishpoly.org',
+                phone: '+44 20 7946 0102', program: 'BEng Mechanical Engineering', mode: 'physical', status: 'enrolled',
+                batch: 'SEP2025' },
+            { id: 3, studentId: 'STU-2025-003', firstName: 'Michael', lastName: 'Okafor', email: 'michael.o@britishpoly.org',
+                phone: '+44 20 7946 0103', program: 'MBA Business Administration', mode: 'online', status: 'enrolled',
+                batch: 'SEP2025' },
+            { id: 4, studentId: 'STU-2025-004', firstName: 'Aisha', lastName: 'Labana', email: 'aisha.l@britishpoly.org',
+                phone: '+44 20 7946 0104', program: 'BSc Public Health', mode: 'physical', status: 'graduated',
+                batch: 'APR2025' },
+            { id: 5, studentId: 'STU-2025-005', firstName: 'David', lastName: 'Chen', email: 'david.c@britishpoly.org',
+                phone: '+44 20 7946 0105', program: 'BA Digital Media', mode: 'online', status: 'enrolled',
+                batch: 'SEP2025' },
+            { id: 6, studentId: 'STU-2025-006', firstName: 'Emma', lastName: 'Williams', email: 'emma.w@britishpoly.org',
+                phone: '+44 20 7946 0106', program: 'BSc Psychology', mode: 'hybrid', status: 'enrolled',
+                batch: 'SEP2025' },
+            { id: 7, studentId: 'STU-2025-007', firstName: 'James', lastName: 'Kofi', email: 'james.k@britishpoly.org',
+                phone: '+44 20 7946 0107', program: 'BEng Electrical & Electronic Engineering', mode: 'physical',
+                status: 'suspended', batch: 'SEP2025' },
+            { id: 8, studentId: 'STU-2025-008', firstName: 'Sophia', lastName: 'Patel', email: 'sophia.p@britishpoly.org',
+                phone: '+44 20 7946 0108', program: 'BSc Data Science', mode: 'hybrid', status: 'enrolled',
+                batch: 'SEP2025' },
+            { id: 9, studentId: 'STU-2025-009', firstName: 'Thomas', lastName: 'Mensah', email: 'thomas.m@britishpoly.org',
+                phone: '+44 20 7946 0109', program: 'BSc Computer Science', mode: 'physical', status: 'withdrawn',
+                batch: 'APR2025' },
+            { id: 10, studentId: 'STU-2025-010', firstName: 'Olivia', lastName: 'Brown', email: 'olivia.b@britishpoly.org',
+                phone: '+44 20 7946 0110', program: 'BSc Public Health', mode: 'online', status: 'enrolled',
+                batch: 'SEP2025' },
+            { id: 11, studentId: 'STU-2025-011', firstName: 'Daniel', lastName: 'Adeyemi', email: 'daniel.a@britishpoly.org',
+                phone: '+44 20 7946 0111', program: 'MBA Business Administration', mode: 'hybrid', status: 'enrolled',
+                batch: 'OCT2025-PG' },
+            { id: 12, studentId: 'STU-2025-012', firstName: 'Grace', lastName: 'Okonkwo', email: 'grace.o@britishpoly.org',
+                phone: '+44 20 7946 0112', program: 'BSc Psychology', mode: 'physical', status: 'graduated',
+                batch: 'SUM2025' },
+            { id: 13, studentId: 'STU-2025-013', firstName: 'Samuel', lastName: 'Quaye', email: 'samuel.q@britishpoly.org',
+                phone: '+44 20 7946 0113', program: 'BEng Mechanical Engineering', mode: 'physical', status: 'enrolled',
+                batch: 'SEP2025' },
+            { id: 14, studentId: 'STU-2025-014', firstName: 'Felicity', lastName: 'Asare', email: 'felicity.a@britishpoly.org',
+                phone: '+44 20 7946 0114', program: 'BA Digital Media', mode: 'online', status: 'enrolled',
+                batch: 'SEP2025' },
+            { id: 15, studentId: 'STU-2025-015', firstName: 'Kwame', lastName: 'Boateng', email: 'kwame.b@britishpoly.org',
+                phone: '+44 20 7946 0115', program: 'BSc Data Science', mode: 'hybrid', status: 'suspended',
+                batch: 'SEP2025' },
+            { id: 16, studentId: 'STU-2025-016', firstName: 'Abena', lastName: 'Mensah', email: 'abena.m@britishpoly.org',
+                phone: '+44 20 7946 0116', program: 'BSc Public Health', mode: 'physical', status: 'enrolled',
+                batch: 'SEP2025' },
+            { id: 17, studentId: 'STU-2025-017', firstName: 'Kofi', lastName: 'Annan', email: 'kofi.a@britishpoly.org',
+                phone: '+44 20 7946 0117', program: 'BEng Electrical & Electronic Engineering', mode: 'physical',
+                status: 'enrolled', batch: 'SEP2025' },
+            { id: 18, studentId: 'STU-2025-018', firstName: 'Yaa', lastName: 'Asiedu', email: 'yaa.a@britishpoly.org',
+                phone: '+44 20 7946 0118', program: 'BSc Computer Science', mode: 'online', status: 'enrolled',
+                batch: 'JAN2026' },
+            { id: 19, studentId: 'STU-2025-019', firstName: 'Kojo', lastName: 'Tetteh', email: 'kojo.t@britishpoly.org',
+                phone: '+44 20 7946 0119', program: 'MBA Business Administration', mode: 'physical', status: 'enrolled',
+                batch: 'OCT2025-PG' },
+            { id: 20, studentId: 'STU-2025-020', firstName: 'Esi', lastName: 'Asare', email: 'esi.a@britishpoly.org',
+                phone: '+44 20 7946 0120', program: 'BSc Psychology', mode: 'hybrid', status: 'enrolled',
+                batch: 'SEP2025' }
+        ];
+
+        let nextId = 21;
+        let editingId = null;
+        let currentSort = 'id';
+        let sortAsc = true;
+        let selectedStudents = new Set();
+
+        // ===== DOM REFS =====
+        const tbody = document.getElementById('studentsBody');
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const modeFilter = document.getElementById('modeFilter');
+        const programFilter = document.getElementById('programFilter');
+        const resultCount = document.getElementById('resultCount');
+        const modal = document.getElementById('studentModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const bulkBar = document.getElementById('bulkBar');
+        const selectedCount = document.getElementById('selectedCount');
+        const selectAll = document.getElementById('selectAll');
+
+        // ===== RENDER =====
+        function renderStudents() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const status = statusFilter.value;
+            const mode = modeFilter.value;
+            const program = programFilter.value;
+
+            let filtered = students.filter(student => {
+                const fullName = (student.firstName + ' ' + student.lastName).toLowerCase();
+                const matchSearch = fullName.includes(searchTerm) ||
+                    student.studentId.toLowerCase().includes(searchTerm) ||
+                    student.email.toLowerCase().includes(searchTerm);
+                const matchStatus = status === 'all' || student.status === status;
+                const matchMode = mode === 'all' || student.mode === mode;
+                const matchProgram = program === 'all' || student.program === program;
+                return matchSearch && matchStatus && matchMode && matchProgram;
+            });
+
+            // Sort
+            filtered.sort((a, b) => {
+                let valA = a[currentSort];
+                let valB = b[currentSort];
+                if (currentSort === 'name') {
+                    valA = (a.firstName + ' ' + a.lastName).toLowerCase();
+                    valB = (b.firstName + ' ' + b.lastName).toLowerCase();
+                }
+                if (typeof valA === 'string') valA = valA.toLowerCase();
+                if (typeof valB === 'string') valB = valB.toLowerCase();
+                if (valA < valB) return sortAsc ? -1 : 1;
+                if (valA > valB) return sortAsc ? 1 : -1;
+                return 0;
+            });
+
+            resultCount.textContent = filtered.length;
+
+            // Update Stats
+            updateStats();
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align:center; padding:2.5rem; color:#6a7f9e;">
+                            <div style="font-size:2.5rem; margin-bottom:0.5rem;">👨‍🎓</div>
+                            <p>No students found matching your criteria.</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(student => {
+                const statusClass = 'status-' + student.status;
+                const modeClass = 'mode-' + student.mode;
+                const fullName = student.firstName + ' ' + student.lastName;
+                const initials = student.firstName.charAt(0) + student.lastName.charAt(0);
+                const checked = selectedStudents.has(student.id) ? 'checked' : '';
+
+                html += `
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="student-checkbox" data-id="${student.id}" ${checked} onchange="toggleStudent(${student.id})">
+                        </td>
+                        <td><strong>${student.studentId}</strong></td>
+                        <td>
+                            <div style="display:flex; align-items:center; gap:0.5rem;">
+                                <div style="width:32px; height:32px; border-radius:50%; background:#e6eeff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.75rem; color:#1a5cff; flex-shrink:0;">${initials}</div>
+                                ${fullName}
+                            </div>
+                        </td>
+                        <td>${student.program}</td>
+                        <td><span class="mode-badge ${modeClass}">${student.mode.charAt(0).toUpperCase() + student.mode.slice(1)}</span></td>
+                        <td><span class="status-badge ${statusClass}">${student.status.charAt(0).toUpperCase() + student.status.slice(1)}</span></td>
+                        <td>${student.batch || 'N/A'}</td>
+                        <td style="text-align:right;">
+                            <div class="action-btns">
+                                <button class="btn btn-sm btn-primary" onclick="editStudent(${student.id})">✎</button>
+                                <button class="btn btn-sm btn-warning" onclick="toggleStatus(${student.id})">↻</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteStudent(${student.id})">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+
+            // Update select all
+            const checkboxes = document.querySelectorAll('.student-checkbox');
+            const checkedBoxes = document.querySelectorAll('.student-checkbox:checked');
+            selectAll.checked = checkboxes.length > 0 && checkboxes.length === checkedBoxes.length;
+
+            updateBulkBar();
+        }
+
+        // ===== UPDATE STATS =====
+        function updateStats() {
+            document.getElementById('totalStudents').textContent = students.length;
+            document.getElementById('enrolledStudents').textContent = students.filter(s => s.status === 'enrolled').length;
+            document.getElementById('graduatedStudents').textContent = students.filter(s => s.status === 'graduated').length;
+            document.getElementById('onlineStudents').textContent = students.filter(s => s.mode === 'online').length;
+        }
+
+        // ===== SORT =====
+        function sortTable(field) {
+            if (currentSort === field) {
+                sortAsc = !sortAsc;
+            } else {
+                currentSort = field;
+                sortAsc = true;
+            }
+            renderStudents();
+        }
+
+        // ===== BULK SELECTION =====
+        function toggleStudent(id) {
+            if (selectedStudents.has(id)) {
+                selectedStudents.delete(id);
+            } else {
+                selectedStudents.add(id);
+            }
+            renderStudents();
+        }
+
+        function toggleAll() {
+            const checkboxes = document.querySelectorAll('.student-checkbox');
+            const allChecked = selectAll.checked;
+            checkboxes.forEach(cb => {
+                const id = parseInt(cb.dataset.id);
+                if (allChecked) {
+                    selectedStudents.add(id);
+                } else {
+                    selectedStudents.delete(id);
+                }
+                cb.checked = allChecked;
+            });
+            updateBulkBar();
+        }
+
+        function updateBulkBar() {
+            const count = selectedStudents.size;
+            if (count > 0) {
+                bulkBar.classList.add('show');
+                selectedCount.textContent = count;
+            } else {
+                bulkBar.classList.remove('show');
+            }
+        }
+
+        function clearSelection() {
+            selectedStudents.clear();
+            renderStudents();
+        }
+
+        function bulkAction(status) {
+            if (selectedStudents.size === 0) return;
+            if (!confirm(`Update ${selectedStudents.size} students to "${status}"?`)) return;
+
+            students.forEach(s => {
+                if (selectedStudents.has(s.id)) {
+                    s.status = status;
+                }
+            });
+            clearSelection();
+            renderStudents();
+            showToast(`✅ ${selectedStudents.size} students updated to ${status}`, 'success');
+        }
+
+        // ===== MODAL =====
+        function openModal(student) {
+            if (student) {
+                editingId = student.id;
+                modalTitle.textContent = '✎ Edit Student';
+                document.getElementById('studentFirstName').value = student.firstName;
+                document.getElementById('studentLastName').value = student.lastName;
+                document.getElementById('studentEmail').value = student.email;
+                document.getElementById('studentId').value = student.studentId;
+                document.getElementById('studentPhone').value = student.phone || '';
+                document.getElementById('studentProgram').value = student.program;
+                document.getElementById('studentMode').value = student.mode;
+                document.getElementById('studentBatch').value = student.batch || 'SEP2025';
+                document.getElementById('studentStatus').value = student.status;
+            } else {
+                editingId = null;
+                modalTitle.textContent = 'Add New Student';
+                document.getElementById('studentFirstName').value = '';
+                document.getElementById('studentLastName').value = '';
+                document.getElementById('studentEmail').value = '';
+                document.getElementById('studentId').value = '';
+                document.getElementById('studentPhone').value = '';
+                document.getElementById('studentProgram').value = 'BSc Computer Science';
+                document.getElementById('studentMode').value = 'physical';
+                document.getElementById('studentBatch').value = 'SEP2025';
+                document.getElementById('studentStatus').value = 'enrolled';
+            }
+            modal.classList.add('open');
+        }
+
+        function closeModal() {
+            modal.classList.remove('open');
+            editingId = null;
+        }
+
+        // ===== SAVE STUDENT =====
+        function saveStudent() {
+            const firstName = document.getElementById('studentFirstName').value.trim();
+            const lastName = document.getElementById('studentLastName').value.trim();
+            const email = document.getElementById('studentEmail').value.trim();
+            const studentId = document.getElementById('studentId').value.trim();
+            const phone = document.getElementById('studentPhone').value.trim();
+            const program = document.getElementById('studentProgram').value;
+            const mode = document.getElementById('studentMode').value;
+            const batch = document.getElementById('studentBatch').value;
+            const status = document.getElementById('studentStatus').value;
+
+            if (!firstName || !lastName || !email || !studentId) {
+                showToast('❌ Please fill in all required fields', 'error');
+                return;
+            }
+
+            if (!email.includes('@')) {
+                showToast('❌ Please enter a valid email address', 'error');
+                return;
+            }
+
+            // Check duplicate
+            const duplicate = students.some(s =>
+                (s.email.toLowerCase() === email.toLowerCase() || s.studentId === studentId) &&
+                s.id !== editingId
+            );
+            if (duplicate) {
+                showToast('❌ A student with this email or ID already exists', 'error');
+                return;
+            }
+
+            if (editingId) {
+                const idx = students.findIndex(s => s.id === editingId);
+                if (idx !== -1) {
+                    students[idx] = { ...students[idx], firstName, lastName, email, studentId, phone, program, mode, batch,
+                        status };
+                    showToast('✅ Student updated successfully', 'success');
+                }
+            } else {
+                const newStudent = {
+                    id: nextId++,
+                    studentId,
+                    firstName,
+                    lastName,
+                    email,
+                    phone: phone || 'N/A',
+                    program,
+                    mode,
+                    batch,
+                    status
+                };
+                students.push(newStudent);
+                showToast('✅ Student added successfully', 'success');
+            }
+
+            closeModal();
+            renderStudents();
+        }
+
+        // ===== EDIT STUDENT =====
+        function editStudent(id) {
+            const student = students.find(s => s.id === id);
+            if (student) openModal(student);
+        }
+
+        // ===== TOGGLE STATUS =====
+        function toggleStatus(id) {
+            const student = students.find(s => s.id === id);
+            if (!student) return;
+            const statuses = ['enrolled', 'graduated', 'suspended', 'withdrawn'];
+            const currentIdx = statuses.indexOf(student.status);
+            const nextIdx = (currentIdx + 1) % statuses.length;
+            student.status = statuses[nextIdx];
+            renderStudents();
+            showToast(`↻ Status changed to "${student.status}"`, 'success');
+        }
+
+        // ===== DELETE STUDENT =====
+        function deleteStudent(id) {
+            const student = students.find(s => s.id === id);
+            if (!student) return;
+            if (confirm(`Delete student "${student.firstName} ${student.lastName}"? This cannot be undone.`)) {
+                students = students.filter(s => s.id !== id);
+                selectedStudents.delete(id);
+                renderStudents();
+                showToast('🗑️ Student deleted', 'success');
+            }
+        }
+
+        // ===== RESET FILTERS =====
+        function resetFilters() {
+            searchInput.value = '';
+            statusFilter.value = 'all';
+            modeFilter.value = 'all';
+            programFilter.value = 'all';
+            clearSelection();
+            renderStudents();
+            showToast('↻ Filters reset', 'success');
+        }
+
+        // ===== REFRESH =====
+        function refreshStudents() {
+            renderStudents();
+            showToast('↻ Students refreshed', 'success');
+        }
+
+        // ===== EXPORT CSV =====
+        function exportCSV() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const status = statusFilter.value;
+            const mode = modeFilter.value;
+            const program = programFilter.value;
+
+            let filtered = students.filter(student => {
+                const fullName = (student.firstName + ' ' + student.lastName).toLowerCase();
+                const matchSearch = fullName.includes(searchTerm) ||
+                    student.studentId.toLowerCase().includes(searchTerm) ||
+                    student.email.toLowerCase().includes(searchTerm);
+                const matchStatus = status === 'all' || student.status === status;
+                const matchMode = mode === 'all' || student.mode === mode;
+                const matchProgram = program === 'all' || student.program === program;
+                return matchSearch && matchStatus && matchMode && matchProgram;
+            });
+
+            if (filtered.length === 0) {
+                showToast('❌ No data to export', 'error');
+                return;
+            }
+
+            const headers = ['Student ID', 'First Name', 'Last Name', 'Email', 'Phone', 'Program', 'Mode', 'Status', 'Batch'];
+            const rows = filtered.map(s => [
+                s.studentId, s.firstName, s.lastName, s.email, s.phone || 'N/A',
+                s.program, s.mode, s.status, s.batch || 'N/A'
+            ]);
+
+            let csv = headers.join(',') + '\n';
+            rows.forEach(row => {
+                csv += row.map(cell => `"${cell}"`).join(',') + '\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download',
+            `students_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showToast(`✅ Exported ${filtered.length} students`, 'success');
+        }
+
+        // ===== TOAST =====
+        const toast = document.getElementById('toast');
+        let toastTimer;
+
+        function showToast(msg, type = 'success') {
+            toast.textContent = msg;
+            toast.className = 'toast ' + type + ' show';
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ===== SIDEBAR TOGGLE =====
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const toggleBtn = document.getElementById('sidebarToggle');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        toggleBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (sidebar.classList.contains('open')) toggleSidebar();
+                if (modal.classList.contains('open')) closeModal();
+            }
+        });
+
+        // ===== EVENT BINDING =====
+        searchInput.addEventListener('input', renderStudents);
+        statusFilter.addEventListener('change', renderStudents);
+        modeFilter.addEventListener('change', renderStudents);
+        programFilter.addEventListener('change', renderStudents);
+
+        // ===== INIT =====
+        renderStudents();
+        console.log('✅ British Poly · Student Registry loaded');
+        console.log(`👨‍🎓 ${students.length} students loaded`);
+    </script>
+
+</body>
+</html>

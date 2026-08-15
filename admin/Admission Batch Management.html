@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>Admission Batch Management · British Poly Admin</title>
+    <!-- Google Font + minimal reset -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f6faff;
+            color: #0a1e3c;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 260px;
+            background: #0a1e3c;
+            color: white;
+            min-height: 100vh;
+            padding: 1.8rem 1.2rem 2rem;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.25s ease;
+            z-index: 200;
+        }
+
+        .sidebar .logo {
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar .logo span {
+            color: #6a9aff;
+        }
+
+        .sidebar .logo small {
+            font-weight: 400;
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.4);
+            display: block;
+            margin-top: 0.1rem;
+        }
+
+        .sidebar .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar .nav-section .label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .sidebar .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.6rem 0.8rem;
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: 0.15s ease;
+            margin-bottom: 0.15rem;
+            cursor: pointer;
+        }
+
+        .sidebar .nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .sidebar .nav-item.active {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+        }
+
+        .sidebar .nav-item .icon {
+            font-size: 1.1rem;
+            width: 28px;
+            text-align: center;
+        }
+
+        .sidebar .nav-item .badge {
+            margin-left: auto;
+            background: #1a5cff;
+            color: white;
+            font-size: 0.6rem;
+            padding: 0.05rem 0.6rem;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+
+        .sidebar .user-card {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 0.8rem 1rem;
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .sidebar .user-card .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1a5cff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .sidebar .user-card .info {
+            font-size: 0.8rem;
+        }
+
+        .sidebar .user-card .info .name {
+            font-weight: 600;
+            color: white;
+        }
+
+        .sidebar .user-card .info .role {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem 2rem 3rem;
+            max-width: calc(100% - 260px);
+            width: 100%;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            background: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eef2f8;
+            margin-bottom: 2rem;
+        }
+
+        .top-bar .greeting {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .top-bar .greeting small {
+            font-weight: 400;
+            color: #4a6a8a;
+            font-size: 0.8rem;
+        }
+
+        .top-bar .actions {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .top-bar .actions .btn {
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: 0.15s ease;
+            background: white;
+            color: #0a1e3c;
+            border-color: #c5d4ee;
+            text-decoration: none;
+        }
+
+        .top-bar .actions .btn-primary {
+            background: #0a1e3c;
+            color: white;
+            border-color: #0a1e3c;
+        }
+
+        .top-bar .actions .btn-primary:hover {
+            background: #17335c;
+            border-color: #17335c;
+        }
+
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0a1e3c;
+        }
+
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: #4a6a8a;
+            font-weight: 500;
+        }
+
+        /* ===== BATCH GRID ===== */
+        .batch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .batch-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.8rem;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            border: 1px solid rgba(26, 92, 255, 0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+
+        .batch-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 36px rgba(0, 20, 50, 0.08);
+        }
+
+        .batch-card .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+
+        .batch-card .header .title {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .batch-card .header .code {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #1a5cff;
+            background: #e6eeff;
+            padding: 0.15rem 0.8rem;
+            border-radius: 40px;
+        }
+
+        .batch-card .details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin: 0.8rem 0 1rem;
+            font-size: 0.85rem;
+        }
+
+        .batch-card .details .item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: #1a3660;
+        }
+
+        .batch-card .details .item .icon {
+            font-size: 1rem;
+        }
+
+        .batch-card .status-badge {
+            padding: 0.1rem 0.7rem;
+            border-radius: 40px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .batch-card .status-open {
+            background: #ddf0e6;
+            color: #0e7b3a;
+        }
+        .batch-card .status-closed {
+            background: #f0e6e6;
+            color: #b22234;
+        }
+        .batch-card .status-pending {
+            background: #f0ece6;
+            color: #d48c2c;
+        }
+        .batch-card .status-full {
+            background: #e6eeff;
+            color: #1a5cff;
+        }
+
+        .batch-card .progress-section {
+            margin: 1rem 0;
+        }
+
+        .batch-card .progress-section .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #eef2f8;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .batch-card .progress-section .progress-bar .fill {
+            height: 100%;
+            background: #1a5cff;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .batch-card .progress-section .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #4a6a8a;
+            margin-top: 0.2rem;
+        }
+
+        .batch-card .footer {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid #eef2f8;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #1a5cff;
+            color: white;
+            border-color: #1a5cff;
+        }
+
+        .btn-primary:hover {
+            background: #2a6cff;
+            border-color: #2a6cff;
+        }
+
+        .btn-success {
+            background: #0e7b3a;
+            color: white;
+            border-color: #0e7b3a;
+        }
+
+        .btn-success:hover {
+            background: #1a934a;
+            border-color: #1a934a;
+        }
+
+        .btn-danger {
+            background: #b22234;
+            color: white;
+            border-color: #b22234;
+        }
+
+        .btn-danger:hover {
+            background: #a01e2e;
+            border-color: #a01e2e;
+        }
+
+        .btn-warning {
+            background: #d48c2c;
+            color: white;
+            border-color: #d48c2c;
+        }
+
+        .btn-warning:hover {
+            background: #c07a1e;
+            border-color: #c07a1e;
+        }
+
+        .btn-outline-blue {
+            background: white;
+            color: #0a1e3c;
+            border-color: #0a1e3c;
+        }
+
+        .btn-outline-blue:hover {
+            background: #edf4ff;
+            border-color: #1a5cff;
+            color: #1a5cff;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.8rem;
+            font-size: 0.7rem;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 30, 60, 0.45);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            max-width: 560px;
+            width: 92%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem 2rem 2.2rem;
+            border-radius: 32px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            animation: modalIn 0.2s ease;
+        }
+
+        @keyframes modalIn {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .modal .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #1a3660;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .modal .form-group label .required {
+            color: #b22234;
+        }
+
+        .modal .form-group input,
+        .modal .form-group select,
+        .modal .form-group textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 60px;
+            border: 2px solid #dce5f2;
+            background: white;
+            font-weight: 500;
+            color: #0a1e3c;
+            font-size: 0.9rem;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .modal .form-group input:focus,
+        .modal .form-group select:focus,
+        .modal .form-group textarea:focus {
+            border-color: #1a5cff;
+            box-shadow: 0 0 0 3px rgba(26, 92, 255, 0.1);
+        }
+
+        .modal .form-group textarea {
+            border-radius: 20px;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .modal .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .modal .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .modal .modal-actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .modal .modal-actions .btn {
+            flex: 1;
+            justify-content: center;
+            min-width: 100px;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #0a1e3c;
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 500;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.25s, transform 0.25s;
+            pointer-events: none;
+            font-size: 0.9rem;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .toast.success {
+            background: #0e7b3a;
+        }
+
+        .toast.error {
+            background: #b22234;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 0.8rem;
+            left: 0.8rem;
+            z-index: 300;
+            background: #0a1e3c;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0.6rem 1rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 150;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: fixed;
+                transform: translateX(-100%);
+                width: 280px;
+                height: 100vh;
+                border-radius: 0 20px 20px 0;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+                box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+            }
+            .sidebar-toggle {
+                display: block;
+            }
+            .main-content {
+                padding: 1rem 1rem 2rem;
+                max-width: 100%;
+            }
+            .top-bar {
+                padding: 0.5rem 1rem;
+                border-radius: 20px;
+                margin-top: 0.5rem;
+            }
+            .batch-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .top-bar .greeting {
+                font-size: 0.85rem;
+            }
+            .batch-card .details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .batch-card {
+                padding: 1.2rem;
+            }
+            .modal {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="British Poly · Home.html">Admin Home</a><a href="About Us · British Poly.html">About Us · British Poly</a><a href="Admin Profile · Account.html">Admin Profile · Account</a><a href="Admissions · British Poly.html">Admissions · British Poly</a><a href="British Poly · Home.html">British Poly · Home</a><a href="Contact Us.html">Contact Us</a><a href="Finance & Bursary Control .html">Finance & Bursary Control </a><a href="Notice Board.html">Notice Board</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page15.html">page15</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page19.html">page19</a><a href="page21.html">page21</a><a href="page22.html">page22</a><a href="page23.html">page23</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a><a href="Parent & Guardian Portal.html">Parent & Guardian Portal</a><a href="Programs · British Poly.html">Programs · British Poly</a><a href="Staff Management.html">Staff Management</a><a href="Student Life.html">Student Life</a></div>
+
+    <!-- ===== SIDEBAR TOGGLE ===== -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            British<span>Poly</span>
+            <small>Administration</small>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Main</div>
+            <a href="#" class="nav-item">
+                <span class="icon">📊</span> Dashboard
+            </a>
+            <a href="#" class="nav-item active">
+                <span class="icon">🎓</span> Admission Batches
+                <span class="badge">6</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📋</span> Applications
+                <span class="badge">12</span>
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">👨‍🎓</span> Students
+                <span class="badge">1,247</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Management</div>
+            <a href="#" class="nav-item">
+                <span class="icon">📚</span> Courses
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📅</span> Sessions
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">📝</span> Results
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="label">Settings</div>
+            <a href="#" class="nav-item">
+                <span class="icon">🔐</span> Access Control
+            </a>
+            <a href="#" class="nav-item">
+                <span class="icon">⚙️</span> System Settings
+            </a>
+        </div>
+
+        <div class="user-card">
+            <div class="avatar">AD</div>
+            <div class="info">
+                <div class="name">Admin User</div>
+                <div class="role">Administrator</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content">
+
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="greeting">
+                🎓 Admission Batch Management
+                <small>| Manage admission cohorts</small>
+            </div>
+            <div class="actions">
+                <button class="btn btn-primary" onclick="openModal()">➕ New Batch</button>
+                <button class="btn btn-outline" onclick="refreshBatches()">🔄 Refresh</button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="number" id="totalBatches">0</div>
+                <div class="label">Total Batches</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="openBatches">0</div>
+                <div class="label">Open</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="closedBatches">0</div>
+                <div class="label">Closed</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="totalApplications">0</div>
+                <div class="label">Total Applications</div>
+            </div>
+        </div>
+
+        <!-- Batch Grid -->
+        <div class="batch-grid" id="batchGrid">
+            <!-- dynamic -->
+        </div>
+
+    </div>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="batchModal">
+        <div class="modal">
+            <h2 id="modalTitle">Create New Admission Batch</h2>
+
+            <div class="form-group">
+                <label>Batch Name <span class="required">*</span></label>
+                <input type="text" id="batchName" placeholder="e.g. September 2025 Intake">
+            </div>
+
+            <div class="form-group">
+                <label>Batch Code <span class="required">*</span></label>
+                <input type="text" id="batchCode" placeholder="e.g. SEP2025">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Start Date <span class="required">*</span></label>
+                    <input type="date" id="batchStart">
+                </div>
+                <div class="form-group">
+                    <label>End Date <span class="required">*</span></label>
+                    <input type="date" id="batchEnd">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Application Deadline</label>
+                    <input type="date" id="batchDeadline">
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="batchStatus">
+                        <option value="open">Open</option>
+                        <option value="pending">Pending</option>
+                        <option value="full">Full</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Capacity</label>
+                    <input type="number" id="batchCapacity" placeholder="e.g. 100" value="100">
+                </div>
+                <div class="form-group">
+                    <label>Current Enrolled</label>
+                    <input type="number" id="batchEnrolled" placeholder="e.g. 45" value="0">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="batchDescription" rows="2" placeholder="Additional notes about this batch..."></textarea>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="saveBatch()">💾 Save Batch</button>
+                <button class="btn btn-outline-blue" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast" class="toast">message</div>
+
+    <script>
+        // ===== DATA =====
+        let batches = [{
+            id: 1,
+            name: 'September 2025 Intake',
+            code: 'SEP2025',
+            startDate: '2025-09-01',
+            endDate: '2026-06-30',
+            deadline: '2025-08-15',
+            status: 'open',
+            capacity: 150,
+            enrolled: 98,
+            description: 'Main intake for the 2025/2026 academic year. All programs available.'
+        }, {
+            id: 2,
+            name: 'January 2026 Intake',
+            code: 'JAN2026',
+            startDate: '2026-01-15',
+            endDate: '2026-12-20',
+            deadline: '2025-12-15',
+            status: 'pending',
+            capacity: 80,
+            enrolled: 0,
+            description: 'Mid-year intake for select programs. Applications opening soon.'
+        }, {
+            id: 3,
+            name: 'Summer 2025 Short Courses',
+            code: 'SUM2025',
+            startDate: '2025-06-01',
+            endDate: '2025-08-30',
+            deadline: '2025-05-15',
+            status: 'full',
+            capacity: 60,
+            enrolled: 60,
+            description: 'Intensive summer programs for professional development.'
+        }, {
+            id: 4,
+            name: 'April 2025 Intake',
+            code: 'APR2025',
+            startDate: '2025-04-01',
+            endDate: '2025-12-20',
+            deadline: '2025-03-15',
+            status: 'closed',
+            capacity: 120,
+            enrolled: 112,
+            description: 'Early year intake for distance learning programs.'
+        }, {
+            id: 5,
+            name: 'October 2025 Postgraduate',
+            code: 'OCT2025-PG',
+            startDate: '2025-10-01',
+            endDate: '2026-09-30',
+            deadline: '2025-09-15',
+            status: 'open',
+            capacity: 50,
+            enrolled: 28,
+            description: 'Postgraduate programs including MBA, MSc, and professional diplomas.'
+        }, {
+            id: 6,
+            name: 'July 2025 International',
+            code: 'JUL2025-INT',
+            startDate: '2025-07-01',
+            endDate: '2026-06-30',
+            deadline: '2025-06-15',
+            status: 'pending',
+            capacity: 40,
+            enrolled: 0,
+            description: 'Special intake for international students with pre-sessional programs.'
+        }];
+
+        let nextId = 7;
+        let editingId = null;
+
+        // ===== DOM REFS =====
+        const batchGrid = document.getElementById('batchGrid');
+        const modal = document.getElementById('batchModal');
+        const modalTitle = document.getElementById('modalTitle');
+
+        // ===== RENDER =====
+        function renderBatches() {
+            let html = '';
+            batches.forEach(batch => {
+                const statusClass = 'status-' + batch.status;
+                const statusLabel = batch.status.charAt(0).toUpperCase() + batch.status.slice(1);
+                const progress = batch.capacity > 0 ? (batch.enrolled / batch.capacity) * 100 : 0;
+                const progressColor = progress >= 90 ? '#b22234' : progress >= 70 ? '#d48c2c' : '#1a5cff';
+
+                html += `
+                    <div class="batch-card">
+                        <div class="header">
+                            <span class="title">${batch.name}</span>
+                            <span class="code">${batch.code}</span>
+                        </div>
+                        <div class="details">
+                            <div class="item"><span class="icon">📅</span> ${formatDate(batch.startDate)} - ${formatDate(batch.endDate)}</div>
+                            <div class="item"><span class="icon">⏰</span> Deadline: ${formatDate(batch.deadline)}</div>
+                            <div class="item"><span class="icon">👥</span> ${batch.enrolled} / ${batch.capacity} enrolled</div>
+                            <div class="item"><span class="status-badge ${statusClass}">${statusLabel}</span></div>
+                        </div>
+                        ${batch.description ? `<p style="font-size:0.85rem; color:#4a6a8a; margin:0.3rem 0 0.8rem;">${batch.description}</p>` : ''}
+                        <div class="progress-section">
+                            <div class="progress-bar">
+                                <div class="fill" style="width:${Math.min(progress, 100)}%; background:${progressColor};"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>${Math.round(progress)}% full</span>
+                                <span>${batch.capacity - batch.enrolled} spots left</span>
+                            </div>
+                        </div>
+                        <div class="footer">
+                            <button class="btn btn-sm btn-primary" onclick="editBatch(${batch.id})">✎ Edit</button>
+                            <button class="btn btn-sm btn-success" onclick="viewApplications(${batch.id})">📋 Apps</button>
+                            <button class="btn btn-sm btn-warning" onclick="toggleStatus(${batch.id})">↻ Status</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteBatch(${batch.id})">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (batches.length === 0) {
+                html = `
+                    <div style="grid-column:1/-1; text-align:center; padding:3rem; color:#6a7f9e;">
+                        <div style="font-size:3rem; margin-bottom:0.5rem;">📭</div>
+                        <p>No admission batches created yet.</p>
+                        <p style="font-size:0.85rem;">Click "New Batch" to get started.</p>
+                    </div>
+                `;
+            }
+
+            batchGrid.innerHTML = html;
+            updateStats();
+        }
+
+        // ===== UPDATE STATS =====
+        function updateStats() {
+            document.getElementById('totalBatches').textContent = batches.length;
+            document.getElementById('openBatches').textContent = batches.filter(b => b.status === 'open').length;
+            document.getElementById('closedBatches').textContent = batches.filter(b => b.status === 'closed' || b.status ===
+                'full').length;
+            const totalApps = batches.reduce((sum, b) => sum + b.enrolled, 0);
+            document.getElementById('totalApplications').textContent = totalApps;
+        }
+
+        // ===== FORMAT DATE =====
+        function formatDate(dateStr) {
+            if (!dateStr) return 'N/A';
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        // ===== MODAL =====
+        function openModal(batch) {
+            if (batch) {
+                editingId = batch.id;
+                modalTitle.textContent = '✎ Edit Admission Batch';
+                document.getElementById('batchName').value = batch.name;
+                document.getElementById('batchCode').value = batch.code;
+                document.getElementById('batchStart').value = batch.startDate;
+                document.getElementById('batchEnd').value = batch.endDate;
+                document.getElementById('batchDeadline').value = batch.deadline;
+                document.getElementById('batchStatus').value = batch.status;
+                document.getElementById('batchCapacity').value = batch.capacity;
+                document.getElementById('batchEnrolled').value = batch.enrolled;
+                document.getElementById('batchDescription').value = batch.description || '';
+            } else {
+                editingId = null;
+                modalTitle.textContent = 'Create New Admission Batch';
+                document.getElementById('batchName').value = '';
+                document.getElementById('batchCode').value = '';
+                document.getElementById('batchStart').value = '';
+                document.getElementById('batchEnd').value = '';
+                document.getElementById('batchDeadline').value = '';
+                document.getElementById('batchStatus').value = 'pending';
+                document.getElementById('batchCapacity').value = 100;
+                document.getElementById('batchEnrolled').value = 0;
+                document.getElementById('batchDescription').value = '';
+            }
+            modal.classList.add('open');
+        }
+
+        function closeModal() {
+            modal.classList.remove('open');
+            editingId = null;
+        }
+
+        // ===== SAVE BATCH =====
+        function saveBatch() {
+            const name = document.getElementById('batchName').value.trim();
+            const code = document.getElementById('batchCode').value.trim();
+            const startDate = document.getElementById('batchStart').value;
+            const endDate = document.getElementById('batchEnd').value;
+            const deadline = document.getElementById('batchDeadline').value;
+            const status = document.getElementById('batchStatus').value;
+            const capacity = parseInt(document.getElementById('batchCapacity').value) || 0;
+            const enrolled = parseInt(document.getElementById('batchEnrolled').value) || 0;
+            const description = document.getElementById('batchDescription').value.trim();
+
+            if (!name || !code || !startDate || !endDate) {
+                showToast('❌ Please fill in all required fields', 'error');
+                return;
+            }
+
+            if (enrolled > capacity) {
+                showToast('❌ Enrolled students cannot exceed capacity', 'error');
+                return;
+            }
+
+            if (editingId) {
+                const idx = batches.findIndex(b => b.id === editingId);
+                if (idx !== -1) {
+                    batches[idx] = { ...batches[idx], name, code, startDate, endDate, deadline, status, capacity, enrolled,
+                        description };
+                    showToast('✅ Batch updated successfully', 'success');
+                }
+            } else {
+                const newBatch = {
+                    id: nextId++,
+                    name,
+                    code,
+                    startDate,
+                    endDate,
+                    deadline,
+                    status,
+                    capacity,
+                    enrolled,
+                    description
+                };
+                batches.push(newBatch);
+                showToast('✅ Batch created successfully', 'success');
+            }
+
+            closeModal();
+            renderBatches();
+        }
+
+        // ===== EDIT BATCH =====
+        function editBatch(id) {
+            const batch = batches.find(b => b.id === id);
+            if (batch) openModal(batch);
+        }
+
+        // ===== TOGGLE STATUS =====
+        function toggleStatus(id) {
+            const batch = batches.find(b => b.id === id);
+            if (!batch) return;
+            const statuses = ['open', 'pending', 'full', 'closed'];
+            const currentIdx = statuses.indexOf(batch.status);
+            const nextIdx = (currentIdx + 1) % statuses.length;
+            batch.status = statuses[nextIdx];
+            renderBatches();
+            showToast(`↻ Status changed to "${batch.status}"`, 'success');
+        }
+
+        // ===== DELETE BATCH =====
+        function deleteBatch(id) {
+            const batch = batches.find(b => b.id === id);
+            if (!batch) return;
+            if (confirm(`Delete batch "${batch.name}"? This cannot be undone.`)) {
+                batches = batches.filter(b => b.id !== id);
+                renderBatches();
+                showToast('🗑️ Batch deleted', 'success');
+            }
+        }
+
+        // ===== VIEW APPLICATIONS =====
+        function viewApplications(id) {
+            const batch = batches.find(b => b.id === id);
+            if (!batch) return;
+            showToast(`📋 ${batch.enrolled} applications for ${batch.name}`, 'success');
+        }
+
+        // ===== REFRESH =====
+        function refreshBatches() {
+            renderBatches();
+            showToast('↻ Batches refreshed', 'success');
+        }
+
+        // ===== TOAST =====
+        const toast = document.getElementById('toast');
+        let toastTimer;
+
+        function showToast(msg, type = 'success') {
+            toast.textContent = msg;
+            toast.className = 'toast ' + type + ' show';
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ===== SIDEBAR TOGGLE =====
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const toggleBtn = document.getElementById('sidebarToggle');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        toggleBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (sidebar.classList.contains('open')) toggleSidebar();
+                if (modal.classList.contains('open')) closeModal();
+            }
+        });
+
+        // ===== INIT =====
+        renderBatches();
+        console.log('✅ British Poly · Admission Batch Management loaded');
+        console.log(`🎓 ${batches.length} batches loaded`);
+    </script>
+
+</body>
+</html>

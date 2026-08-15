@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff · Student Advisory & Mentorship</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #edf2f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+
+        .dashboard {
+            max-width: 1380px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 36px;
+            box-shadow: 0 24px 56px -16px rgba(0, 20, 40, 0.18);
+            padding: 2rem 2.2rem;
+            transition: all 0.2s;
+        }
+
+        /* ===== HEADER ===== */
+        .dash-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem 1.5rem;
+            border-bottom: 1px solid #e9eff6;
+            padding-bottom: 1.4rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .header-left .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #1a4fbf, #2563eb);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.4rem;
+            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
+        }
+
+        .header-left h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0b1e2e;
+            letter-spacing: -0.02em;
+        }
+
+        .header-left h1 span { color: #2563eb; }
+
+        .header-left .badge-role {
+            background: #e5edf9;
+            color: #1f4f8a;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .header-right .date-badge {
+            background: #f2f6fc;
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            color: #1f3b57;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-outline {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #1f3f5c;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+
+        .btn-outline i { color: #2563eb; }
+        .btn-outline:hover { background: #f4f9ff; border-color: #b2c8dd; }
+
+        .btn-primary {
+            background: #0b1e2e;
+            border: 1px solid #0b1e2e;
+            color: white;
+        }
+        .btn-primary i { color: white; }
+        .btn-primary:hover { background: #1a3147; }
+
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #f9fcff;
+            border-radius: 20px;
+            padding: 0.9rem 1.2rem;
+            border: 1px solid #e9f0f7;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: 0.15s;
+        }
+        .stat-card:hover { border-color: #c9d9ec; background: #fafdff; }
+
+        .stat-card .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            background: #e5effb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .stat-card .stat-content .stat-number {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0b1e2e;
+            line-height: 1.2;
+        }
+
+        .stat-card .stat-content .stat-label {
+            font-size: 0.7rem;
+            color: #4d6a87;
+            font-weight: 500;
+        }
+
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.6rem;
+            border-bottom: 1px solid #e9eff6;
+            padding-bottom: 0.4rem;
+        }
+
+        .tab {
+            padding: 0.4rem 1.4rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #4d6a87;
+            background: transparent;
+            transition: 0.15s;
+            cursor: default;
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .tab.active {
+            background: #e5edf9;
+            color: #1f4f8a;
+            border-color: #c9d9ec;
+            font-weight: 600;
+        }
+
+        .tab i { font-size: 0.85rem; }
+        .tab .count {
+            background: #d7e2ed;
+            color: #1f3b57;
+            border-radius: 40px;
+            padding: 0.05rem 0.6rem;
+            font-size: 0.65rem;
+        }
+        .tab.active .count { background: #b8cee5; }
+
+        /* ===== FILTER BAR ===== */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.6rem 1.2rem;
+            margin-bottom: 1.4rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #e9eff6;
+        }
+
+        .filter-bar .filter-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #4d6a87;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .filter-chip {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.15rem 1rem;
+            font-size: 0.75rem;
+            color: #1f3f5c;
+            cursor: default;
+            transition: 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .filter-chip.active {
+            background: #e5edf9;
+            border-color: #b2c8dd;
+            font-weight: 500;
+        }
+        .filter-chip i { color: #6a86a3; font-size: 0.7rem; }
+        .filter-chip.active i { color: #2563eb; }
+
+        .filter-search {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.15rem 0.8rem 0.15rem 1rem;
+        }
+
+        .filter-search i { color: #8aa5c2; font-size: 0.8rem; }
+        .filter-search input {
+            border: none;
+            background: transparent;
+            padding: 0.3rem 0.4rem 0.3rem 0.6rem;
+            font-size: 0.8rem;
+            outline: none;
+            width: 140px;
+            color: #0b1e2e;
+        }
+        .filter-search input::placeholder { color: #a5bdd4; }
+
+        /* ===== 2-COLUMN GRID ===== */
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 1.8rem;
+            margin-bottom: 1.8rem;
+        }
+
+        @media (max-width: 900px) {
+            .grid-2col { grid-template-columns: 1fr; }
+        }
+
+        /* ===== SECTION CARDS ===== */
+        .section-card {
+            background: #f9fcff;
+            border-radius: 24px;
+            padding: 1.2rem 1.4rem 1.4rem;
+            border: 1px solid #e9f0f7;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .section-title h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0b1e2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title h3 i { color: #2563eb; }
+
+        .section-title .badge-count {
+            background: #e5edf9;
+            color: #1f4f8a;
+            border-radius: 60px;
+            padding: 0.05rem 0.9rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* ===== ADVISEE LIST ===== */
+        .advisee-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #eef4fa;
+        }
+        .advisee-item:last-child { border-bottom: 0; }
+
+        .advisee-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            background: #e5effb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-weight: 600;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .advisee-info { flex: 1; }
+        .advisee-info .advisee-name { font-weight: 500; font-size: 0.9rem; color: #0b1e2e; }
+        .advisee-info .advisee-detail {
+            font-size: 0.7rem;
+            color: #4d6a87;
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .advisee-info .advisee-detail i { color: #2563eb; width: 0.9rem; }
+
+        .advisee-status {
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 0.1rem 0.7rem;
+            border-radius: 40px;
+            background: #e2f0e6;
+            color: #1a6d3b;
+        }
+        .advisee-status.at-risk { background: #fde8e8; color: #b13e3e; }
+        .advisee-status.attention { background: #fef3d7; color: #a7691a; }
+        .advisee-status.on-track { background: #e5edf9; color: #1f4f8a; }
+
+        .advisee-action {
+            font-size: 0.7rem;
+            color: #2563eb;
+            font-weight: 500;
+            cursor: default;
+            padding: 0.1rem 0.6rem;
+            border-radius: 40px;
+            border: 1px solid #d7e2ed;
+            background: white;
+            transition: 0.1s;
+        }
+        .advisee-action:hover { background: #f4f9ff; }
+
+        /* ===== MENTORSHIP SESSIONS ===== */
+        .session-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eef4fa;
+        }
+        .session-item:last-child { border-bottom: 0; }
+
+        .session-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: #e5effb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .session-icon.warning { background: #fef3d7; color: #a7691a; }
+        .session-icon.success { background: #e2f0e6; color: #1a6d3b; }
+        .session-icon.purple { background: #ede4f5; color: #6b3f9e; }
+        .session-icon.danger { background: #fde8e8; color: #b13e3e; }
+
+        .session-info { flex: 1; }
+        .session-info .session-title { font-weight: 500; font-size: 0.85rem; color: #0b1e2e; }
+        .session-info .session-meta {
+            font-size: 0.7rem;
+            color: #4d6a87;
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .session-info .session-meta i { color: #2563eb; width: 0.8rem; }
+
+        .session-time {
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: #1f3b57;
+            background: #f2f6fc;
+            padding: 0.1rem 0.6rem;
+            border-radius: 40px;
+        }
+
+        /* ===== MENTORSHIP ACTIVITY ===== */
+        .activity-item {
+            display: flex;
+            gap: 0.8rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eef4fa;
+            align-items: flex-start;
+        }
+        .activity-item:last-child { border-bottom: 0; }
+
+        .activity-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 10px;
+            background: #e5effb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .activity-content { flex: 1; }
+        .activity-content .activity-text { font-size: 0.82rem; color: #0b1e2e; }
+        .activity-content .activity-text strong { font-weight: 600; }
+        .activity-content .activity-time { font-size: 0.65rem; color: #6a86a3; }
+
+        /* ===== BUTTONS ===== */
+        .btn-sm {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.2rem 1rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #1f3f5c;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+        .btn-sm i { color: #2563eb; }
+        .btn-sm:hover { background: #f4f9ff; border-color: #b2c8dd; }
+        .btn-sm.primary { background: #0b1e2e; border-color: #0b1e2e; color: white; }
+        .btn-sm.primary i { color: white; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .dashboard { padding: 1.2rem; border-radius: 28px; }
+            .header-left h1 { font-size: 1.2rem; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .filter-search { margin-left: 0; width: 100%; }
+            .filter-search input { width: 100%; }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard { padding: 0.8rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .header-left .logo-icon { width: 40px; height: 40px; font-size: 1.2rem; }
+            .tab { font-size: 0.7rem; padding: 0.2rem 0.8rem; }
+            .filter-chip { font-size: 0.65rem; padding: 0.1rem 0.6rem; }
+        }
+
+        .footer-note {
+            margin-top: 1.2rem;
+            font-size: 0.7rem;
+            color: #7f99b5;
+            display: flex;
+            justify-content: flex-end;
+            border-top: 1px solid #e9eff6;
+            padding-top: 1rem;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Staff Home</a><a href="pag19.html">pag19</a><a href="page.10.html">page 10</a><a href="page.12.html">page 12</a><a href="page.14.html">page 14</a><a href="page.15.html">page 15</a><a href="page1.html">page1</a><a href="page11.html">page11</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page7.html">page7</a><a href="page9.html">page9</a></div>
+<div class="dashboard">
+
+    <!-- ===== HEADER ===== -->
+    <div class="dash-header">
+        <div class="header-left">
+            <div class="logo-icon"><i class="fas fa-hands-helping"></i></div>
+            <div>
+                <h1>Advisory & <span>Mentorship</span></h1>
+                <div style="display: flex; gap: 0.5rem; margin-top: 0.1rem;">
+                    <span class="badge-role"><i class="fas fa-user-tie"></i> Staff Advisor</span>
+                    <span class="badge-role" style="background: #e2f0e6; color: #1a6d3b;"><i class="fas fa-star"></i> Mentor</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-right">
+            <span class="date-badge"><i class="far fa-calendar-alt"></i> Aug 14, 2026</span>
+            <span class="btn-outline"><i class="fas fa-bell"></i> <span style="background: #b13e3e; color: white; border-radius: 50%; padding: 0 6px; font-size: 0.6rem;">4</span></span>
+            <span class="btn-outline"><i class="fas fa-user-circle"></i> Dr. Mitchell</span>
+        </div>
+    </div>
+
+    <!-- ===== STATS ===== -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">18</div>
+                <div class="stat-label">Active Advisees</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-calendar-check" style="color: #1a6d3b;"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Sessions This Week</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-exclamation-triangle" style="color: #a7691a;"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">3</div>
+                <div class="stat-label">At-Risk Students</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-check-circle" style="color: #1a6d3b;"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">92%</div>
+                <div class="stat-label">Mentorship Progress</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-comments" style="color: #6b3f9e;"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">24</div>
+                <div class="stat-label">Messages This Month</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TABS ===== -->
+    <div class="tabs">
+        <span class="tab active"><i class="fas fa-users"></i> Advisees <span class="count">18</span></span>
+        <span class="tab"><i class="fas fa-calendar-alt"></i> Sessions <span class="count">7</span></span>
+        <span class="tab"><i class="fas fa-chart-line"></i> Progress</span>
+        <span class="tab"><i class="fas fa-comment-dots"></i> Messages <span class="count">4</span></span>
+        <span class="tab"><i class="fas fa-cog"></i> Settings</span>
+    </div>
+
+    <!-- ===== FILTER ===== -->
+    <div class="filter-bar">
+        <span class="filter-label"><i class="fas fa-filter"></i> Filter:</span>
+        <span class="filter-chip active">All</span>
+        <span class="filter-chip"><i class="fas fa-circle" style="color: #1a6d3b;"></i> On Track</span>
+        <span class="filter-chip"><i class="fas fa-circle" style="color: #a7691a;"></i> Needs Attention</span>
+        <span class="filter-chip"><i class="fas fa-circle" style="color: #b13e3e;"></i> At Risk</span>
+        <span class="filter-chip"><i class="fas fa-circle" style="color: #6b3f9e;"></i> New</span>
+        <div class="filter-search">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search student..." />
+        </div>
+        <span class="btn-sm primary"><i class="fas fa-user-plus"></i> Add Advisee</span>
+    </div>
+
+    <!-- ===== 2-COLUMN ===== -->
+    <div class="grid-2col">
+
+        <!-- LEFT: ADVISEES LIST -->
+        <div class="section-card">
+            <div class="section-title">
+                <h3><i class="fas fa-user-graduate"></i> My Advisees</h3>
+                <span class="badge-count">18 active</span>
+            </div>
+
+            <!-- Advisee 1 -->
+            <div class="advisee-item">
+                <div class="advisee-avatar">JD</div>
+                <div class="advisee-info">
+                    <div class="advisee-name">Jonathan Doe</div>
+                    <div class="advisee-detail">
+                        <span><i class="fas fa-id-card"></i> S-1024</span>
+                        <span><i class="fas fa-graduation-cap"></i> Computer Science</span>
+                        <span><i class="fas fa-flag"></i> Year 3</span>
+                    </div>
+                </div>
+                <span class="advisee-status on-track"><i class="fas fa-check-circle"></i> On Track</span>
+                <span class="advisee-action"> <i class="fas fa-chevron-right"></i> </span>
+            </div>
+
+            <!-- Advisee 2 -->
+            <div class="advisee-item">
+                <div class="advisee-avatar">SM</div>
+                <div class="advisee-info">
+                    <div class="advisee-name">Sarah Mitchell</div>
+                    <div class="advisee-detail">
+                        <span><i class="fas fa-id-card"></i> S-1032</span>
+                        <span><i class="fas fa-graduation-cap"></i> Engineering</span>
+                        <span><i class="fas fa-flag"></i> Year 2</span>
+                    </div>
+                </div>
+                <span class="advisee-status on-track"><i class="fas fa-check-circle"></i> On Track</span>
+                <span class="advisee-action"> <i class="fas fa-chevron-right"></i> </span>
+            </div>
+
+            <!-- Advisee 3 - At Risk -->
+            <div class="advisee-item">
+                <div class="advisee-avatar">AK</div>
+                <div class="advisee-info">
+                    <div class="advisee-name">Aisha Khan</div>
+                    <div class="advisee-detail">
+                        <span><i class="fas fa-id-card"></i> S-1045</span>
+                        <span><i class="fas fa-graduation-cap"></i> Physics</span>
+                        <span><i class="fas fa-flag"></i> Year 4</span>
+                    </div>
+                </div>
+                <span class="advisee-status at-risk"><i class="fas fa-exclamation-triangle"></i> At Risk</span>
+                <span class="advisee-action"> <i class="fas fa-chevron-right"></i> </span>
+            </div>
+
+            <!-- Advisee 4 - Needs Attention -->
+            <div class="advisee-item">
+                <div class="advisee-avatar">MR</div>
+                <div class="advisee-info">
+                    <div class="advisee-name">Miguel Rodriguez</div>
+                    <div class="advisee-detail">
+                        <span><i class="fas fa-id-card"></i> S-1058</span>
+                        <span><i class="fas fa-graduation-cap"></i> Mathematics</span>
+                        <span><i class="fas fa-flag"></i> Year 1</span>
+                    </div>
+                </div>
+                <span class="advisee-status attention"><i class="fas fa-clock"></i> Needs Attention</span>
+                <span class="advisee-action"> <i class="fas fa-chevron-right"></i> </span>
+            </div>
+
+            <!-- Advisee 5 -->
+            <div class="advisee-item">
+                <div class="advisee-avatar">LW</div>
+                <div class="advisee-info">
+                    <div class="advisee-name">Li Wei</div>
+                    <div class="advisee-detail">
+                        <span><i class="fas fa-id-card"></i> S-1062</span>
+                        <span><i class="fas fa-graduation-cap"></i> Computer Science</span>
+                        <span><i class="fas fa-flag"></i> Year 3</span>
+                    </div>
+                </div>
+                <span class="advisee-status on-track"><i class="fas fa-check-circle"></i> On Track</span>
+                <span class="advisee-action"> <i class="fas fa-chevron-right"></i> </span>
+            </div>
+
+            <!-- Advisee 6 -->
+            <div class="advisee-item">
+                <div class="advisee-avatar">EP</div>
+                <div class="advisee-info">
+                    <div class="advisee-name">Elena Petrova</div>
+                    <div class="advisee-detail">
+                        <span><i class="fas fa-id-card"></i> S-1070</span>
+                        <span><i class="fas fa-graduation-cap"></i> Biology</span>
+                        <span><i class="fas fa-flag"></i> Year 2</span>
+                    </div>
+                </div>
+                <span class="advisee-status on-track"><i class="fas fa-check-circle"></i> On Track</span>
+                <span class="advisee-action"> <i class="fas fa-chevron-right"></i> </span>
+            </div>
+
+            <div style="margin-top: 0.8rem; display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                <span class="btn-sm"><i class="fas fa-chevron-down"></i> Show all 18</span>
+                <span class="btn-sm"><i class="fas fa-file-alt"></i> Generate report</span>
+                <span class="btn-sm primary"><i class="fas fa-envelope"></i> Send to all</span>
+            </div>
+        </div>
+
+        <!-- RIGHT: SESSIONS + ACTIVITY -->
+        <div style="display: flex; flex-direction: column; gap: 1.8rem;">
+
+            <!-- UPCOMING SESSIONS -->
+            <div class="section-card">
+                <div class="section-title">
+                    <h3><i class="fas fa-calendar-alt"></i> Upcoming Sessions</h3>
+                    <span class="badge-count">7 scheduled</span>
+                </div>
+
+                <div class="session-item">
+                    <div class="session-icon"><i class="fas fa-video"></i></div>
+                    <div class="session-info">
+                        <div class="session-title">Jonathan Doe · Academic Review</div>
+                        <div class="session-meta">
+                            <span><i class="far fa-calendar"></i> Today</span>
+                            <span><i class="far fa-clock"></i> 2:00 PM</span>
+                            <span><i class="fas fa-video"></i> Virtual</span>
+                        </div>
+                    </div>
+                    <span class="session-time">30 min</span>
+                </div>
+
+                <div class="session-item">
+                    <div class="session-icon warning"><i class="fas fa-exclamation-circle"></i></div>
+                    <div class="session-info">
+                        <div class="session-title">Aisha Khan · Intervention Plan</div>
+                        <div class="session-meta">
+                            <span><i class="far fa-calendar"></i> Tomorrow</span>
+                            <span><i class="far fa-clock"></i> 10:00 AM</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Office 204</span>
+                        </div>
+                    </div>
+                    <span class="session-time">45 min</span>
+                </div>
+
+                <div class="session-item">
+                    <div class="session-icon success"><i class="fas fa-chart-line"></i></div>
+                    <div class="session-info">
+                        <div class="session-title">Miguel Rodriguez · Progress Check</div>
+                        <div class="session-meta">
+                            <span><i class="far fa-calendar"></i> Aug 16</span>
+                            <span><i class="far fa-clock"></i> 11:30 AM</span>
+                            <span><i class="fas fa-video"></i> Virtual</span>
+                        </div>
+                    </div>
+                    <span class="session-time">30 min</span>
+                </div>
+
+                <div class="session-item">
+                    <div class="session-icon purple"><i class="fas fa-users"></i></div>
+                    <div class="session-info">
+                        <div class="session-title">Group Mentorship · Year 3 CS</div>
+                        <div class="session-meta">
+                            <span><i class="far fa-calendar"></i> Aug 18</span>
+                            <span><i class="far fa-clock"></i> 3:00 PM</span>
+                            <span><i class="fas fa-map-marker-alt"></i> Room 301</span>
+                        </div>
+                    </div>
+                    <span class="session-time">60 min</span>
+                </div>
+
+                <div style="margin-top: 0.6rem; display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                    <span class="btn-sm primary"><i class="fas fa-plus"></i> Schedule session</span>
+                    <span class="btn-sm"><i class="fas fa-calendar-check"></i> Calendar</span>
+                </div>
+            </div>
+
+            <!-- MENTORSHIP ACTIVITY -->
+            <div class="section-card">
+                <div class="section-title">
+                    <h3><i class="fas fa-stream"></i> Recent Activity</h3>
+                    <span class="badge-count">6 new</span>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon"><i class="fas fa-comment"></i></div>
+                    <div class="activity-content">
+                        <div class="activity-text"><strong>Jonathan Doe</strong> sent a message about course selection</div>
+                        <div class="activity-time"><i class="far fa-clock"></i> 15 min ago</div>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon success"><i class="fas fa-check-circle"></i></div>
+                    <div class="activity-content">
+                        <div class="activity-text"><strong>Aisha Khan</strong> completed her academic improvement plan</div>
+                        <div class="activity-time"><i class="far fa-clock"></i> 1 hour ago</div>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon warning"><i class="fas fa-flag"></i></div>
+                    <div class="activity-content">
+                        <div class="activity-text"><strong>System</strong> flagged <strong>Miguel Rodriguez</strong> for low attendance</div>
+                        <div class="activity-time"><i class="far fa-clock"></i> 3 hours ago</div>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon purple"><i class="fas fa-file-alt"></i></div>
+                    <div class="activity-content">
+                        <div class="activity-text"><strong>Sarah Mitchell</strong> submitted her mentorship reflection</div>
+                        <div class="activity-time"><i class="far fa-clock"></i> 5 hours ago</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 0.4rem;">
+                    <span class="btn-sm"><i class="fas fa-history"></i> View all activity</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== QUICK ACTIONS ===== -->
+    <div class="section-card" style="margin-top: 0.2rem;">
+        <div class="section-title">
+            <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.6rem 1rem;">
+            <span class="btn-sm primary"><i class="fas fa-envelope"></i> Send Announcement</span>
+            <span class="btn-sm"><i class="fas fa-file-pdf"></i> Generate Advisee Report</span>
+            <span class="btn-sm"><i class="fas fa-chart-bar"></i> View Mentorship Analytics</span>
+            <span class="btn-sm"><i class="fas fa-calendar-plus"></i> Schedule Group Session</span>
+            <span class="btn-sm"><i class="fas fa-flag"></i> Flag At-Risk Students</span>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="footer-note">
+        <span><i class="fas fa-sync-alt"></i> Last sync: 2 min ago</span>
+        <span><i class="fas fa-user-graduate"></i> 18 advisees · 7 sessions</span>
+        <span><i class="fas fa-chevron-right"></i> <a href="#" style="color: #2563eb; text-decoration: none;">full advisory report</a></span>
+        <span><i class="fas fa-star"></i> Mentor since 2024</span>
+    </div>
+</div>
+</body>
+</html>

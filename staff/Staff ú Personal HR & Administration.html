@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff · Personal HR & Administration</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #edf2f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+
+        .dashboard {
+            max-width: 1380px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 36px;
+            box-shadow: 0 24px 56px -16px rgba(0, 20, 40, 0.18);
+            padding: 2rem 2.2rem;
+            transition: all 0.2s;
+        }
+
+        /* ===== HEADER ===== */
+        .dash-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem 1.5rem;
+            border-bottom: 1px solid #e9eff6;
+            padding-bottom: 1.4rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .header-left .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #1a4fbf, #2563eb);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.4rem;
+            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
+        }
+
+        .header-left h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0b1e2e;
+            letter-spacing: -0.02em;
+        }
+
+        .header-left h1 span { color: #2563eb; }
+
+        .header-left .badge-role {
+            background: #e5edf9;
+            color: #1f4f8a;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .header-right .date-badge {
+            background: #f2f6fc;
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            color: #1f3b57;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-outline {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #1f3f5c;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+
+        .btn-outline i { color: #2563eb; }
+        .btn-outline:hover { background: #f4f9ff; border-color: #b2c8dd; }
+
+        .btn-primary {
+            background: #0b1e2e;
+            border: 1px solid #0b1e2e;
+            color: white;
+        }
+        .btn-primary i { color: white; }
+        .btn-primary:hover { background: #1a3147; }
+
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #f9fcff;
+            border-radius: 20px;
+            padding: 0.9rem 1.2rem;
+            border: 1px solid #e9f0f7;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: 0.15s;
+        }
+        .stat-card:hover { border-color: #c9d9ec; background: #fafdff; }
+
+        .stat-card .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            background: #e5effb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .stat-card .stat-content .stat-number {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0b1e2e;
+            line-height: 1.2;
+        }
+
+        .stat-card .stat-content .stat-label {
+            font-size: 0.7rem;
+            color: #4d6a87;
+            font-weight: 500;
+        }
+
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.6rem;
+            border-bottom: 1px solid #e9eff6;
+            padding-bottom: 0.4rem;
+        }
+
+        .tab {
+            padding: 0.4rem 1.4rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #4d6a87;
+            background: transparent;
+            transition: 0.15s;
+            cursor: default;
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .tab.active {
+            background: #e5edf9;
+            color: #1f4f8a;
+            border-color: #c9d9ec;
+            font-weight: 600;
+        }
+
+        .tab i { font-size: 0.85rem; }
+        .tab .count {
+            background: #d7e2ed;
+            color: #1f3b57;
+            border-radius: 40px;
+            padding: 0.05rem 0.6rem;
+            font-size: 0.65rem;
+        }
+        .tab.active .count { background: #b8cee5; }
+
+        /* ===== 2-COLUMN GRID ===== */
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 1.8rem;
+            margin-bottom: 1.8rem;
+        }
+
+        @media (max-width: 900px) {
+            .grid-2col { grid-template-columns: 1fr; }
+        }
+
+        /* ===== SECTION CARDS ===== */
+        .section-card {
+            background: #f9fcff;
+            border-radius: 24px;
+            padding: 1.2rem 1.4rem 1.4rem;
+            border: 1px solid #e9f0f7;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .section-title h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0b1e2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title h3 i { color: #2563eb; }
+
+        .section-title .badge-count {
+            background: #e5edf9;
+            color: #1f4f8a;
+            border-radius: 60px;
+            padding: 0.05rem 0.9rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* ===== FORM FIELDS ===== */
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .field-group label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #3c5a79;
+        }
+
+        .field-group input,
+        .field-group select {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 14px;
+            padding: 0.5rem 0.9rem;
+            font-size: 0.85rem;
+            color: #0b1e2e;
+            transition: 0.15s;
+            width: 100%;
+        }
+
+        .field-group input:focus,
+        .field-group select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+        }
+
+        .field-group .hint {
+            font-size: 0.65rem;
+            color: #6a86a3;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 500px) {
+            .field-row { grid-template-columns: 1fr; }
+        }
+
+        /* ===== HR ITEMS (Leave, Payroll, etc.) ===== */
+        .hr-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #eef4fa;
+        }
+        .hr-item:last-child { border-bottom: 0; }
+
+        .hr-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
+            background: #e5effb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .hr-icon.warning { background: #fef3d7; color: #a7691a; }
+        .hr-icon.success { background: #e2f0e6; color: #1a6d3b; }
+        .hr-icon.danger { background: #fde8e8; color: #b13e3e; }
+        .hr-icon.purple { background: #ede4f5; color: #6b3f9e; }
+
+        .hr-info { flex: 1; }
+        .hr-info .hr-title { font-weight: 500; font-size: 0.85rem; color: #0b1e2e; }
+        .hr-info .hr-meta {
+            font-size: 0.7rem;
+            color: #4d6a87;
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .hr-info .hr-meta i { color: #2563eb; width: 0.8rem; }
+
+        .hr-status {
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 0.1rem 0.7rem;
+            border-radius: 40px;
+            background: #e5edf9;
+            color: #1f4f8a;
+        }
+        .hr-status.approved { background: #e2f0e6; color: #1a6d3b; }
+        .hr-status.pending { background: #fef3d7; color: #a7691a; }
+        .hr-status.rejected { background: #fde8e8; color: #b13e3e; }
+
+        .hr-action {
+            font-size: 0.7rem;
+            color: #2563eb;
+            font-weight: 500;
+            cursor: default;
+            padding: 0.1rem 0.6rem;
+            border-radius: 40px;
+            border: 1px solid #d7e2ed;
+            background: white;
+            transition: 0.1s;
+        }
+        .hr-action:hover { background: #f4f9ff; }
+
+        /* ===== BENEFITS / PAYROLL CARDS ===== */
+        .benefit-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-top: 0.4rem;
+        }
+
+        .benefit-item {
+            background: white;
+            border: 1px solid #e9f0f7;
+            border-radius: 16px;
+            padding: 0.7rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .benefit-item .benefit-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: #e5effb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .benefit-item .benefit-info .benefit-name {
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: #0b1e2e;
+        }
+        .benefit-item .benefit-info .benefit-value {
+            font-size: 0.7rem;
+            color: #4d6a87;
+        }
+
+        @media (max-width: 600px) {
+            .benefit-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-sm {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.2rem 1rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #1f3f5c;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+        .btn-sm i { color: #2563eb; }
+        .btn-sm:hover { background: #f4f9ff; border-color: #b2c8dd; }
+        .btn-sm.primary { background: #0b1e2e; border-color: #0b1e2e; color: white; }
+        .btn-sm.primary i { color: white; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .dashboard { padding: 1.2rem; border-radius: 28px; }
+            .header-left h1 { font-size: 1.2rem; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard { padding: 0.8rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .header-left .logo-icon { width: 40px; height: 40px; font-size: 1.2rem; }
+            .tab { font-size: 0.7rem; padding: 0.2rem 0.8rem; }
+        }
+
+        .footer-note {
+            margin-top: 1.2rem;
+            font-size: 0.7rem;
+            color: #7f99b5;
+            display: flex;
+            justify-content: flex-end;
+            border-top: 1px solid #e9eff6;
+            padding-top: 1rem;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Staff Home</a><a href="pag19.html">pag19</a><a href="page.10.html">page 10</a><a href="page.12.html">page 12</a><a href="page.14.html">page 14</a><a href="page.15.html">page 15</a><a href="page1.html">page1</a><a href="page11.html">page11</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page7.html">page7</a><a href="page8.html">page8</a></div>
+<div class="dashboard">
+
+    <!-- ===== HEADER ===== -->
+    <div class="dash-header">
+        <div class="header-left">
+            <div class="logo-icon"><i class="fas fa-user-cog"></i></div>
+            <div>
+                <h1>HR & <span>Administration</span></h1>
+                <div style="display: flex; gap: 0.5rem; margin-top: 0.1rem;">
+                    <span class="badge-role"><i class="fas fa-id-badge"></i> Staff ID: EMP-1024</span>
+                    <span class="badge-role" style="background: #e2f0e6; color: #1a6d3b;"><i class="fas fa-check-circle"></i> Active</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-right">
+            <span class="date-badge"><i class="far fa-calendar-alt"></i> Aug 14, 2026</span>
+            <span class="btn-outline"><i class="fas fa-bell"></i> <span style="background: #b13e3e; color: white; border-radius: 50%; padding: 0 6px; font-size: 0.6rem;">2</span></span>
+            <span class="btn-outline"><i class="fas fa-user-circle"></i> J. Doe</span>
+        </div>
+    </div>
+
+    <!-- ===== STATS ===== -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">18</div>
+                <div class="stat-label">Leave Days Remaining</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-wallet" style="color: #1a6d3b;"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">$4,850</div>
+                <div class="stat-label">This Month's Payroll</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-clock" style="color: #a7691a;"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Pending Requests</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-heart" style="color: #b13e3e;"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">92%</div>
+                <div class="stat-label">Benefits Utilization</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-file-signature" style="color: #6b3f9e;"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Documents Pending</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TABS ===== -->
+    <div class="tabs">
+        <span class="tab active"><i class="fas fa-user"></i> My Profile</span>
+        <span class="tab"><i class="fas fa-calendar-alt"></i> Leave & Time <span class="count">3</span></span>
+        <span class="tab"><i class="fas fa-wallet"></i> Payroll</span>
+        <span class="tab"><i class="fas fa-heartbeat"></i> Benefits</span>
+        <span class="tab"><i class="fas fa-file-alt"></i> Documents</span>
+        <span class="tab"><i class="fas fa-cog"></i> Settings</span>
+    </div>
+
+    <!-- ===== 2-COLUMN ===== -->
+    <div class="grid-2col">
+
+        <!-- LEFT: PROFILE + PERSONAL INFO -->
+        <div class="section-card">
+            <div class="section-title">
+                <h3><i class="fas fa-id-card"></i> Personal Information</h3>
+                <span class="badge-count">Last updated: Aug 10</span>
+            </div>
+
+            <div class="field-row">
+                <div class="field-group">
+                    <label><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" value="Jonathan Doe" />
+                </div>
+                <div class="field-group">
+                    <label><i class="fas fa-id-badge"></i> Employee ID</label>
+                    <input type="text" value="EMP-1024" readonly style="background: #f3f7fc;" />
+                </div>
+            </div>
+
+            <div class="field-row">
+                <div class="field-group">
+                    <label><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" value="jonathan.doe@company.com" />
+                </div>
+                <div class="field-group">
+                    <label><i class="fas fa-phone"></i> Phone</label>
+                    <input type="text" value="+1 (415) 555-0187" />
+                </div>
+            </div>
+
+            <div class="field-row">
+                <div class="field-group">
+                    <label><i class="fas fa-briefcase"></i> Department</label>
+                    <select>
+                        <option>IT & Engineering</option>
+                        <option>HR</option>
+                        <option>Finance</option>
+                        <option>Operations</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label><i class="fas fa-user-tie"></i> Job Title</label>
+                    <input type="text" value="Senior Software Engineer" />
+                </div>
+            </div>
+
+            <div class="field-row">
+                <div class="field-group">
+                    <label><i class="fas fa-calendar-alt"></i> Date of Joining</label>
+                    <input type="text" value="March 15, 2022" readonly style="background: #f3f7fc;" />
+                </div>
+                <div class="field-group">
+                    <label><i class="fas fa-map-marker-alt"></i> Location</label>
+                    <input type="text" value="San Francisco, CA" />
+                </div>
+            </div>
+
+            <div style="margin-top: 0.6rem; display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                <span class="btn-sm primary"><i class="fas fa-save"></i> Save Changes</span>
+                <span class="btn-sm"><i class="fas fa-undo-alt"></i> Reset</span>
+                <span class="btn-sm"><i class="fas fa-print"></i> Print</span>
+            </div>
+        </div>
+
+        <!-- RIGHT: LEAVE + PAYROLL QUICK VIEW -->
+        <div style="display: flex; flex-direction: column; gap: 1.8rem;">
+
+            <!-- LEAVE REQUESTS -->
+            <div class="section-card">
+                <div class="section-title">
+                    <h3><i class="fas fa-calendar-alt"></i> Leave & Time Off</h3>
+                    <span class="badge-count">3 pending</span>
+                </div>
+
+                <div class="hr-item">
+                    <div class="hr-icon warning"><i class="fas fa-clock"></i></div>
+                    <div class="hr-info">
+                        <div class="hr-title">Annual Leave · Vacation</div>
+                        <div class="hr-meta">
+                            <span><i class="far fa-calendar"></i> Aug 20-24</span>
+                            <span><i class="fas fa-clock"></i> 5 days</span>
+                        </div>
+                    </div>
+                    <span class="hr-status pending">Pending</span>
+                </div>
+
+                <div class="hr-item">
+                    <div class="hr-icon success"><i class="fas fa-check-circle"></i></div>
+                    <div class="hr-info">
+                        <div class="hr-title">Sick Leave</div>
+                        <div class="hr-meta">
+                            <span><i class="far fa-calendar"></i> Jul 5-6</span>
+                            <span><i class="fas fa-clock"></i> 2 days</span>
+                        </div>
+                    </div>
+                    <span class="hr-status approved">Approved</span>
+                </div>
+
+                <div class="hr-item">
+                    <div class="hr-icon purple"><i class="fas fa-briefcase"></i></div>
+                    <div class="hr-info">
+                        <div class="hr-title">Work from Home</div>
+                        <div class="hr-meta">
+                            <span><i class="far fa-calendar"></i> Aug 16</span>
+                            <span><i class="fas fa-clock"></i> 1 day</span>
+                        </div>
+                    </div>
+                    <span class="hr-status pending">Pending</span>
+                </div>
+
+                <div class="hr-item">
+                    <div class="hr-icon danger"><i class="fas fa-times-circle"></i></div>
+                    <div class="hr-info">
+                        <div class="hr-title">Unpaid Leave</div>
+                        <div class="hr-meta">
+                            <span><i class="far fa-calendar"></i> Jun 28</span>
+                            <span><i class="fas fa-clock"></i> 1 day</span>
+                        </div>
+                    </div>
+                    <span class="hr-status rejected">Rejected</span>
+                </div>
+
+                <div style="margin-top: 0.6rem; display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                    <span class="btn-sm primary"><i class="fas fa-plus"></i> New Request</span>
+                    <span class="btn-sm"><i class="fas fa-calendar-check"></i> View All</span>
+                </div>
+            </div>
+
+            <!-- PAYROLL & BENEFITS QUICK -->
+            <div class="section-card">
+                <div class="section-title">
+                    <h3><i class="fas fa-wallet"></i> Payroll Summary</h3>
+                    <span class="badge-count">Next: Aug 25</span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid #eef4fa;">
+                    <span style="font-size: 0.8rem; color: #4d6a87;">Base Salary</span>
+                    <span style="font-weight: 600; font-size: 0.9rem;">$5,200.00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid #eef4fa;">
+                    <span style="font-size: 0.8rem; color: #4d6a87;">Bonus (Q3)</span>
+                    <span style="font-weight: 600; font-size: 0.9rem; color: #1a6d3b;">+$850.00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid #eef4fa;">
+                    <span style="font-size: 0.8rem; color: #4d6a87;">Deductions</span>
+                    <span style="font-weight: 600; font-size: 0.9rem; color: #b13e3e;">-$1,200.00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 0.6rem 0 0.2rem;">
+                    <span style="font-weight: 600; font-size: 0.9rem;">Net Pay (This Month)</span>
+                    <span style="font-weight: 700; font-size: 1.1rem; color: #0b1e2e;">$4,850.00</span>
+                </div>
+
+                <div style="margin-top: 0.8rem; display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                    <span class="btn-sm"><i class="fas fa-download"></i> Download Payslip</span>
+                    <span class="btn-sm primary"><i class="fas fa-chart-line"></i> View Details</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== BENEFITS SECTION (full width) ===== -->
+    <div class="section-card" style="margin-top: 0.2rem;">
+        <div class="section-title">
+            <h3><i class="fas fa-heartbeat"></i> Benefits & Insurance</h3>
+            <span class="badge-count">4 active</span>
+        </div>
+
+        <div class="benefit-grid">
+            <div class="benefit-item">
+                <div class="benefit-icon"><i class="fas fa-heart"></i></div>
+                <div class="benefit-info">
+                    <div class="benefit-name">Health Insurance</div>
+                    <div class="benefit-value">Premium Plan · Active</div>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon" style="background: #fef3d7; color: #a7691a;"><i class="fas fa-eye"></i></div>
+                <div class="benefit-info">
+                    <div class="benefit-name">Vision Coverage</div>
+                    <div class="benefit-value">Standard · Active</div>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon" style="background: #e2f0e6; color: #1a6d3b;"><i class="fas fa-tooth"></i></div>
+                <div class="benefit-info">
+                    <div class="benefit-name">Dental Plan</div>
+                    <div class="benefit-value">Premium · Active</div>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon" style="background: #ede4f5; color: #6b3f9e;"><i class="fas fa-university"></i></div>
+                <div class="benefit-info">
+                    <div class="benefit-name">Retirement 401(k)</div>
+                    <div class="benefit-value">5% Match · Active</div>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon" style="background: #fde8e8; color: #b13e3e;"><i class="fas fa-life-ring"></i></div>
+                <div class="benefit-info">
+                    <div class="benefit-name">Life Insurance</div>
+                    <div class="benefit-value">2x Salary · Active</div>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon" style="background: #e5effb; color: #1f4f8a;"><i class="fas fa-graduation-cap"></i></div>
+                <div class="benefit-info">
+                    <div class="benefit-name">Tuition Reimbursement</div>
+                    <div class="benefit-value">$5,000/year · Pending</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 0.8rem; display: flex; gap: 0.6rem; flex-wrap: wrap;">
+            <span class="btn-sm primary"><i class="fas fa-edit"></i> Manage Benefits</span>
+            <span class="btn-sm"><i class="fas fa-file-pdf"></i> View Summary</span>
+            <span class="btn-sm"><i class="fas fa-phone"></i> Contact HR</span>
+        </div>
+    </div>
+
+    <!-- ===== DOCUMENTS QUICK ===== -->
+    <div class="section-card" style="margin-top: 1.2rem;">
+        <div class="section-title">
+            <h3><i class="fas fa-file-alt"></i> Important Documents</h3>
+            <span class="badge-count">4 pending</span>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 0.8rem 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <i class="fas fa-file-pdf" style="color: #b13e3e; font-size: 1.2rem;"></i>
+                <div>
+                    <div style="font-size: 0.8rem; font-weight: 500;">Employment Contract</div>
+                    <div style="font-size: 0.65rem; color: #4d6a87;">Signed · Mar 2022</div>
+                </div>
+                <span class="hr-status approved">✓</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <i class="fas fa-file-pdf" style="color: #2563eb; font-size: 1.2rem;"></i>
+                <div>
+                    <div style="font-size: 0.8rem; font-weight: 500;">NDA Agreement</div>
+                    <div style="font-size: 0.65rem; color: #4d6a87;">Signed · Mar 2022</div>
+                </div>
+                <span class="hr-status approved">✓</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <i class="fas fa-file-pdf" style="color: #a7691a; font-size: 1.2rem;"></i>
+                <div>
+                    <div style="font-size: 0.8rem; font-weight: 500;">Tax Form W-4</div>
+                    <div style="font-size: 0.65rem; color: #4d6a87;">Pending review</div>
+                </div>
+                <span class="hr-status pending">⏳</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <i class="fas fa-file-pdf" style="color: #6b3f9e; font-size: 1.2rem;"></i>
+                <div>
+                    <div style="font-size: 0.8rem; font-weight: 500;">Performance Review Q3</div>
+                    <div style="font-size: 0.65rem; color: #4d6a87;">Awaiting signature</div>
+                </div>
+                <span class="hr-status pending">⏳</span>
+            </div>
+        </div>
+
+        <div style="margin-top: 0.6rem; display: flex; gap: 0.6rem; flex-wrap: wrap;">
+            <span class="btn-sm primary"><i class="fas fa-upload"></i> Upload Document</span>
+            <span class="btn-sm"><i class="fas fa-folder-open"></i> View All</span>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="footer-note">
+        <span><i class="fas fa-sync-alt"></i> Last sync: 2 min ago</span>
+        <span><i class="fas fa-user-shield"></i> HR Portal · EMP-1024</span>
+        <span><i class="fas fa-chevron-right"></i> <a href="#" style="color: #2563eb; text-decoration: none;">full HR dashboard</a></span>
+        <span><i class="fas fa-print"></i> Personal HR · Staff</span>
+    </div>
+</div>
+</body>
+</html>

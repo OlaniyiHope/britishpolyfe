@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <title>AI Study Tool · Homework & Past Questions</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #eef3fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .ai-tool {
+            max-width: 1300px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 44px;
+            box-shadow: 0 30px 60px -18px rgba(0, 20, 40, 0.18);
+            padding: 28px 32px 32px;
+            transition: all 0.2s;
+        }
+
+        /* header */
+        .tool-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            gap: 14px;
+        }
+
+        .tool-header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #0a1e32;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .tool-header h1 i {
+            color: #7c3aed;
+            font-size: 2rem;
+        }
+
+        .tool-header h1 .ai-badge {
+            font-size: 0.6rem;
+            background: #7c3aed;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .student-badge {
+            background: #e6edf8;
+            padding: 8px 20px;
+            border-radius: 60px;
+            font-weight: 500;
+            color: #1c3857;
+            font-size: 0.9rem;
+        }
+
+        .student-badge i {
+            margin-right: 6px;
+            color: #2563eb;
+        }
+
+        .live-badge {
+            background: #dc3545;
+            color: white;
+            font-weight: 600;
+            font-size: 0.7rem;
+            padding: 6px 16px 6px 14px;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            animation: livePulse 1.8s infinite;
+        }
+
+        @keyframes livePulse {
+            0% { opacity: 0.75; transform: scale(0.97); }
+            50% { opacity: 1; transform: scale(1.02); }
+            100% { opacity: 0.75; transform: scale(0.97); }
+        }
+
+        /* AI search bar */
+        .ai-search-area {
+            background: linear-gradient(145deg, #f5f0ff, #f8fbff);
+            border-radius: 28px;
+            padding: 20px 24px 24px;
+            border: 1px solid #dce8f5;
+            margin-bottom: 26px;
+        }
+
+        .ai-search-area .ai-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #4a6b8f;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-search-area .ai-label i {
+            color: #7c3aed;
+        }
+
+        .search-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .search-wrapper .search-input {
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 60px;
+            padding: 0 8px 0 22px;
+            border: 2px solid #e8eff8;
+            transition: 0.15s;
+        }
+
+        .search-wrapper .search-input:focus-within {
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.10);
+        }
+
+        .search-wrapper .search-input i {
+            color: #7c3aed;
+            font-size: 0.9rem;
+        }
+
+        .search-wrapper .search-input input {
+            border: none;
+            background: transparent;
+            padding: 14px 14px;
+            font-size: 0.95rem;
+            width: 100%;
+            outline: none;
+            color: #11273f;
+        }
+
+        .search-wrapper .search-input input::placeholder {
+            color: #8da3bd;
+        }
+
+        .search-wrapper .ai-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .ai-btn {
+            background: #7c3aed;
+            border: none;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.15s;
+            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.20);
+        }
+
+        .ai-btn:hover {
+            background: #5b21b6;
+            transform: scale(1.02);
+        }
+
+        .ai-btn-outline {
+            background: white;
+            color: #1a3a6b;
+            border: 2px solid #dce8f5;
+            box-shadow: none;
+        }
+
+        .ai-btn-outline:hover {
+            background: #f5f0ff;
+            border-color: #7c3aed;
+        }
+
+        /* quick filters */
+        .quick-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .quick-filters .qfilter {
+            background: white;
+            border: 1px solid #dce8f5;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #4a6b8f;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .quick-filters .qfilter:hover {
+            background: #f5f0ff;
+            border-color: #7c3aed;
+        }
+
+        .quick-filters .qfilter.active {
+            background: #7c3aed;
+            color: white;
+            border-color: #7c3aed;
+        }
+
+        /* stats row */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: #f8fbff;
+            border-radius: 20px;
+            padding: 14px 18px;
+            border: 1px solid #e7eef9;
+            text-align: center;
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: #4f6e8e;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0b1e31;
+            line-height: 1.3;
+        }
+
+        .stat-card .stat-value.ai-color {
+            color: #7c3aed;
+        }
+
+        /* results grid */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 22px;
+            margin-top: 4px;
+        }
+
+        .result-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 20px 20px 18px;
+            border: 1px solid #ebf1f9;
+            box-shadow: 0 4px 12px rgba(0, 20, 30, 0.02);
+            transition: 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .result-card:hover {
+            border-color: #c5d7ed;
+            box-shadow: 0 12px 28px -8px rgba(124, 58, 237, 0.08);
+            transform: translateY(-3px);
+        }
+
+        .result-card .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .result-card .type-badge {
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 40px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .type-badge.homework {
+            background: #dbeafe;
+            color: #1e4b8f;
+        }
+
+        .type-badge.pastq {
+            background: #d1fae5;
+            color: #0b6e4f;
+        }
+
+        .type-badge.quiz {
+            background: #fef3c7;
+            color: #8b6914;
+        }
+
+        .result-card .year-tag {
+            font-size: 0.65rem;
+            background: #f2f6fd;
+            padding: 3px 12px;
+            border-radius: 30px;
+            color: #4b6b8a;
+        }
+
+        .result-card .title {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: #0b1e31;
+            margin: 4px 0 6px;
+        }
+
+        .result-card .description {
+            font-size: 0.85rem;
+            color: #2f4b69;
+            line-height: 1.5;
+            flex: 1;
+            margin-bottom: 12px;
+        }
+
+        .result-card .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #e8eff7;
+            padding-top: 14px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .result-card .meta {
+            font-size: 0.7rem;
+            color: #5d7b9a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .result-card .meta i {
+            color: #7c3aed;
+        }
+
+        .result-card .action-icons {
+            display: flex;
+            gap: 12px;
+            color: #7e95b2;
+        }
+
+        .result-card .action-icons i {
+            cursor: pointer;
+            transition: 0.1s;
+            font-size: 0.9rem;
+        }
+
+        .result-card .action-icons i:hover {
+            color: #7c3aed;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px 20px;
+            color: #4b6a89;
+            background: #fafdff;
+            border-radius: 48px;
+            border: 1px dashed #c2d6ec;
+        }
+
+        .empty-state i {
+            font-size: 2.8rem;
+            color: #b0c8e0;
+            margin-bottom: 12px;
+        }
+
+        /* footer */
+        .tool-footer {
+            margin-top: 28px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 0.78rem;
+            color: #577392;
+            border-top: 1px solid #e7eef8;
+            padding-top: 20px;
+        }
+
+        .tool-footer i {
+            margin-right: 4px;
+        }
+
+        /* responsive */
+        @media (max-width: 700px) {
+            .ai-tool { padding: 20px 16px 24px; }
+            .tool-header h1 { font-size: 1.5rem; }
+            .ai-search-area { padding: 16px 18px; }
+            .search-wrapper .search-input { min-width: 150px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .results-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .results-grid { grid-template-columns: 1fr; }
+            .search-wrapper { flex-direction: column; }
+            .ai-btn { justify-content: center; }
+            .quick-filters { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Student Home</a><a href="page1.html">page1</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page15.html">page15</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page9.html">page9</a></div>
+
+<div class="ai-tool" id="aiTool">
+    <!-- header -->
+    <div class="tool-header">
+        <h1>
+            <i class="fas fa-robot"></i> StudyAI
+            <span class="ai-badge"><i class="fas fa-bolt"></i> AI</span>
+        </h1>
+        <div class="header-right">
+            <span class="student-badge"><i class="fas fa-id-badge"></i> S-2026-014 · Sarah</span>
+            <span class="live-badge"><i class="fas fa-circle" style="font-size:0.45rem;"></i> LIVE</span>
+        </div>
+    </div>
+
+    <!-- AI search area -->
+    <div class="ai-search-area">
+        <div class="ai-label">
+            <i class="fas fa-sparkles"></i> AI-powered search · homework & past questions
+        </div>
+        <div class="search-wrapper">
+            <div class="search-input">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Ask AI... e.g. 'past questions for CS 201'" />
+            </div>
+            <div class="ai-actions">
+                <button class="ai-btn" id="searchBtn"><i class="fas fa-magic"></i> Search AI</button>
+                <button class="ai-btn ai-btn-outline" id="addBtn"><i class="fas fa-plus"></i> Add</button>
+            </div>
+        </div>
+        <div class="quick-filters">
+            <span class="qfilter active" data-filter="all">All</span>
+            <span class="qfilter" data-filter="homework"><i class="fas fa-pencil-alt"></i> Homework</span>
+            <span class="qfilter" data-filter="pastq"><i class="fas fa-history"></i> Past Q</span>
+            <span class="qfilter" data-filter="quiz"><i class="fas fa-question-circle"></i> Quiz</span>
+        </div>
+    </div>
+
+    <!-- stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Total Resources</div>
+            <div class="stat-value ai-color" id="totalResources">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Homework</div>
+            <div class="stat-value" id="hwCount">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Past Questions</div>
+            <div class="stat-value" id="pastqCount">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Quizzes</div>
+            <div class="stat-value" id="quizCount">0</div>
+        </div>
+    </div>
+
+    <!-- results grid -->
+    <div class="results-grid" id="resultsGrid">
+        <!-- injected by js -->
+    </div>
+
+    <!-- footer -->
+    <div class="tool-footer">
+        <span><i class="far fa-clock"></i> updated: <span id="updateTime">just now</span></span>
+        <span><i class="fas fa-brain"></i> AI-powered recommendations</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // ----- sample data -----
+        let resources = [
+            { id: 1, title: 'Data Structures Assignment #3', type: 'homework', desc: 'Implement a binary search tree with insert, delete, and traversal methods.', year: '2026', course: 'CS 201' },
+            { id: 2, title: 'CS 201 Past Exam 2025', type: 'pastq', desc: 'Midterm exam covering arrays, linked lists, and recursion.', year: '2025', course: 'CS 201' },
+            { id: 3, title: 'Web Dev Quiz - React Basics', type: 'quiz', desc: '10 questions on components, state, and props.', year: '2026', course: 'CS 260' },
+            { id: 4, title: 'Linear Algebra Practice Problems', type: 'homework', desc: 'Vector spaces, eigenvalues, and diagonalization exercises.', year: '2026', course: 'MATH 220' },
+            { id: 5, title: 'Physics 101 Past Questions 2024', type: 'pastq', desc: 'Mechanics, thermodynamics, and wave motion questions.', year: '2024', course: 'PHYS 101' },
+            { id: 6, title: 'Database Systems Quiz', type: 'quiz', desc: 'SQL queries, normalization, and ER diagrams.', year: '2026', course: 'CS 310' },
+            { id: 7, title: 'Composition I Essay Topics', type: 'homework', desc: 'Five persuasive essay topics with outlines.', year: '2026', course: 'ENG 110' },
+            { id: 8, title: 'CS 260 Past Exam 2025', type: 'pastq', desc: 'Frontend, backend, and API design questions.', year: '2025', course: 'CS 260' },
+        ];
+
+        // ----- state -----
+        let currentFilter = 'all';
+        let searchTerm = '';
+
+        // DOM refs
+        const grid = document.getElementById('resultsGrid');
+        const searchInput = document.getElementById('searchInput');
+        const filterEls = document.querySelectorAll('.qfilter');
+        const totalResourcesEl = document.getElementById('totalResources');
+        const hwCountEl = document.getElementById('hwCount');
+        const pastqCountEl = document.getElementById('pastqCount');
+        const quizCountEl = document.getElementById('quizCount');
+        const updateTimeSpan = document.getElementById('updateTime');
+
+        // ----- helpers -----
+        function updateTimestamp() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2,'0');
+            const m = String(now.getMinutes()).padStart(2,'0');
+            updateTimeSpan.textContent = `${h}:${m}`;
+        }
+
+        function getTypeBadge(type) {
+            const map = {
+                'homework': '<span class="type-badge homework"><i class="fas fa-pencil-alt"></i> Homework</span>',
+                'pastq': '<span class="type-badge pastq"><i class="fas fa-history"></i> Past Q</span>',
+                'quiz': '<span class="type-badge quiz"><i class="fas fa-question-circle"></i> Quiz</span>'
+            };
+            return map[type] || map.homework;
+        }
+
+        function getTypeIcon(type) {
+            const map = {
+                'homework': 'fa-pencil-alt',
+                'pastq': 'fa-history',
+                'quiz': 'fa-question-circle'
+            };
+            return map[type] || 'fa-file';
+        }
+
+        // ----- render -----
+        function render() {
+            // filter + search
+            let filtered = resources.filter(r => {
+                if (currentFilter !== 'all' && r.type !== currentFilter) return false;
+                if (searchTerm.trim() !== '') {
+                    const term = searchTerm.trim().toLowerCase();
+                    return r.title.toLowerCase().includes(term) ||
+                           r.desc.toLowerCase().includes(term) ||
+                           r.course.toLowerCase().includes(term) ||
+                           r.year.includes(term);
+                }
+                return true;
+            });
+
+            // stats
+            const total = resources.length;
+            const hw = resources.filter(r => r.type === 'homework').length;
+            const pastq = resources.filter(r => r.type === 'pastq').length;
+            const quiz = resources.filter(r => r.type === 'quiz').length;
+
+            totalResourcesEl.textContent = total;
+            hwCountEl.textContent = hw;
+            pastqCountEl.textContent = pastq;
+            quizCountEl.textContent = quiz;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <p style="font-weight:500; margin-top:6px;">No results found</p>
+                        <p style="font-size:0.85rem;">Try adjusting your search or filters</p>
+                    </div>
+                `;
+                updateTimestamp();
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(r => {
+                const badgeHtml = getTypeBadge(r.type);
+                html += `
+                    <div class="result-card" data-id="${r.id}">
+                        <div class="card-top">
+                            ${badgeHtml}
+                            <span class="year-tag"><i class="far fa-calendar-alt"></i> ${r.year}</span>
+                        </div>
+                        <div class="title">${r.title}</div>
+                        <div class="description">${r.desc}</div>
+                        <div class="card-footer">
+                            <span class="meta"><i class="fas fa-book"></i> ${r.course}</span>
+                            <div class="action-icons">
+                                <i class="fas fa-download" data-action="download" data-id="${r.id}"></i>
+                                <i class="far fa-trash-alt" data-action="delete" data-id="${r.id}" style="color:#b91c1c;"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = html;
+            updateTimestamp();
+        }
+
+        // ----- AI search simulation -----
+        function performAISearch() {
+            const query = searchInput.value.trim();
+            if (!query) {
+                searchTerm = '';
+                render();
+                return;
+            }
+            // simulate AI: search in title, desc, course, year
+            searchTerm = query;
+            render();
+            // show feedback
+            const resultCount = resources.filter(r => {
+                const term = query.toLowerCase();
+                return r.title.toLowerCase().includes(term) ||
+                       r.desc.toLowerCase().includes(term) ||
+                       r.course.toLowerCase().includes(term) ||
+                       r.year.includes(term);
+            }).length;
+            // subtle feedback via placeholder
+            const msg = resultCount > 0 ? `AI found ${resultCount} results` : 'No matches found';
+            // we can show it as a temporary label - we'll use a small alert-like
+            const label = document.querySelector('.ai-label');
+            const original = label.innerHTML;
+            label.innerHTML = `<i class="fas fa-sparkles"></i> ${msg}`;
+            setTimeout(() => {
+                label.innerHTML = original;
+            }, 2000);
+        }
+
+        // ----- add resource -----
+        function addResource() {
+            const title = prompt('Resource title:');
+            if (title === null || title.trim() === '') return;
+            const desc = prompt('Description:') || 'No description';
+            const typeOptions = ['homework', 'pastq', 'quiz'];
+            const typeInput = prompt('Type (homework / pastq / quiz):', 'homework');
+            let type = 'homework';
+            if (typeInput && typeOptions.includes(typeInput.trim().toLowerCase())) {
+                type = typeInput.trim().toLowerCase();
+            }
+            const course = prompt('Course code (e.g. CS 201):') || 'General';
+            const year = new Date().getFullYear().toString();
+
+            const newId = resources.length ? Math.max(...resources.map(r => r.id)) + 1 : 1;
+            resources.push({
+                id: newId,
+                title: title.trim(),
+                desc: desc.trim(),
+                type: type,
+                course: course.trim(),
+                year: year,
+            });
+            render();
+        }
+
+        // ----- delete resource -----
+        function deleteResource(id) {
+            if (!confirm('Remove this resource?')) return;
+            resources = resources.filter(r => r.id !== id);
+            render();
+        }
+
+        // ----- download (simulate) -----
+        function downloadResource(id) {
+            const item = resources.find(r => r.id === id);
+            if (!item) return;
+            alert(`📥 Downloading: "${item.title}" (simulated)`);
+        }
+
+        // ----- event delegation -----
+        grid.addEventListener('click', (e) => {
+            const target = e.target.closest('[data-action]');
+            if (!target) return;
+            const action = target.dataset.action;
+            const id = Number(target.dataset.id);
+            if (isNaN(id)) return;
+
+            if (action === 'delete') deleteResource(id);
+            else if (action === 'download') downloadResource(id);
+        });
+
+        // ----- filters -----
+        filterEls.forEach(el => {
+            el.addEventListener('click', () => {
+                filterEls.forEach(f => f.classList.remove('active'));
+                el.classList.add('active');
+                currentFilter = el.dataset.filter;
+                render();
+            });
+        });
+
+        // ----- search -----
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                performAISearch();
+            }
+        });
+
+        document.getElementById('searchBtn').addEventListener('click', performAISearch);
+        document.getElementById('addBtn').addEventListener('click', addResource);
+
+        // ----- init -----
+        render();
+
+        // ----- live update: timestamp & occasional new resource -----
+        setInterval(() => {
+            updateTimestamp();
+
+            // occasionally add a new AI-suggested resource (simulate)
+            if (resources.length < 15 && Math.random() > 0.8) {
+                const titles = ['AI Ethics Discussion Questions', 'ML Basics Homework', 'Data Science Quiz', 'CS 310 Past Exam 2026'];
+                const types = ['homework', 'pastq', 'quiz'];
+                const courses = ['CS 201', 'CS 260', 'MATH 220', 'PHYS 101', 'CS 310'];
+                const newItem = {
+                    id: resources.length + 1,
+                    title: titles[Math.floor(Math.random() * titles.length)],
+                    desc: 'AI-generated practice questions and exercises.',
+                    type: types[Math.floor(Math.random() * types.length)],
+                    course: courses[Math.floor(Math.random() * courses.length)],
+                    year: '2026',
+                };
+                // avoid duplicate titles
+                const exists = resources.some(r => r.title === newItem.title);
+                if (!exists) {
+                    resources.push(newItem);
+                    render();
+                }
+            }
+        }, 30000);
+    })();
+</script>
+</body>
+</html>

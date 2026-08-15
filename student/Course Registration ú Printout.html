@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <title>Course Registration · Printout</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #eef3fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .print-wrapper {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 40px;
+            box-shadow: 0 30px 60px -18px rgba(0, 20, 40, 0.18);
+            padding: 32px 36px 28px;
+            transition: all 0.2s;
+        }
+
+        /* print button */
+        .print-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .print-btn {
+            background: #1a3652;
+            border: none;
+            color: white;
+            padding: 10px 28px;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.15s;
+            box-shadow: 0 4px 10px rgba(0, 20, 40, 0.06);
+        }
+
+        .print-btn:hover {
+            background: #0a1e32;
+            transform: scale(1.01);
+        }
+
+        .print-btn i {
+            font-size: 0.9rem;
+        }
+
+        .back-btn {
+            background: #e6edf8;
+            border: none;
+            color: #1c3857;
+            padding: 10px 24px;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .back-btn:hover {
+            background: #d4e0f0;
+        }
+
+        /* ----- PRINTABLE AREA ----- */
+        #printArea {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 28px 30px 30px;
+            border: 1px solid #e7eef9;
+        }
+
+        /* header */
+        .print-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 18px;
+            border-bottom: 3px double #dce6f2;
+        }
+
+        .print-header .institution {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .print-header .institution i {
+            font-size: 2.4rem;
+            color: #7c3aed;
+        }
+
+        .print-header .institution h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0a1e32;
+            letter-spacing: -0.3px;
+        }
+
+        .print-header .institution .sub {
+            font-size: 0.8rem;
+            color: #4f6e8e;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        .print-header .doc-info {
+            text-align: right;
+        }
+
+        .print-header .doc-info .doc-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a3652;
+        }
+
+        .print-header .doc-info .doc-meta {
+            font-size: 0.8rem;
+            color: #4f6e8e;
+            margin-top: 4px;
+        }
+
+        /* student info */
+        .student-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px 30px;
+            background: #f8fbff;
+            border-radius: 20px;
+            padding: 18px 24px;
+            margin-bottom: 24px;
+            border: 1px solid #e7eef9;
+        }
+
+        .student-info .info-item {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 8px;
+        }
+
+        .student-info .info-item .label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #4f6e8e;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            min-width: 80px;
+        }
+
+        .student-info .info-item .value {
+            font-weight: 500;
+            color: #0b1e31;
+        }
+
+        /* table */
+        .table-wrap {
+            overflow-x: auto;
+            margin-bottom: 20px;
+            border-radius: 16px;
+            border: 1px solid #e7eef9;
+        }
+
+        .reg-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 560px;
+        }
+
+        .reg-table th {
+            text-align: left;
+            padding: 14px 16px;
+            background: #f2f8ff;
+            font-weight: 600;
+            color: #1a3652;
+            border-bottom: 2px solid #dce6f2;
+        }
+
+        .reg-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #eaf0f8;
+            color: #1d3957;
+            vertical-align: middle;
+        }
+
+        .reg-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .reg-table .status-badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: 40px;
+            display: inline-block;
+        }
+
+        .status-badge.registered {
+            background: #d1fae5;
+            color: #0b6e4f;
+        }
+
+        .status-badge.waitlist {
+            background: #fef3c7;
+            color: #8b6914;
+        }
+
+        .status-badge.pending {
+            background: #fee9e7;
+            color: #b91c1c;
+        }
+
+        .reg-table .amount {
+            font-weight: 600;
+        }
+
+        /* summary row */
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 16px 0 8px;
+            border-top: 2px solid #dce6f2;
+            margin-top: 8px;
+        }
+
+        .summary-row .total-box {
+            text-align: right;
+        }
+
+        .summary-row .total-box .total-label {
+            font-size: 0.8rem;
+            color: #4f6e8e;
+            font-weight: 500;
+        }
+
+        .summary-row .total-box .total-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #059669;
+        }
+
+        .summary-row .total-box .total-value.credits {
+            color: #7c3aed;
+        }
+
+        /* footer */
+        .print-footer {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #e7eef8;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.75rem;
+            color: #577392;
+        }
+
+        .print-footer .signature {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .print-footer .signature .sig-line {
+            display: inline-block;
+            min-width: 120px;
+            border-bottom: 1px solid #a0bcdb;
+            margin-top: 4px;
+        }
+
+        /* print styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0.2in;
+            }
+
+            .print-wrapper {
+                box-shadow: none;
+                padding: 0;
+                border-radius: 0;
+            }
+
+            .print-controls {
+                display: none !important;
+            }
+
+            #printArea {
+                border: none;
+                padding: 0;
+                border-radius: 0;
+            }
+
+            .print-header {
+                border-bottom-color: #aaa;
+            }
+
+            .student-info {
+                background: #f5f9ff;
+                border-color: #ccc;
+            }
+
+            .reg-table th {
+                background: #eef3fa;
+                border-bottom-color: #aaa;
+            }
+
+            .reg-table td {
+                border-bottom-color: #dde6f2;
+            }
+
+            .summary-row {
+                border-top-color: #aaa;
+            }
+
+            .print-footer .signature .sig-line {
+                border-bottom-color: #666;
+            }
+
+            .print-footer {
+                border-top-color: #ccc;
+            }
+
+            .table-wrap {
+                border-color: #ccc;
+            }
+
+            .back-btn, .print-btn {
+                display: none !important;
+            }
+        }
+
+        /* responsive */
+        @media (max-width: 700px) {
+            .print-wrapper { padding: 20px 16px 24px; }
+            #printArea { padding: 18px 16px 20px; }
+            .student-info { grid-template-columns: 1fr; }
+            .print-header { flex-direction: column; align-items: flex-start; }
+            .print-header .doc-info { text-align: left; width: 100%; }
+            .reg-table { font-size: 0.8rem; min-width: 480px; }
+            .reg-table th, .reg-table td { padding: 10px 12px; }
+        }
+
+        @media (max-width: 480px) {
+            .print-wrapper { padding: 12px 10px 18px; }
+            #printArea { padding: 12px 10px 16px; }
+            .reg-table { font-size: 0.7rem; min-width: 400px; }
+            .reg-table th, .reg-table td { padding: 8px 8px; }
+            .summary-row .total-box .total-value { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Student Home</a><a href="page1.html">page1</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page15.html">page15</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page9.html">page9</a></div>
+
+<div class="print-wrapper">
+    <!-- controls (hidden in print) -->
+    <div class="print-controls">
+        <button class="back-btn" onclick="window.history.back()"><i class="fas fa-arrow-left"></i> Back</button>
+        <button class="print-btn" onclick="window.print()"><i class="fas fa-print"></i> Print / PDF</button>
+    </div>
+
+    <!-- PRINTABLE AREA -->
+    <div id="printArea">
+        <!-- header -->
+        <div class="print-header">
+            <div class="institution">
+                <i class="fas fa-university"></i>
+                <div>
+                    <h1>Springfield University</h1>
+                    <div class="sub">Office of the Registrar</div>
+                </div>
+            </div>
+            <div class="doc-info">
+                <div class="doc-title"><i class="fas fa-file-alt" style="margin-right:8px;color:#7c3aed;"></i>Course Registration Form</div>
+                <div class="doc-meta">Generated: <span id="printDate"></span></div>
+            </div>
+        </div>
+
+        <!-- student info -->
+        <div class="student-info" id="studentInfo">
+            <div class="info-item">
+                <span class="label">Student ID</span>
+                <span class="value">S-2026-014</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Name</span>
+                <span class="value">Sarah Chen</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Program</span>
+                <span class="value">B.S. Computer Science</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Semester</span>
+                <span class="value">Spring 2026</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Academic Year</span>
+                <span class="value">2025–2026</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Advisor</span>
+                <span class="value">Dr. Alan Turing</span>
+            </div>
+        </div>
+
+        <!-- course table -->
+        <div class="table-wrap">
+            <table class="reg-table" id="regTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Course Code</th>
+                        <th>Course Title</th>
+                        <th>Credits</th>
+                        <th>Schedule</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- injected by js -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- summary -->
+        <div class="summary-row" id="summaryRow">
+            <div>
+                <span style="font-weight:500; color:#1a3652;">Total Courses: <span id="totalCourses">0</span></span>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <span style="font-weight:500; color:#1a3652;">Status: <span style="color:#059669;font-weight:600;">Confirmed</span></span>
+            </div>
+            <div class="total-box">
+                <div class="total-label">Total Credits</div>
+                <div class="total-value credits" id="totalCredits">0</div>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <div class="print-footer">
+            <div>
+                <i class="fas fa-check-circle" style="color:#059669;"></i> This is an official registration record.
+                <br />
+                <span style="font-size:0.7rem;">Please verify all information before the add/drop deadline.</span>
+            </div>
+            <div class="signature">
+                <div>
+                    <div>Student Signature</div>
+                    <div class="sig-line">&nbsp;</div>
+                </div>
+                <div>
+                    <div>Registrar Signature</div>
+                    <div class="sig-line">&nbsp;</div>
+                </div>
+                <div>
+                    <div>Date</div>
+                    <div class="sig-line">&nbsp;</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // ----- sample registered courses -----
+        const registeredCourses = [
+            { code: 'CS 201', title: 'Data Structures', credits: 3, schedule: 'MWF 10:00am', status: 'registered' },
+            { code: 'CS 260', title: 'Web Development', credits: 4, schedule: 'TTh 11:00am', status: 'registered' },
+            { code: 'MATH 220', title: 'Linear Algebra', credits: 3, schedule: 'MWF 8:00am', status: 'waitlist' },
+            { code: 'PHYS 101', title: 'Intro to Physics', credits: 4, schedule: 'TTh 1:00pm', status: 'registered' },
+            { code: 'ENG 110', title: 'Composition I', credits: 3, schedule: 'MWF 2:00pm', status: 'pending' },
+        ];
+
+        // DOM refs
+        const tbody = document.getElementById('tableBody');
+        const totalCoursesEl = document.getElementById('totalCourses');
+        const totalCreditsEl = document.getElementById('totalCredits');
+        const printDateEl = document.getElementById('printDate');
+
+        // ----- helpers -----
+        function formatStatus(status) {
+            const map = {
+                'registered': '<span class="status-badge registered"><i class="fas fa-check-circle"></i> Registered</span>',
+                'waitlist': '<span class="status-badge waitlist"><i class="fas fa-clock"></i> Waitlist</span>',
+                'pending': '<span class="status-badge pending"><i class="fas fa-exclamation-triangle"></i> Pending</span>'
+            };
+            return map[status] || map.pending;
+        }
+
+        function getStatusIcon(status) {
+            const map = {
+                'registered': 'fa-check-circle',
+                'waitlist': 'fa-clock',
+                'pending': 'fa-exclamation-triangle'
+            };
+            return map[status] || 'fa-circle';
+        }
+
+        // ----- render table -----
+        function renderTable() {
+            let html = '';
+            let totalCredits = 0;
+
+            registeredCourses.forEach((c, idx) => {
+                totalCredits += c.credits;
+                const statusHtml = formatStatus(c.status);
+                html += `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td><strong>${c.code}</strong></td>
+                        <td>${c.title}</td>
+                        <td style="text-align:center;font-weight:600;">${c.credits}</td>
+                        <td><i class="far fa-calendar-alt" style="color:#7c3aed;margin-right:4px;"></i>${c.schedule}</td>
+                        <td>${statusHtml}</td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+            totalCoursesEl.textContent = registeredCourses.length;
+            totalCreditsEl.textContent = totalCredits;
+        }
+
+        // ----- set print date -----
+        function setDate() {
+            const now = new Date();
+            const opts = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            printDateEl.textContent = now.toLocaleDateString('en-US', opts);
+        }
+
+        // ----- init -----
+        renderTable();
+        setDate();
+
+        // update date on print (in case of delay)
+        window.addEventListener('beforeprint', function() {
+            setDate();
+        });
+
+    })();
+</script>
+</body>
+</html>

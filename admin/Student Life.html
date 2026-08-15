@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>Student Life · British Poly</title>
+    <!-- Google Font + minimal reset -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f6faff;
+            color: #0a1e3c;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1320px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            background: #0a1e3c;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 0.4rem 0;
+            font-size: 0.75rem;
+        }
+
+        .top-bar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+        }
+
+        .top-bar .contact-info {
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .top-bar .contact-info span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .top-bar .quick-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .top-bar .quick-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .top-bar .quick-links a:hover {
+            color: white;
+        }
+
+        .top-bar .quick-links .apply-btn {
+            background: #1a5cff;
+            color: white;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.7rem;
+        }
+
+        .top-bar .quick-links .apply-btn:hover {
+            background: #2a6cff;
+        }
+
+        /* ===== MAIN NAV ===== */
+        .main-nav {
+            background: white;
+            padding: 0.8rem 0;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+            border-bottom: 1px solid #eef2f8;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .main-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.5rem;
+        }
+
+        .main-nav .logo {
+            font-weight: 800;
+            font-size: 1.6rem;
+            letter-spacing: -0.02em;
+            color: #0a1e3c;
+            text-decoration: none;
+        }
+
+        .main-nav .logo span {
+            color: #1a5cff;
+        }
+
+        .main-nav .logo small {
+            font-weight: 400;
+            font-size: 0.7rem;
+            color: #4a6a8a;
+            margin-left: 0.3rem;
+        }
+
+        .main-nav .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .main-nav .nav-links a {
+            color: #2a3a5a;
+            text-decoration: none;
+            transition: color 0.15s;
+            position: relative;
+        }
+
+        .main-nav .nav-links a:hover {
+            color: #1a5cff;
+        }
+
+        .main-nav .nav-links a.active {
+            color: #1a5cff;
+            font-weight: 600;
+        }
+
+        .main-nav .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #1a5cff;
+            border-radius: 4px;
+        }
+
+        .main-nav .nav-links .dropdown {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .main-nav .nav-links .dropdown .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 16px;
+            padding: 0.5rem 0;
+            min-width: 200px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid #eef2f8;
+            margin-top: 0.5rem;
+        }
+
+        .main-nav .nav-links .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .main-nav .nav-links .dropdown .dropdown-menu a {
+            display: block;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.85rem;
+        }
+
+        .main-nav .nav-links .dropdown .dropdown-menu a:hover {
+            background: #f0f6ff;
+        }
+
+        .main-nav .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #0a1e3c;
+        }
+
+        /* ===== PAGE HEADER ===== */
+        .page-header {
+            background: linear-gradient(135deg, #0a1e3c 0%, #1a3a6a 100%);
+            color: white;
+            padding: 3rem 0 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 60%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(26, 92, 255, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .page-header .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header .breadcrumb {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .page-header .breadcrumb a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+        }
+
+        .page-header .breadcrumb a:hover {
+            color: white;
+        }
+
+        .page-header .breadcrumb .sep {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .page-header .subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin-top: 0.5rem;
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0a1e3c;
+        }
+
+        .section-header p {
+            color: #4a6a8a;
+            max-width: 600px;
+            margin: 0.5rem auto 0;
+            font-size: 1.05rem;
+        }
+
+        /* ===== CAMPUS LIFE GRID ===== */
+        .campus-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .campus-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem 1.8rem;
+            border: 1px solid #eef2f8;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: center;
+        }
+
+        .campus-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 36px rgba(0, 20, 50, 0.08);
+        }
+
+        .campus-card .icon {
+            font-size: 3rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .campus-card h4 {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .campus-card p {
+            font-size: 0.9rem;
+            color: #4a6a8a;
+            line-height: 1.6;
+        }
+
+        /* ===== CLUBS & SOCIETIES ===== */
+        .clubs-section {
+            background: white;
+            border-top: 1px solid #eef2f8;
+            border-bottom: 1px solid #eef2f8;
+        }
+
+        .clubs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .club-card {
+            background: #f8faff;
+            border-radius: 16px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            border: 1px solid #eef2f8;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .club-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 20, 50, 0.06);
+        }
+
+        .club-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .club-card h5 {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .club-card .members {
+            font-size: 0.75rem;
+            color: #4a6a8a;
+        }
+
+        /* ===== STUDENT SERVICES ===== */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            display: flex;
+            gap: 1.2rem;
+            align-items: flex-start;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid #eef2f8;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 20, 50, 0.08);
+        }
+
+        .service-card .icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .service-card .info h4 {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .service-card .info p {
+            font-size: 0.85rem;
+            color: #4a6a8a;
+            line-height: 1.5;
+        }
+
+        /* ===== ACCOMMODATION ===== */
+        .accommodation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .accommodation-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.8rem;
+            border: 1px solid #eef2f8;
+            box-shadow: 0 4px 16px rgba(0, 20, 50, 0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .accommodation-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 20, 50, 0.08);
+        }
+
+        .accommodation-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .accommodation-card h4 {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .accommodation-card .price {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #1a5cff;
+            margin-bottom: 0.3rem;
+        }
+
+        .accommodation-card .price small {
+            font-weight: 400;
+            font-size: 0.8rem;
+            color: #4a6a8a;
+        }
+
+        .accommodation-card p {
+            font-size: 0.85rem;
+            color: #4a6a8a;
+            line-height: 1.5;
+        }
+
+        .accommodation-card .features {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.8rem;
+        }
+
+        .accommodation-card .features span {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            background: #e6eeff;
+            color: #1a5cff;
+        }
+
+        /* ===== WELLNESS ===== */
+        .wellness-section {
+            background: white;
+            border-top: 1px solid #eef2f8;
+        }
+
+        .wellness-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+        }
+
+        .wellness-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8faff;
+            border-radius: 20px;
+            border: 1px solid #eef2f8;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .wellness-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 20, 50, 0.06);
+        }
+
+        .wellness-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .wellness-card h4 {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .wellness-card p {
+            font-size: 0.85rem;
+            color: #4a6a8a;
+            line-height: 1.5;
+        }
+
+        /* ===== CTA ===== */
+        .cta-banner {
+            background: linear-gradient(135deg, #0a1e3c, #1a3a6a);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 28px;
+            text-align: center;
+            margin: 2rem 0 1rem;
+        }
+
+        .cta-banner h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .cta-banner p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #1a5cff;
+            color: white;
+            border-color: #1a5cff;
+        }
+
+        .btn-primary:hover {
+            background: #2a6cff;
+            border-color: #2a6cff;
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(26, 92, 255, 0.3);
+        }
+
+        .btn-outline-white {
+            background: transparent;
+            color: white;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-outline-white:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #0a1e3c;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 3rem 0 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .footer .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 2.5rem;
+        }
+
+        .footer .brand {
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: white;
+        }
+
+        .footer .brand span {
+            color: #6a9aff;
+        }
+
+        .footer .brand-desc {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-top: 0.5rem;
+            max-width: 280px;
+        }
+
+        .footer h4 {
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .footer ul {
+            list-style: none;
+        }
+
+        .footer ul li {
+            margin-bottom: 0.4rem;
+        }
+
+        .footer ul li a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.15s;
+        }
+
+        .footer ul li a:hover {
+            color: white;
+        }
+
+        .footer .bottom {
+            grid-column: 1 / -1;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 1.5rem;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .footer .container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar .container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.3rem;
+            }
+
+            .top-bar .contact-info {
+                gap: 0.6rem;
+            }
+
+            .main-nav .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: 0.8rem;
+                padding: 1rem 0;
+            }
+
+            .main-nav .nav-links.open {
+                display: flex;
+            }
+
+            .main-nav .nav-toggle {
+                display: block;
+            }
+
+            .main-nav .nav-links .dropdown .dropdown-menu {
+                position: static;
+                box-shadow: none;
+                border: none;
+                padding-left: 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .footer .container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .footer .bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .service-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .campus-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .clubs-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .accommodation-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .wellness-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="British Poly · Home.html">Admin Home</a><a href="About Us · British Poly.html">About Us · British Poly</a><a href="Admin Profile · Account.html">Admin Profile · Account</a><a href="Admissions · British Poly.html">Admissions · British Poly</a><a href="British Poly · Home.html">British Poly · Home</a><a href="Contact Us.html">Contact Us</a><a href="Finance & Bursary Control .html">Finance & Bursary Control </a><a href="Notice Board.html">Notice Board</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page15.html">page15</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page19.html">page19</a><a href="page21.html">page21</a><a href="page22.html">page22</a><a href="page23.html">page23</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a><a href="Parent & Guardian Portal.html">Parent & Guardian Portal</a><a href="Programs · British Poly.html">Programs · British Poly</a><a href="Staff Management.html">Staff Management</a></div>
+
+    <!-- ===== TOP BAR ===== -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="contact-info">
+                <span>📞 +44 20 7946 0100</span>
+                <span>✉️ info@britishpoly.org</span>
+                <span>📍 London, UK</span>
+            </div>
+            <div class="quick-links">
+                <a href="#">Staff Portal</a>
+                <a href="#">Student Portal</a>
+                <a href="#" class="apply-btn">Apply Now</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN NAV ===== -->
+    <nav class="main-nav">
+        <div class="container">
+            <a href="#" class="logo">British<span>Poly</span><small>· since 1987</small></a>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+
+            <div class="nav-links" id="navLinks">
+                <a href="#">Home</a>
+                <a href="#">About</a>
+                <a href="#">Programs</a>
+                <a href="#">Admissions</a>
+                <a href="#" class="active">Student Life</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== PAGE HEADER ===== -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="#">Home</a>
+                <span class="sep">/</span>
+                <span>Student Life</span>
+            </div>
+            <h1>Student Life</h1>
+            <p class="subtitle">Discover a vibrant, supportive community where you can grow, learn, and make lifelong connections.</p>
+        </div>
+    </section>
+
+    <!-- ===== CAMPUS LIFE ===== -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Life on Campus</h2>
+                <p>Experience a dynamic campus environment designed to inspire and support you.</p>
+            </div>
+            <div class="campus-grid">
+                <div class="campus-card">
+                    <div class="icon">🏛️</div>
+                    <h4>Modern Facilities</h4>
+                    <p>State-of-the-art lecture theatres, labs, libraries, and collaborative spaces across our London campus.</p>
+                </div>
+                <div class="campus-card">
+                    <div class="icon">🌳</div>
+                    <h4>Green Spaces</h4>
+                    <p>Beautiful outdoor areas for relaxation, study, and socialising between classes.</p>
+                </div>
+                <div class="campus-card">
+                    <div class="icon">☕</div>
+                    <h4>Student Commons</h4>
+                    <p>Vibrant social spaces with cafés, dining options, and areas to connect with fellow students.</p>
+                </div>
+                <div class="campus-card">
+                    <div class="icon">⚽</div>
+                    <h4>Sports &amp; Fitness</h4>
+                    <p>Fitness centre, sports hall, outdoor pitches, and wellness programs for all fitness levels.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CLUBS & SOCIETIES ===== -->
+    <section class="section clubs-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Clubs &amp; Societies</h2>
+                <p>Join one of our 50+ student-led clubs and find your community.</p>
+            </div>
+            <div class="clubs-grid">
+                <div class="club-card">
+                    <div class="icon">💻</div>
+                    <h5>Tech Society</h5>
+                    <div class="members">320 members</div>
+                </div>
+                <div class="club-card">
+                    <div class="icon">🎨</div>
+                    <h5>Art &amp; Design</h5>
+                    <div class="members">180 members</div>
+                </div>
+                <div class="club-card">
+                    <div class="icon">⚽</div>
+                    <h5>Football Club</h5>
+                    <div class="members">250 members</div>
+                </div>
+                <div class="club-card">
+                    <div class="icon">🎭</div>
+                    <h5>Drama &amp; Theatre</h5>
+                    <div class="members">120 members</div>
+                </div>
+                <div class="club-card">
+                    <div class="icon">🧠</div>
+                    <h5>Psychology Society</h5>
+                    <div class="members">95 members</div>
+                </div>
+                <div class="club-card">
+                    <div class="icon">🌍</div>
+                    <h5>International Club</h5>
+                    <div class="members">210 members</div>
+                </div>
+                <div class="club-card">
+                    <div class="icon">🎵</div>
+                    <h5>Music Society</h5>
+                    <div class="members">150 members</div>
+                </div>
+                <div class="club-card">
+                    <div class="icon">📚</div>
+                    <h5>Book Club</h5>
+                    <div class="members">85 members</div>
+                </div>
+                <div class="club-card">
+                    <div class="icon">🏏</div>
+                    <h5>Cricket Club</h5>
+                    <div class="members">130 members</div>
+                </div>
+                <div class="club-card">
+                    <div class="icon">🎮</div>
+                    <h5>Gaming Society</h5>
+                    <div class="members">200 members</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== STUDENT SERVICES ===== -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Student Services</h2>
+                <p>Comprehensive support services to help you succeed academically and personally.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="icon">🎓</div>
+                    <div class="info">
+                        <h4>Academic Support</h4>
+                        <p>One-on-one tutoring, study skills workshops, and writing centres to help you excel in your studies.</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="icon">💼</div>
+                    <div class="info">
+                        <h4>Career Services</h4>
+                        <p>Internship placements, career counselling, CV workshops, and employer networking events.</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="icon">🧠</div>
+                    <div class="info">
+                        <h4>Counselling &amp; Wellness</h4>
+                        <p>Professional counselling, mental health support, and wellness programs for all students.</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="icon">💰</div>
+                    <div class="info">
+                        <h4>Financial Advice</h4>
+                        <p>Guidance on student loans, budgeting, scholarships, and financial planning.</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="icon">🛂</div>
+                    <div class="info">
+                        <h4>International Support</h4>
+                        <p>Visa assistance, cultural integration, language support, and international student events.</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="icon">👥</div>
+                    <div class="info">
+                        <h4>Student Union</h4>
+                        <p>Student advocacy, representation, and a hub for student-led initiatives and events.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ACCOMMODATION ===== -->
+    <section class="section" style="background:white; border-top:1px solid #eef2f8; border-bottom:1px solid #eef2f8;">
+        <div class="container">
+            <div class="section-header">
+                <h2>Accommodation</h2>
+                <p>Find your perfect home away from home with our range of student accommodation options.</p>
+            </div>
+            <div class="accommodation-grid">
+                <div class="accommodation-card">
+                    <div class="icon">🏢</div>
+                    <h4>On-Campus Halls</h4>
+                    <div class="price">£450 <small>/ month</small></div>
+                    <p>Modern en-suite rooms with shared kitchen and common areas. 5-minute walk to all campus facilities.</p>
+                    <div class="features">
+                        <span>WiFi</span>
+                        <span>En-suite</span>
+                        <span>Common Room</span>
+                        <span>Laundry</span>
+                    </div>
+                </div>
+                <div class="accommodation-card">
+                    <div class="icon">🏠</div>
+                    <h4>Private Student Residences</h4>
+                    <div class="price">£550 <small>/ month</small></div>
+                    <p>Premium studio apartments located near campus with all bills included. Ideal for postgraduate students.</p>
+                    <div class="features">
+                        <span>Studio</span>
+                        <span>Bills Included</span>
+                        <span>Gym</span>
+                        <span>Study Room</span>
+                    </div>
+                </div>
+                <div class="accommodation-card">
+                    <div class="icon">🏘️</div>
+                    <h4>Shared Housing</h4>
+                    <div class="price">£380 <small>/ month</small></div>
+                    <p>Off-campus shared houses in the local community. Independent living with access to campus transport.</p>
+                    <div class="features">
+                        <span>Shared Kitchen</span>
+                        <span>Garden</span>
+                        <span>Budget Friendly</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== WELLNESS ===== -->
+    <section class="section wellness-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Wellness &amp; Wellbeing</h2>
+                <p>We prioritise your physical and mental wellbeing with a range of support services.</p>
+            </div>
+            <div class="wellness-grid">
+                <div class="wellness-card">
+                    <div class="icon">🧘</div>
+                    <h4>Mental Health Support</h4>
+                    <p>Free and confidential counselling, workshops, and peer support groups.</p>
+                </div>
+                <div class="wellness-card">
+                    <div class="icon">🏋️</div>
+                    <h4>Fitness &amp; Sport</h4>
+                    <p>Fully-equipped gym, fitness classes, and sports teams for all abilities.</p>
+                </div>
+                <div class="wellness-card">
+                    <div class="icon">🥗</div>
+                    <h4>Nutritional Advice</h4>
+                    <p>Healthy eating workshops, nutrition counselling, and affordable meal plans.</p>
+                </div>
+                <div class="wellness-card">
+                    <div class="icon">🧘</div>
+                    <h4>Mindfulness &amp; Relaxation</h4>
+                    <p>Meditation sessions, yoga classes, and quiet spaces for relaxation.</p>
+                </div>
+                <div class="wellness-card">
+                    <div class="icon">🤝</div>
+                    <h4>Peer Support Network</h4>
+                    <p>Student-led support groups and mentoring programs for a sense of community.</p>
+                </div>
+                <div class="wellness-card">
+                    <div class="icon">📱</div>
+                    <h4>Digital Wellness</h4>
+                    <p>Online resources, apps, and virtual support for your wellbeing journey.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA BANNER ===== -->
+    <section class="section" style="padding-top:0;">
+        <div class="container">
+            <div class="cta-banner">
+                <h2>Join Our Community</h2>
+                <p>Be part of a vibrant, diverse community that supports your growth and success.</p>
+                <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+                    <a href="#" class="btn btn-primary">Explore Programs →</a>
+                    <a href="#" class="btn btn-outline-white">Visit Campus</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div>
+                <div class="brand">British<span>Poly</span></div>
+                <div class="brand-desc">Excellence in polytechnic education since 1987. Empowering students with practical skills, industry knowledge, and a global perspective.</div>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Programs</a></li>
+                    <li><a href="#">Admissions</a></li>
+                    <li><a href="#">Student Life</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Student Portal</a></li>
+                    <li><a href="#">Staff Portal</a></li>
+                    <li><a href="#">Library</a></li>
+                    <li><a href="#">Events Calendar</a></li>
+                    <li><a href="#">News &amp; Blog</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="#">📞 +44 20 7946 0100</a></li>
+                    <li><a href="#">✉️ info@britishpoly.org</a></li>
+                    <li><a href="#">📍 London, UK</a></li>
+                    <li><a href="#">📱 Social Media</a></li>
+                </ul>
+            </div>
+            <div class="bottom">
+                <span>© 2025 British Polytechnic. All rights reserved.</span>
+                <span>
+                    <a href="#" style="color:rgba(255,255,255,0.5); text-decoration:none; margin-right:1rem;">Privacy Policy</a>
+                    <a href="#" style="color:rgba(255,255,255,0.5); text-decoration:none;">Terms &amp; Conditions</a>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== MOBILE NAV =====
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        navToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('open');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+            });
+        });
+
+        console.log('✅ British Poly · Student Life page loaded');
+    </script>
+
+</body>
+</html>

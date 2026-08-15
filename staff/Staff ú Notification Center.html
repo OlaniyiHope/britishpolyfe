@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff · Notification Center</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f2f6fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1.2rem;
+        }
+
+        /* main card */
+        .notif-center {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 40px;
+            box-shadow: 0 24px 56px -16px rgba(0, 20, 40, 0.15), 0 8px 24px -6px rgba(0,0,0,0.04);
+            padding: 2rem 2.2rem;
+            transition: all 0.2s ease;
+        }
+
+        /* header */
+        .notif-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem 1.5rem;
+            border-bottom: 1px solid #e9eff6;
+            padding-bottom: 1.4rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .header-left h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #0b1e2e;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-left h1 i {
+            color: #2563eb;
+        }
+
+        .header-left .notif-badge {
+            background: #e5edf9;
+            color: #1f4f8a;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .header-right .date-badge {
+            background: #f2f6fc;
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            color: #1f3b57;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-icon {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #1f3f5c;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+
+        .btn-icon i {
+            color: #2563eb;
+        }
+
+        .btn-icon:hover {
+            background: #f4f9ff;
+            border-color: #b2c8dd;
+        }
+
+        .btn-icon.primary {
+            background: #0b1e2e;
+            border-color: #0b1e2e;
+            color: white;
+        }
+
+        .btn-icon.primary i {
+            color: white;
+        }
+
+        /* filter tabs */
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.8rem;
+            border-bottom: 1px solid #e9eff6;
+            padding-bottom: 0.6rem;
+        }
+
+        .tab {
+            padding: 0.4rem 1.4rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #4d6a87;
+            background: transparent;
+            transition: 0.15s;
+            cursor: default;
+            border: 1px solid transparent;
+        }
+
+        .tab.active {
+            background: #e5edf9;
+            color: #1f4f8a;
+            border-color: #c9d9ec;
+            font-weight: 600;
+        }
+
+        .tab i {
+            margin-right: 0.3rem;
+        }
+
+        .tab .count {
+            background: #d7e2ed;
+            color: #1f3b57;
+            border-radius: 40px;
+            padding: 0.05rem 0.6rem;
+            font-size: 0.7rem;
+            margin-left: 0.3rem;
+        }
+
+        .tab.active .count {
+            background: #b8cee5;
+        }
+
+        /* notification list */
+        .notif-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .notif-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 0.8rem;
+            border-radius: 24px;
+            transition: 0.1s;
+            border-bottom: 1px solid #f0f5fb;
+            position: relative;
+        }
+
+        .notif-item:last-child {
+            border-bottom: 0;
+        }
+
+        .notif-item:hover {
+            background: #fafdff;
+        }
+
+        .notif-item.unread {
+            background: #f4f9ff;
+            border-left: 4px solid #2563eb;
+            border-radius: 24px 24px 24px 24px;
+        }
+
+        .notif-item.unread:hover {
+            background: #eef6ff;
+        }
+
+        .notif-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 16px;
+            background: #e5effb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .notif-icon.warning {
+            background: #fef3d7;
+            color: #a7691a;
+        }
+
+        .notif-icon.success {
+            background: #e2f0e6;
+            color: #1a6d3b;
+        }
+
+        .notif-icon.danger {
+            background: #fde8e8;
+            color: #b13e3e;
+        }
+
+        .notif-icon.purple {
+            background: #ede4f5;
+            color: #6b3f9e;
+        }
+
+        .notif-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .notif-content .notif-title {
+            font-weight: 500;
+            color: #0b1e2e;
+            font-size: 0.95rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.4rem 0.6rem;
+        }
+
+        .notif-content .notif-title .highlight {
+            background: #e5edf9;
+            color: #1f4f8a;
+            padding: 0.05rem 0.6rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .notif-content .notif-text {
+            color: #3f5d7a;
+            font-size: 0.9rem;
+            margin-top: 0.1rem;
+            line-height: 1.4;
+        }
+
+        .notif-content .notif-text strong {
+            color: #0b1e2e;
+        }
+
+        .notif-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.4rem 1rem;
+            margin-top: 0.3rem;
+            font-size: 0.75rem;
+            color: #6a86a3;
+        }
+
+        .notif-meta i {
+            margin-right: 0.2rem;
+        }
+
+        .notif-meta .priority {
+            font-weight: 600;
+            font-size: 0.65rem;
+            padding: 0.1rem 0.7rem;
+            border-radius: 40px;
+            background: #e5edf9;
+            color: #1f4f8a;
+        }
+
+        .priority.high {
+            background: #fde8e8;
+            color: #b13e3e;
+        }
+
+        .priority.medium {
+            background: #fef3d7;
+            color: #a7691a;
+        }
+
+        .priority.low {
+            background: #e2f0e6;
+            color: #1a6d3b;
+        }
+
+        .notif-actions {
+            display: flex;
+            gap: 0.2rem;
+            flex-shrink: 0;
+            margin-left: 0.5rem;
+        }
+
+        .notif-actions .action-btn {
+            background: transparent;
+            border: none;
+            color: #8aa5c2;
+            padding: 0.2rem 0.5rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+
+        .notif-actions .action-btn:hover {
+            background: #eef4fa;
+            color: #1f4f8a;
+        }
+
+        .notif-actions .action-btn.danger:hover {
+            background: #fde8e8;
+            color: #b13e3e;
+        }
+
+        /* mark all read row */
+        .mark-all-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1.2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e9eff6;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .mark-all-row .btn-ghost {
+            background: transparent;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.3rem 1.4rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #1f3f5c;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: default;
+        }
+
+        .mark-all-row .btn-ghost i {
+            color: #2563eb;
+        }
+
+        .mark-all-row .btn-ghost:hover {
+            background: #f4f9ff;
+            border-color: #b2c8dd;
+        }
+
+        /* responsive */
+        @media (max-width: 700px) {
+            .notif-center {
+                padding: 1.5rem;
+                border-radius: 28px;
+            }
+            .header-left h1 {
+                font-size: 1.4rem;
+            }
+            .notif-item {
+                flex-wrap: wrap;
+                padding: 0.8rem 0.4rem;
+            }
+            .notif-actions {
+                margin-left: 0;
+                width: 100%;
+                justify-content: flex-end;
+                margin-top: 0.2rem;
+            }
+            .notif-icon {
+                width: 38px;
+                height: 38px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .notif-center {
+                padding: 1rem;
+            }
+            .filter-tabs {
+                gap: 0.2rem;
+            }
+            .tab {
+                padding: 0.2rem 0.9rem;
+                font-size: 0.75rem;
+            }
+            .header-right .date-badge {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.8rem;
+            }
+            .btn-icon {
+                padding: 0.2rem 0.8rem;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* empty state (hidden by default) */
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #4d6a87;
+        }
+        .empty-state i {
+            font-size: 3rem;
+            color: #c9d9ec;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Staff Home</a><a href="pag19.html">pag19</a><a href="page.10.html">page 10</a><a href="page.12.html">page 12</a><a href="page.14.html">page 14</a><a href="page.15.html">page 15</a><a href="page1.html">page1</a><a href="page11.html">page11</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page3.html">page3</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a></div>
+<div class="notif-center">
+
+    <!-- header -->
+    <div class="notif-header">
+        <div class="header-left">
+            <h1><i class="fas fa-bell"></i> Notifications</h1>
+            <span class="notif-badge"><i class="fas fa-circle" style="color: #2563eb; font-size: 0.5rem;"></i> 5 unread</span>
+        </div>
+        <div class="header-right">
+            <span class="date-badge"><i class="far fa-calendar-alt"></i> Aug 14, 2026</span>
+            <span class="btn-icon"><i class="fas fa-sliders-h"></i> Filter</span>
+            <span class="btn-icon primary"><i class="fas fa-cog"></i> Settings</span>
+        </div>
+    </div>
+
+    <!-- filter tabs -->
+    <div class="filter-tabs">
+        <span class="tab active"><i class="fas fa-inbox"></i> All <span class="count">12</span></span>
+        <span class="tab"><i class="fas fa-envelope-open"></i> Unread <span class="count">5</span></span>
+        <span class="tab"><i class="fas fa-tag"></i> Mentions <span class="count">3</span></span>
+        <span class="tab"><i class="fas fa-check-circle"></i> Read <span class="count">7</span></span>
+        <span class="tab"><i class="fas fa-flag"></i> Priority <span class="count">4</span></span>
+    </div>
+
+    <!-- notification list -->
+    <div class="notif-list">
+
+        <!-- unread item 1 -->
+        <div class="notif-item unread">
+            <div class="notif-icon"><i class="fas fa-user-plus"></i></div>
+            <div class="notif-content">
+                <div class="notif-title">
+                    New staff member assigned
+                    <span class="highlight">unread</span>
+                </div>
+                <div class="notif-text"><strong>Alex Rivera</strong> has been added to the Engineering team.</div>
+                <div class="notif-meta">
+                    <span><i class="far fa-clock"></i> 12 min ago</span>
+                    <span class="priority high">High</span>
+                    <span><i class="fas fa-tag"></i> HR</span>
+                </div>
+            </div>
+            <div class="notif-actions">
+                <span class="action-btn" title="Mark as read"><i class="fas fa-check"></i></span>
+                <span class="action-btn danger" title="Dismiss"><i class="fas fa-times"></i></span>
+            </div>
+        </div>
+
+        <!-- unread item 2 -->
+        <div class="notif-item unread">
+            <div class="notif-icon warning"><i class="fas fa-clock"></i></div>
+            <div class="notif-content">
+                <div class="notif-title">
+                    Upcoming deadline
+                    <span class="highlight">unread</span>
+                </div>
+                <div class="notif-text">Q3 performance reviews are due in <strong>3 days</strong>. Please submit your team's evaluations.</div>
+                <div class="notif-meta">
+                    <span><i class="far fa-clock"></i> 1 hour ago</span>
+                    <span class="priority medium">Medium</span>
+                    <span><i class="fas fa-calendar-alt"></i> Aug 17</span>
+                </div>
+            </div>
+            <div class="notif-actions">
+                <span class="action-btn"><i class="fas fa-check"></i></span>
+                <span class="action-btn danger"><i class="fas fa-times"></i></span>
+            </div>
+        </div>
+
+        <!-- read item (no unread class) -->
+        <div class="notif-item">
+            <div class="notif-icon success"><i class="fas fa-check-double"></i></div>
+            <div class="notif-content">
+                <div class="notif-title">Task completed</div>
+                <div class="notif-text"><strong>Maria Chen</strong> marked the onboarding checklist as complete.</div>
+                <div class="notif-meta">
+                    <span><i class="far fa-clock"></i> 3 hours ago</span>
+                    <span class="priority low">Low</span>
+                </div>
+            </div>
+            <div class="notif-actions">
+                <span class="action-btn"><i class="fas fa-check"></i></span>
+                <span class="action-btn danger"><i class="fas fa-times"></i></span>
+            </div>
+        </div>
+
+        <!-- unread item 3 -->
+        <div class="notif-item unread">
+            <div class="notif-icon purple"><i class="fas fa-at"></i></div>
+            <div class="notif-content">
+                <div class="notif-title">
+                    Mention in staff meeting
+                    <span class="highlight">unread</span>
+                </div>
+                <div class="notif-text"><strong>@You</strong> were mentioned in the weekly staff sync notes. Please review the action items.</div>
+                <div class="notif-meta">
+                    <span><i class="far fa-clock"></i> 4 hours ago</span>
+                    <span class="priority high">High</span>
+                    <span><i class="fas fa-tag"></i> Meeting</span>
+                </div>
+            </div>
+            <div class="notif-actions">
+                <span class="action-btn"><i class="fas fa-check"></i></span>
+                <span class="action-btn danger"><i class="fas fa-times"></i></span>
+            </div>
+        </div>
+
+        <!-- read item -->
+        <div class="notif-item">
+            <div class="notif-icon"><i class="fas fa-file-alt"></i></div>
+            <div class="notif-content">
+                <div class="notif-title">Report generated</div>
+                <div class="notif-text">Monthly attendance report for July is ready for download.</div>
+                <div class="notif-meta">
+                    <span><i class="far fa-clock"></i> 6 hours ago</span>
+                    <span class="priority low">Low</span>
+                </div>
+            </div>
+            <div class="notif-actions">
+                <span class="action-btn"><i class="fas fa-check"></i></span>
+                <span class="action-btn danger"><i class="fas fa-times"></i></span>
+            </div>
+        </div>
+
+        <!-- unread item 4 -->
+        <div class="notif-item unread">
+            <div class="notif-icon danger"><i class="fas fa-exclamation-triangle"></i></div>
+            <div class="notif-content">
+                <div class="notif-title">
+                    System alert
+                    <span class="highlight">unread</span>
+                </div>
+                <div class="notif-text">Staff directory sync failed. Please check the integration settings.</div>
+                <div class="notif-meta">
+                    <span><i class="far fa-clock"></i> 8 hours ago</span>
+                    <span class="priority high">High</span>
+                    <span><i class="fas fa-tag"></i> System</span>
+                </div>
+            </div>
+            <div class="notif-actions">
+                <span class="action-btn"><i class="fas fa-check"></i></span>
+                <span class="action-btn danger"><i class="fas fa-times"></i></span>
+            </div>
+        </div>
+
+        <!-- read item -->
+        <div class="notif-item">
+            <div class="notif-icon success"><i class="fas fa-user-check"></i></div>
+            <div class="notif-content">
+                <div class="notif-title">Approval request</div>
+                <div class="notif-text"><strong>James Okafor</strong> approved 3 time-off requests.</div>
+                <div class="notif-meta">
+                    <span><i class="far fa-clock"></i> 1 day ago</span>
+                    <span class="priority medium">Medium</span>
+                </div>
+            </div>
+            <div class="notif-actions">
+                <span class="action-btn"><i class="fas fa-check"></i></span>
+                <span class="action-btn danger"><i class="fas fa-times"></i></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- mark all read & load more -->
+    <div class="mark-all-row">
+        <span class="btn-ghost"><i class="fas fa-check-double"></i> Mark all as read</span>
+        <span class="btn-ghost"><i class="fas fa-arrow-down"></i> Load more</span>
+        <span class="btn-ghost" style="border-color: #f3d4d4; color: #b13e3e;"><i class="fas fa-trash-alt"></i> Clear all</span>
+    </div>
+
+    <!-- footer subtle -->
+    <div style="margin-top: 1.2rem; font-size: 0.7rem; color: #7f99b5; display: flex; justify-content: flex-end; border-top: 1px solid #e9eff6; padding-top: 1rem; gap: 1.2rem; flex-wrap: wrap;">
+        <span><i class="fas fa-sync-alt"></i> auto-update: 2 min ago</span>
+        <span><i class="fas fa-bell-slash"></i> 3 suppressed</span>
+    </div>
+</div>
+</body>
+</html>

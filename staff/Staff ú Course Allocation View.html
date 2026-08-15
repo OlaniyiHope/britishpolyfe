@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Staff · Course Allocation View</title>
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: #f3f7fc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem 1.2rem;
+    }
+
+    .dashboard {
+      max-width: 1280px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 40px;
+      box-shadow: 0 24px 56px -16px rgba(0, 20, 40, 0.15), 0 8px 24px -6px rgba(0,0,0,0.04);
+      padding: 2rem 2.2rem;
+      transition: all 0.2s ease;
+    }
+
+    /* header */
+    .dash-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem 1.5rem;
+      border-bottom: 1px solid #e9eff6;
+      padding-bottom: 1.4rem;
+      margin-bottom: 2rem;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .header-left h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #0b1e2e;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .header-left h1 i {
+      color: #2563eb;
+    }
+
+    .header-left .badge-staff {
+      background: #e5edf9;
+      color: #1f4f8a;
+      padding: 0.2rem 1rem;
+      border-radius: 60px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .header-right .date-badge {
+      background: #f2f6fc;
+      padding: 0.4rem 1.2rem;
+      border-radius: 60px;
+      font-size: 0.85rem;
+      color: #1f3b57;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-outline {
+      background: white;
+      border: 1px solid #d7e2ed;
+      border-radius: 60px;
+      padding: 0.4rem 1.2rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #1f3f5c;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: default;
+      transition: 0.1s;
+    }
+
+    .btn-outline i {
+      color: #2563eb;
+    }
+
+    .btn-outline:hover {
+      background: #f4f9ff;
+      border-color: #b2c8dd;
+    }
+
+    /* summary stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: #f9fcff;
+      border-radius: 24px;
+      padding: 1rem 1.2rem;
+      border: 1px solid #e9f0f7;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      transition: 0.15s;
+    }
+
+    .stat-card:hover {
+      border-color: #c9d9ec;
+      background: #fafdff;
+    }
+
+    .stat-icon {
+      width: 44px;
+      height: 44px;
+      background: #e5effb;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2563eb;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .stat-content .stat-number {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #0b1e2e;
+      line-height: 1.2;
+    }
+
+    .stat-content .stat-label {
+      font-size: 0.8rem;
+      color: #4d6a87;
+      font-weight: 450;
+    }
+
+    /* filter bar */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.8rem 1.2rem;
+      margin-bottom: 1.6rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #e9eff6;
+    }
+
+    .filter-bar .filter-label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #4d6a87;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .filter-chip {
+      background: white;
+      border: 1px solid #d7e2ed;
+      border-radius: 60px;
+      padding: 0.2rem 1rem;
+      font-size: 0.8rem;
+      color: #1f3f5c;
+      cursor: default;
+      transition: 0.1s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .filter-chip.active {
+      background: #e5edf9;
+      border-color: #b2c8dd;
+      font-weight: 500;
+    }
+
+    .filter-chip i {
+      color: #6a86a3;
+      font-size: 0.7rem;
+    }
+
+    .filter-chip.active i {
+      color: #2563eb;
+    }
+
+    .filter-chip:hover {
+      background: #f4f9ff;
+    }
+
+    .filter-search {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      background: white;
+      border: 1px solid #d7e2ed;
+      border-radius: 60px;
+      padding: 0.2rem 0.8rem 0.2rem 1rem;
+    }
+
+    .filter-search i {
+      color: #8aa5c2;
+      font-size: 0.8rem;
+    }
+
+    .filter-search input {
+      border: none;
+      background: transparent;
+      padding: 0.4rem 0.4rem 0.4rem 0.6rem;
+      font-size: 0.85rem;
+      outline: none;
+      width: 140px;
+      color: #0b1e2e;
+    }
+
+    .filter-search input::placeholder {
+      color: #a5bdd4;
+    }
+
+    /* course grid */
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .course-card {
+      background: #f9fcff;
+      border-radius: 28px;
+      padding: 1.4rem 1.4rem 1.2rem;
+      border: 1px solid #e9f0f7;
+      transition: 0.15s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .course-card:hover {
+      border-color: #c9d9ec;
+      background: #fafdff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px -8px rgba(0, 20, 40, 0.08);
+    }
+
+    .course-card .course-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.6rem;
+    }
+
+    .course-code {
+      background: #e5effb;
+      color: #1f4f8a;
+      font-weight: 600;
+      font-size: 0.7rem;
+      padding: 0.15rem 0.9rem;
+      border-radius: 40px;
+      letter-spacing: 0.02em;
+    }
+
+    .course-status {
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 0.15rem 0.8rem;
+      border-radius: 40px;
+      background: #e2f0e6;
+      color: #1a6d3b;
+    }
+
+    .course-status.pending {
+      background: #fef3d7;
+      color: #a7691a;
+    }
+
+    .course-status.inactive {
+      background: #f0f2f5;
+      color: #5f7d9b;
+    }
+
+    .course-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0b1e2e;
+      margin-bottom: 0.2rem;
+    }
+
+    .course-instructor {
+      font-size: 0.85rem;
+      color: #4d6a87;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .course-instructor i {
+      color: #2563eb;
+      font-size: 0.8rem;
+    }
+
+    .course-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      font-size: 0.8rem;
+      color: #3f5d7a;
+      margin-bottom: 0.8rem;
+      padding: 0.4rem 0;
+      border-top: 1px solid #e9f0f7;
+      border-bottom: 1px solid #e9f0f7;
+    }
+
+    .course-meta span {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .course-meta i {
+      color: #6a86a3;
+      width: 1rem;
+    }
+
+    .course-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .course-footer .students {
+      font-size: 0.8rem;
+      color: #4d6a87;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .course-footer .students i {
+      color: #2563eb;
+    }
+
+    .btn-small {
+      background: white;
+      border: 1px solid #d7e2ed;
+      border-radius: 60px;
+      padding: 0.2rem 1.2rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #1f3f5c;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: default;
+      transition: 0.1s;
+    }
+
+    .btn-small i {
+      color: #2563eb;
+    }
+
+    .btn-small:hover {
+      background: #f4f9ff;
+      border-color: #b2c8dd;
+    }
+
+    .btn-small.primary {
+      background: #0b1e2e;
+      border-color: #0b1e2e;
+      color: white;
+    }
+
+    .btn-small.primary i {
+      color: white;
+    }
+
+    /* request section */
+    .request-section {
+      background: #f9fcff;
+      border-radius: 28px;
+      padding: 1.4rem 1.6rem 1.6rem;
+      border: 1px solid #e9f0f7;
+      margin-top: 0.4rem;
+    }
+
+    .request-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.8rem;
+    }
+
+    .request-header h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0b1e2e;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .request-header h3 i {
+      color: #2563eb;
+    }
+
+    .request-item {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #eef4fa;
+      gap: 0.5rem;
+    }
+
+    .request-item:last-child {
+      border-bottom: 0;
+    }
+
+    .request-info {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem 1rem;
+    }
+
+    .request-info .req-course {
+      font-weight: 500;
+      color: #0b1e2e;
+    }
+
+    .request-info .req-meta {
+      font-size: 0.75rem;
+      color: #4d6a87;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .request-status {
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 0.1rem 0.8rem;
+      border-radius: 40px;
+      background: #fef3d7;
+      color: #a7691a;
+    }
+
+    .request-status.approved {
+      background: #e2f0e6;
+      color: #1a6d3b;
+    }
+
+    .request-status.rejected {
+      background: #fde8e8;
+      color: #b13e3e;
+    }
+
+    .request-actions {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .request-actions .btn-icon {
+      background: transparent;
+      border: none;
+      color: #8aa5c2;
+      padding: 0.2rem 0.6rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      cursor: default;
+      transition: 0.1s;
+    }
+
+    .request-actions .btn-icon:hover {
+      background: #eef4fa;
+      color: #1f4f8a;
+    }
+
+    .request-actions .btn-icon.approve:hover {
+      background: #e2f0e6;
+      color: #1a6d3b;
+    }
+
+    .request-actions .btn-icon.reject:hover {
+      background: #fde8e8;
+      color: #b13e3e;
+    }
+
+    /* responsive */
+    @media (max-width: 700px) {
+      .dashboard {
+        padding: 1.5rem;
+        border-radius: 28px;
+      }
+      .header-left h1 {
+        font-size: 1.4rem;
+      }
+      .filter-search {
+        margin-left: 0;
+        width: 100%;
+      }
+      .filter-search input {
+        width: 100%;
+      }
+      .course-grid {
+        grid-template-columns: 1fr;
+      }
+      .request-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .request-actions {
+        align-self: flex-end;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .dashboard {
+        padding: 1rem;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem;
+      }
+      .stat-card {
+        padding: 0.8rem;
+      }
+      .stat-content .stat-number {
+        font-size: 1.2rem;
+      }
+      .filter-chip {
+        font-size: 0.7rem;
+        padding: 0.1rem 0.7rem;
+      }
+    }
+
+    .footer-note {
+      margin-top: 1.6rem;
+      font-size: 0.75rem;
+      color: #7f99b5;
+      display: flex;
+      justify-content: flex-end;
+      border-top: 1px solid #e9eff6;
+      padding-top: 1.2rem;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Staff Home</a><a href="pag19.html">pag19</a><a href="page.10.html">page 10</a><a href="page.12.html">page 12</a><a href="page.14.html">page 14</a><a href="page.15.html">page 15</a><a href="page1.html">page1</a><a href="page11.html">page11</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a></div>
+<div class="dashboard">
+
+  <!-- header -->
+  <div class="dash-header">
+    <div class="header-left">
+      <h1><i class="fas fa-book-open"></i> Course Allocation</h1>
+      <span class="badge-staff"><i class="fas fa-user-check"></i> Staff view</span>
+    </div>
+    <div class="header-right">
+      <span class="date-badge"><i class="far fa-calendar-alt"></i> Aug 14, 2026</span>
+      <span class="btn-outline"><i class="fas fa-sync-alt"></i> Sync</span>
+      <span class="btn-outline"><i class="fas fa-download"></i> Export</span>
+    </div>
+  </div>
+
+  <!-- stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+      <div class="stat-content">
+        <div class="stat-number">8</div>
+        <div class="stat-label">Assigned courses</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-users"></i></div>
+      <div class="stat-content">
+        <div class="stat-number">142</div>
+        <div class="stat-label">Total students</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-hourglass-half"></i></div>
+      <div class="stat-content">
+        <div class="stat-number">3</div>
+        <div class="stat-label">Pending requests</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+      <div class="stat-content">
+        <div class="stat-number">94%</div>
+        <div class="stat-label">Allocation rate</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- filter bar -->
+  <div class="filter-bar">
+    <span class="filter-label"><i class="fas fa-filter"></i> Filter:</span>
+    <span class="filter-chip active"><i class="fas fa-check-circle"></i> All</span>
+    <span class="filter-chip"><i class="fas fa-play-circle"></i> Active</span>
+    <span class="filter-chip"><i class="fas fa-hourglass-start"></i> Pending</span>
+    <span class="filter-chip"><i class="fas fa-pause-circle"></i> Inactive</span>
+    <div class="filter-search">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search courses..." />
+    </div>
+  </div>
+
+  <!-- course grid -->
+  <div class="course-grid">
+
+    <!-- course 1 -->
+    <div class="course-card">
+      <div class="course-top">
+        <span class="course-code">CS-301</span>
+        <span class="course-status"><i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle;"></i> Active</span>
+      </div>
+      <div class="course-title">Data Structures &amp; Algorithms</div>
+      <div class="course-instructor"><i class="fas fa-user-tie"></i> Dr. Sarah Mitchell</div>
+      <div class="course-meta">
+        <span><i class="far fa-clock"></i> Mon/Wed 10:00</span>
+        <span><i class="fas fa-building"></i> Room 204</span>
+      </div>
+      <div class="course-footer">
+        <span class="students"><i class="fas fa-user-graduate"></i> 32 students</span>
+        <span class="btn-small"><i class="fas fa-edit"></i> Manage</span>
+        <span class="btn-small primary"><i class="fas fa-users"></i> Roster</span>
+      </div>
+    </div>
+
+    <!-- course 2 -->
+    <div class="course-card">
+      <div class="course-top">
+        <span class="course-code">MATH-210</span>
+        <span class="course-status"><i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle;"></i> Active</span>
+      </div>
+      <div class="course-title">Calculus II</div>
+      <div class="course-instructor"><i class="fas fa-user-tie"></i> Prof. James Okafor</div>
+      <div class="course-meta">
+        <span><i class="far fa-clock"></i> Tue/Thu 08:30</span>
+        <span><i class="fas fa-building"></i> Room 112</span>
+      </div>
+      <div class="course-footer">
+        <span class="students"><i class="fas fa-user-graduate"></i> 28 students</span>
+        <span class="btn-small"><i class="fas fa-edit"></i> Manage</span>
+        <span class="btn-small primary"><i class="fas fa-users"></i> Roster</span>
+      </div>
+    </div>
+
+    <!-- course 3 (pending) -->
+    <div class="course-card">
+      <div class="course-top">
+        <span class="course-code">ENG-405</span>
+        <span class="course-status pending"><i class="fas fa-hourglass-half"></i> Pending</span>
+      </div>
+      <div class="course-title">Advanced Composition</div>
+      <div class="course-instructor"><i class="fas fa-user-tie"></i> Dr. Emily Chen</div>
+      <div class="course-meta">
+        <span><i class="far fa-clock"></i> Mon/Wed 14:00</span>
+        <span><i class="fas fa-building"></i> Room 305</span>
+      </div>
+      <div class="course-footer">
+        <span class="students"><i class="fas fa-user-graduate"></i> 0 students</span>
+        <span class="btn-small"><i class="fas fa-edit"></i> Manage</span>
+        <span class="btn-small" style="background: #fef3d7; border-color: #f5dba8;"><i class="fas fa-clock"></i> Awaiting</span>
+      </div>
+    </div>
+
+    <!-- course 4 -->
+    <div class="course-card">
+      <div class="course-top">
+        <span class="course-code">PHYS-101</span>
+        <span class="course-status"><i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle;"></i> Active</span>
+      </div>
+      <div class="course-title">Introduction to Physics</div>
+      <div class="course-instructor"><i class="fas fa-user-tie"></i> Prof. Alan Turing</div>
+      <div class="course-meta">
+        <span><i class="far fa-clock"></i> Tue/Thu 13:00</span>
+        <span><i class="fas fa-building"></i> Room 401</span>
+      </div>
+      <div class="course-footer">
+        <span class="students"><i class="fas fa-user-graduate"></i> 35 students</span>
+        <span class="btn-small"><i class="fas fa-edit"></i> Manage</span>
+        <span class="btn-small primary"><i class="fas fa-users"></i> Roster</span>
+      </div>
+    </div>
+
+    <!-- course 5 (inactive) -->
+    <div class="course-card">
+      <div class="course-top">
+        <span class="course-code">HIST-220</span>
+        <span class="course-status inactive"><i class="fas fa-pause-circle"></i> Inactive</span>
+      </div>
+      <div class="course-title">Modern European History</div>
+      <div class="course-instructor"><i class="fas fa-user-tie"></i> Dr. Maria Gonzalez</div>
+      <div class="course-meta">
+        <span><i class="far fa-clock"></i> Mon/Wed 16:30</span>
+        <span><i class="fas fa-building"></i> Room 208</span>
+      </div>
+      <div class="course-footer">
+        <span class="students"><i class="fas fa-user-graduate"></i> 0 students</span>
+        <span class="btn-small"><i class="fas fa-edit"></i> Manage</span>
+        <span class="btn-small" style="background: #f0f2f5; border-color: #d7e2ed;"><i class="fas fa-archive"></i> Archived</span>
+      </div>
+    </div>
+
+    <!-- course 6 -->
+    <div class="course-card">
+      <div class="course-top">
+        <span class="course-code">CS-250</span>
+        <span class="course-status"><i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle;"></i> Active</span>
+      </div>
+      <div class="course-title">Database Systems</div>
+      <div class="course-instructor"><i class="fas fa-user-tie"></i> Dr. Anita Patel</div>
+      <div class="course-meta">
+        <span><i class="far fa-clock"></i> Tue/Thu 10:30</span>
+        <span><i class="fas fa-building"></i> Room 301</span>
+      </div>
+      <div class="course-footer">
+        <span class="students"><i class="fas fa-user-graduate"></i> 27 students</span>
+        <span class="btn-small"><i class="fas fa-edit"></i> Manage</span>
+        <span class="btn-small primary"><i class="fas fa-users"></i> Roster</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- pending requests section -->
+  <div class="request-section">
+    <div class="request-header">
+      <h3><i class="fas fa-clock"></i> Allocation Requests</h3>
+      <span class="btn-outline" style="padding: 0.2rem 1rem; font-size: 0.75rem;"><i class="fas fa-plus-circle"></i> New request</span>
+    </div>
+
+    <!-- request 1 -->
+    <div class="request-item">
+      <div class="request-info">
+        <span class="req-course">CS-310 · Software Engineering</span>
+        <span class="req-meta"><i class="fas fa-user"></i> Dr. Robert Kim</span>
+        <span class="req-meta"><i class="far fa-clock"></i> Requested 2 days ago</span>
+        <span class="request-status">Pending</span>
+      </div>
+      <div class="request-actions">
+        <span class="btn-icon approve"><i class="fas fa-check-circle"></i></span>
+        <span class="btn-icon reject"><i class="fas fa-times-circle"></i></span>
+        <span class="btn-icon"><i class="fas fa-ellipsis-v"></i></span>
+      </div>
+    </div>
+
+    <!-- request 2 -->
+    <div class="request-item">
+      <div class="request-info">
+        <span class="req-course">MATH-310 · Linear Algebra</span>
+        <span class="req-meta"><i class="fas fa-user"></i> Prof. David Lee</span>
+        <span class="req-meta"><i class="far fa-clock"></i> Requested 5 days ago</span>
+        <span class="request-status approved"><i class="fas fa-check"></i> Approved</span>
+      </div>
+      <div class="request-actions">
+        <span class="btn-icon"><i class="fas fa-check-circle" style="color: #1a6d3b;"></i></span>
+        <span class="btn-icon"><i class="fas fa-ellipsis-v"></i></span>
+      </div>
+    </div>
+
+    <!-- request 3 -->
+    <div class="request-item">
+      <div class="request-info">
+        <span class="req-course">ENG-210 · Technical Writing</span>
+        <span class="req-meta"><i class="fas fa-user"></i> Dr. Sarah Mitchell</span>
+        <span class="req-meta"><i class="far fa-clock"></i> Requested 1 week ago</span>
+        <span class="request-status rejected"><i class="fas fa-times"></i> Rejected</span>
+      </div>
+      <div class="request-actions">
+        <span class="btn-icon"><i class="fas fa-times-circle" style="color: #b13e3e;"></i></span>
+        <span class="btn-icon"><i class="fas fa-ellipsis-v"></i></span>
+      </div>
+    </div>
+
+    <!-- request 4 (new pending) -->
+    <div class="request-item">
+      <div class="request-info">
+        <span class="req-course">PHYS-210 · Modern Physics</span>
+        <span class="req-meta"><i class="fas fa-user"></i> Prof. Alan Turing</span>
+        <span class="req-meta"><i class="far fa-clock"></i> Requested today</span>
+        <span class="request-status">Pending</span>
+      </div>
+      <div class="request-actions">
+        <span class="btn-icon approve"><i class="fas fa-check-circle"></i></span>
+        <span class="btn-icon reject"><i class="fas fa-times-circle"></i></span>
+        <span class="btn-icon"><i class="fas fa-ellipsis-v"></i></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div class="footer-note">
+    <span><i class="fas fa-sync-alt"></i> Last sync: 2 min ago</span>
+    <span><i class="fas fa-database"></i> 6 courses · 3 pending requests</span>
+    <span><i class="fas fa-chevron-right"></i> <a href="#" style="color: #2563eb; text-decoration: none;">full allocation report</a></span>
+  </div>
+</div>
+</body>
+</html>

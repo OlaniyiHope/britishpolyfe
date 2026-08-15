@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff · E-Learning Service</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #edf2f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+
+        .container {
+            max-width: 1280px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 36px;
+            box-shadow: 0 24px 56px -16px rgba(0, 20, 40, 0.18);
+            padding: 2rem 2.2rem;
+            transition: all 0.2s;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem 1.5rem;
+            border-bottom: 1px solid #e9eff6;
+            padding-bottom: 1.4rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .header-left .icon-box {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #1a4fbf, #2563eb);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.4rem;
+            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
+        }
+
+        .header-left h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0b1e2e;
+            letter-spacing: -0.02em;
+        }
+
+        .header-left h1 span { color: #2563eb; }
+
+        .header-left .badge {
+            background: #e5edf9;
+            color: #1f4f8a;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .header-right .date-badge {
+            background: #f2f6fc;
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            color: #1f3b57;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-outline {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #1f3f5c;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+
+        .btn-outline i { color: #2563eb; }
+        .btn-outline:hover { background: #f4f9ff; border-color: #b2c8dd; }
+
+        .btn-primary {
+            background: #0b1e2e;
+            border: 1px solid #0b1e2e;
+            color: white;
+        }
+        .btn-primary i { color: white; }
+        .btn-primary:hover { background: #1a3147; }
+
+        /* ===== STATS ===== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #f9fcff;
+            border-radius: 20px;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #e9f0f7;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: 0.15s;
+        }
+        .stat-card:hover { border-color: #c9d9ec; background: #fafdff; }
+
+        .stat-card .stat-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: #e5effb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .stat-card .stat-content .stat-number {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0b1e2e;
+            line-height: 1.2;
+        }
+
+        .stat-card .stat-content .stat-label {
+            font-size: 0.7rem;
+            color: #4d6a87;
+            font-weight: 500;
+        }
+
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.6rem;
+            border-bottom: 1px solid #e9eff6;
+            padding-bottom: 0.4rem;
+        }
+
+        .tab {
+            padding: 0.4rem 1.4rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #4d6a87;
+            background: transparent;
+            transition: 0.15s;
+            cursor: default;
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .tab.active {
+            background: #e5edf9;
+            color: #1f4f8a;
+            border-color: #c9d9ec;
+            font-weight: 600;
+        }
+
+        .tab i { font-size: 0.85rem; }
+        .tab .count {
+            background: #d7e2ed;
+            color: #1f3b57;
+            border-radius: 40px;
+            padding: 0.05rem 0.6rem;
+            font-size: 0.65rem;
+        }
+        .tab.active .count { background: #b8cee5; }
+
+        /* ===== FILTER BAR ===== */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.6rem 1.2rem;
+            margin-bottom: 1.4rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #e9eff6;
+        }
+
+        .filter-bar .filter-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #4d6a87;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .filter-chip {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.15rem 1rem;
+            font-size: 0.75rem;
+            color: #1f3f5c;
+            cursor: default;
+            transition: 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .filter-chip.active {
+            background: #e5edf9;
+            border-color: #b2c8dd;
+            font-weight: 500;
+        }
+        .filter-chip i { color: #6a86a3; font-size: 0.7rem; }
+        .filter-chip.active i { color: #2563eb; }
+
+        .filter-search {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.15rem 0.8rem 0.15rem 1rem;
+        }
+
+        .filter-search i { color: #8aa5c2; font-size: 0.8rem; }
+        .filter-search input {
+            border: none;
+            background: transparent;
+            padding: 0.3rem 0.4rem 0.3rem 0.6rem;
+            font-size: 0.8rem;
+            outline: none;
+            width: 140px;
+            color: #0b1e2e;
+        }
+        .filter-search input::placeholder { color: #a5bdd4; }
+
+        /* ===== COURSE GRID ===== */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .course-card {
+            background: #f9fcff;
+            border-radius: 20px;
+            padding: 1.2rem 1.4rem 1.2rem;
+            border: 1px solid #e9f0f7;
+            transition: 0.15s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-card:hover {
+            border-color: #c9d9ec;
+            background: #fafdff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -8px rgba(0, 20, 40, 0.06);
+        }
+
+        .course-card .course-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.4rem;
+        }
+
+        .course-card .course-category {
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 0.1rem 0.8rem;
+            border-radius: 40px;
+            background: #e5edf9;
+            color: #1f4f8a;
+        }
+
+        .course-card .course-category.dev { background: #ede4f5; color: #6b3f9e; }
+        .course-card .course-category.business { background: #e2f0e6; color: #1a6d3b; }
+        .course-card .course-category.soft { background: #fef3d7; color: #a7691a; }
+        .course-card .course-category.tech { background: #e5effb; color: #1f4f8a; }
+
+        .course-card .course-difficulty {
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 0.1rem 0.7rem;
+            border-radius: 40px;
+            background: #e5edf9;
+            color: #1f4f8a;
+        }
+        .course-card .course-difficulty.beginner { background: #e2f0e6; color: #1a6d3b; }
+        .course-card .course-difficulty.intermediate { background: #fef3d7; color: #a7691a; }
+        .course-card .course-difficulty.advanced { background: #fde8e8; color: #b13e3e; }
+
+        .course-card .course-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #0b1e2e;
+            margin-bottom: 0.3rem;
+        }
+
+        .course-card .course-desc {
+            font-size: 0.82rem;
+            color: #3f5d7a;
+            line-height: 1.5;
+            flex: 1;
+            margin-bottom: 0.6rem;
+        }
+
+        .course-card .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            padding-top: 0.6rem;
+            border-top: 1px solid #eef4fa;
+        }
+
+        .course-card .course-footer .course-meta {
+            font-size: 0.7rem;
+            color: #4d6a87;
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .course-card .course-footer .course-meta i { color: #2563eb; width: 0.8rem; }
+
+        .course-card .course-footer .course-action {
+            font-size: 0.7rem;
+            color: #2563eb;
+            font-weight: 500;
+            cursor: default;
+            padding: 0.1rem 0.8rem;
+            border-radius: 40px;
+            border: 1px solid #d7e2ed;
+            background: white;
+            transition: 0.1s;
+        }
+        .course-card .course-footer .course-action:hover { background: #f4f9ff; }
+        .course-card .course-footer .course-action.primary {
+            background: #0b1e2e;
+            border-color: #0b1e2e;
+            color: white;
+        }
+        .course-card .course-footer .course-action.primary:hover { background: #1a3147; }
+
+        /* ===== PROGRESS SECTION ===== */
+        .progress-section {
+            background: #f9fcff;
+            border-radius: 24px;
+            padding: 1.2rem 1.4rem 1.4rem;
+            border: 1px solid #e9f0f7;
+            margin-top: 0.2rem;
+        }
+
+        .progress-section .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .progress-section .section-title h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0b1e2e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .progress-section .section-title h3 i { color: #2563eb; }
+
+        .progress-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #eef4fa;
+        }
+        .progress-item:last-child { border-bottom: 0; }
+
+        .progress-item .progress-info { flex: 1; }
+        .progress-item .progress-info .progress-name {
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #0b1e2e;
+        }
+        .progress-item .progress-info .progress-meta {
+            font-size: 0.7rem;
+            color: #4d6a87;
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .progress-track {
+            width: 140px;
+            height: 6px;
+            background: #e9eff6;
+            border-radius: 20px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .progress-track .progress-fill {
+            height: 100%;
+            border-radius: 20px;
+            background: #2563eb;
+        }
+        .progress-track .progress-fill.high { background: #1a6d3b; }
+        .progress-track .progress-fill.medium { background: #a7691a; }
+        .progress-track .progress-fill.low { background: #b13e3e; }
+
+        .progress-text {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #0b1e2e;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .container { padding: 1.2rem; border-radius: 28px; }
+            .header-left h1 { font-size: 1.2rem; }
+            .stats-row { grid-template-columns: 1fr 1fr; }
+            .course-grid { grid-template-columns: 1fr; }
+            .filter-search { margin-left: 0; width: 100%; }
+            .filter-search input { width: 100%; }
+            .progress-track { width: 100px; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 0.8rem; border-radius: 24px; }
+            .stats-row { grid-template-columns: 1fr; }
+            .header-left .icon-box { width: 40px; height: 40px; font-size: 1.2rem; }
+            .tab { font-size: 0.7rem; padding: 0.2rem 0.8rem; }
+            .progress-item { flex-wrap: wrap; }
+            .progress-track { width: 100%; }
+            .progress-text { text-align: left; }
+        }
+
+        .footer-note {
+            margin-top: 1.2rem;
+            font-size: 0.7rem;
+            color: #7f99b5;
+            display: flex;
+            justify-content: flex-end;
+            border-top: 1px solid #e9eff6;
+            padding-top: 1rem;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Staff Home</a><a href="pag19.html">pag19</a><a href="page.10.html">page 10</a><a href="page.12.html">page 12</a><a href="page.15.html">page 15</a><a href="page1.html">page1</a><a href="page11.html">page11</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a></div>
+<div class="container">
+
+    <!-- ===== HEADER ===== -->
+    <div class="header">
+        <div class="header-left">
+            <div class="icon-box"><i class="fas fa-graduation-cap"></i></div>
+            <div>
+                <h1>E-Learning <span>Service</span></h1>
+                <div style="display: flex; gap: 0.5rem; margin-top: 0.1rem;">
+                    <span class="badge"><i class="fas fa-id-badge"></i> Staff Portal</span>
+                    <span class="badge" style="background: #e2f0e6; color: #1a6d3b;"><i class="fas fa-check-circle"></i> 3 in progress</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-right">
+            <span class="date-badge"><i class="far fa-calendar-alt"></i> Aug 14, 2026</span>
+            <span class="btn-outline"><i class="fas fa-bell"></i> <span style="background: #b13e3e; color: white; border-radius: 50%; padding: 0 6px; font-size: 0.6rem;">2</span></span>
+            <span class="btn-outline"><i class="fas fa-sync-alt"></i> Refresh</span>
+        </div>
+    </div>
+
+    <!-- ===== STATS ===== -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-book"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">24</div>
+                <div class="stat-label">Courses Available</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #1a6d3b;"><i class="fas fa-check-circle"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Completed</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #a7691a;"><i class="fas fa-spinner"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">3</div>
+                <div class="stat-label">In Progress</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #6b3f9e;"><i class="fas fa-certificate"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Certificates Earned</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #b13e3e;"><i class="fas fa-clock"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Learning Hours</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TABS ===== -->
+    <div class="tabs">
+        <span class="tab active"><i class="fas fa-th-large"></i> All Courses <span class="count">24</span></span>
+        <span class="tab"><i class="fas fa-play-circle"></i> In Progress <span class="count">3</span></span>
+        <span class="tab"><i class="fas fa-check-circle"></i> Completed <span class="count">8</span></span>
+        <span class="tab"><i class="fas fa-star"></i> Recommended <span class="count">6</span></span>
+        <span class="tab"><i class="fas fa-certificate"></i> My Certificates</span>
+    </div>
+
+    <!-- ===== FILTER BAR ===== -->
+    <div class="filter-bar">
+        <span class="filter-label"><i class="fas fa-filter"></i> Filter:</span>
+        <span class="filter-chip active">All</span>
+        <span class="filter-chip"><i class="fas fa-code"></i> Development</span>
+        <span class="filter-chip"><i class="fas fa-chart-line"></i> Business</span>
+        <span class="filter-chip"><i class="fas fa-users"></i> Soft Skills</span>
+        <span class="filter-chip"><i class="fas fa-server"></i> Tech</span>
+        <div class="filter-search">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search courses..." />
+        </div>
+        <span class="btn-outline" style="padding: 0.2rem 1rem; font-size: 0.7rem;"><i class="fas fa-sliders-h"></i> Sort</span>
+    </div>
+
+    <!-- ===== COURSE GRID ===== -->
+    <div class="course-grid">
+
+        <!-- Course 1 - Development -->
+        <div class="course-card">
+            <div class="course-top">
+                <span class="course-category dev">Development</span>
+                <span class="course-difficulty beginner">Beginner</span>
+            </div>
+            <div class="course-title">JavaScript Fundamentals</div>
+            <div class="course-desc">Learn the core concepts of JavaScript including variables, functions, and DOM manipulation.</div>
+            <div class="course-footer">
+                <span class="course-meta">
+                    <span><i class="far fa-clock"></i> 8 hrs</span>
+                    <span><i class="fas fa-user"></i> 24 students</span>
+                </span>
+                <span class="course-action primary">Start Learning →</span>
+            </div>
+        </div>
+
+        <!-- Course 2 - Business -->
+        <div class="course-card">
+            <div class="course-top">
+                <span class="course-category business">Business</span>
+                <span class="course-difficulty intermediate">Intermediate</span>
+            </div>
+            <div class="course-title">Project Management Essentials</div>
+            <div class="course-desc">Master the fundamentals of project management, including agile methodologies and team leadership.</div>
+            <div class="course-footer">
+                <span class="course-meta">
+                    <span><i class="far fa-clock"></i> 12 hrs</span>
+                    <span><i class="fas fa-user"></i> 18 students</span>
+                </span>
+                <span class="course-action">View Details</span>
+            </div>
+        </div>
+
+        <!-- Course 3 - Soft Skills -->
+        <div class="course-card">
+            <div class="course-top">
+                <span class="course-category soft">Soft Skills</span>
+                <span class="course-difficulty beginner">Beginner</span>
+            </div>
+            <div class="course-title">Effective Communication</div>
+            <div class="course-desc">Develop essential communication skills for professional success in the workplace.</div>
+            <div class="course-footer">
+                <span class="course-meta">
+                    <span><i class="far fa-clock"></i> 6 hrs</span>
+                    <span><i class="fas fa-user"></i> 32 students</span>
+                </span>
+                <span class="course-action primary">Start Learning →</span>
+            </div>
+        </div>
+
+        <!-- Course 4 - Tech -->
+        <div class="course-card">
+            <div class="course-top">
+                <span class="course-category tech">Tech</span>
+                <span class="course-difficulty advanced">Advanced</span>
+            </div>
+            <div class="course-title">Cloud Computing with AWS</div>
+            <div class="course-desc">Deep dive into cloud architecture, deployment, and management using Amazon Web Services.</div>
+            <div class="course-footer">
+                <span class="course-meta">
+                    <span><i class="far fa-clock"></i> 15 hrs</span>
+                    <span><i class="fas fa-user"></i> 12 students</span>
+                </span>
+                <span class="course-action">View Details</span>
+            </div>
+        </div>
+
+        <!-- Course 5 - Development -->
+        <div class="course-card">
+            <div class="course-top">
+                <span class="course-category dev">Development</span>
+                <span class="course-difficulty intermediate">Intermediate</span>
+            </div>
+            <div class="course-title">React & Modern Frontend</div>
+            <div class="course-desc">Build dynamic user interfaces with React, hooks, and state management.</div>
+            <div class="course-footer">
+                <span class="course-meta">
+                    <span><i class="far fa-clock"></i> 14 hrs</span>
+                    <span><i class="fas fa-user"></i> 20 students</span>
+                </span>
+                <span class="course-action">In Progress</span>
+            </div>
+        </div>
+
+        <!-- Course 6 - Soft Skills -->
+        <div class="course-card">
+            <div class="course-top">
+                <span class="course-category soft">Soft Skills</span>
+                <span class="course-difficulty beginner">Beginner</span>
+            </div>
+            <div class="course-title">Time Management & Productivity</div>
+            <div class="course-desc">Learn proven techniques to improve productivity and manage your time effectively.</div>
+            <div class="course-footer">
+                <span class="course-meta">
+                    <span><i class="far fa-clock"></i> 5 hrs</span>
+                    <span><i class="fas fa-user"></i> 45 students</span>
+                </span>
+                <span class="course-action primary">Start Learning →</span>
+            </div>
+        </div>
+
+        <!-- Course 7 - Business -->
+        <div class="course-card">
+            <div class="course-top">
+                <span class="course-category business">Business</span>
+                <span class="course-difficulty advanced">Advanced</span>
+            </div>
+            <div class="course-title">Leadership & Strategy</div>
+            <div class="course-desc">Develop strategic leadership skills to drive organizational success and team performance.</div>
+            <div class="course-footer">
+                <span class="course-meta">
+                    <span><i class="far fa-clock"></i> 10 hrs</span>
+                    <span><i class="fas fa-user"></i> 8 students</span>
+                </span>
+                <span class="course-action">View Details</span>
+            </div>
+        </div>
+
+        <!-- Course 8 - Tech -->
+        <div class="course-card">
+            <div class="course-top">
+                <span class="course-category tech">Tech</span>
+                <span class="course-difficulty intermediate">Intermediate</span>
+            </div>
+            <div class="course-title">Cybersecurity Fundamentals</div>
+            <div class="course-desc">Understand the fundamentals of cybersecurity, including threat detection and risk management.</div>
+            <div class="course-footer">
+                <span class="course-meta">
+                    <span><i class="far fa-clock"></i> 10 hrs</span>
+                    <span><i class="fas fa-user"></i> 16 students</span>
+                </span>
+                <span class="course-action primary">Start Learning →</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== LEARNING PROGRESS ===== -->
+    <div class="progress-section">
+        <div class="section-title">
+            <h3><i class="fas fa-chart-bar"></i> My Learning Progress</h3>
+            <span class="badge-count" style="background: #e5edf9; color: #1f4f8a; padding: 0.05rem 0.9rem; border-radius: 60px; font-size: 0.65rem; font-weight: 600;">3 active</span>
+        </div>
+
+        <div class="progress-item">
+            <div class="progress-info">
+                <div class="progress-name">JavaScript Fundamentals</div>
+                <div class="progress-meta">
+                    <span><i class="far fa-calendar-alt"></i> Started: Aug 10</span>
+                    <span><i class="fas fa-check-circle" style="color: #1a6d3b;"></i> 4/8 modules</span>
+                </div>
+            </div>
+            <div class="progress-track">
+                <span class="progress-fill" style="width: 50%;"></span>
+            </div>
+            <span class="progress-text">50%</span>
+        </div>
+
+        <div class="progress-item">
+            <div class="progress-info">
+                <div class="progress-name">Effective Communication</div>
+                <div class="progress-meta">
+                    <span><i class="far fa-calendar-alt"></i> Started: Aug 5</span>
+                    <span><i class="fas fa-check-circle" style="color: #1a6d3b;"></i> 3/6 modules</span>
+                </div>
+            </div>
+            <div class="progress-track">
+                <span class="progress-fill" style="width: 30%;"></span>
+            </div>
+            <span class="progress-text">30%</span>
+        </div>
+
+        <div class="progress-item">
+            <div class="progress-info">
+                <div class="progress-name">Cloud Computing with AWS</div>
+                <div class="progress-meta">
+                    <span><i class="far fa-calendar-alt"></i> Started: Jul 28</span>
+                    <span><i class="fas fa-check-circle" style="color: #1a6d3b;"></i> 6/12 modules</span>
+                </div>
+            </div>
+            <div class="progress-track">
+                <span class="progress-fill" style="width: 75%;"></span>
+            </div>
+            <span class="progress-text">75%</span>
+        </div>
+
+        <div class="progress-item">
+            <div class="progress-info">
+                <div class="progress-name">Project Management Essentials</div>
+                <div class="progress-meta">
+                    <span><i class="far fa-calendar-alt"></i> Completed: Aug 1</span>
+                    <span><i class="fas fa-check-circle" style="color: #1a6d3b;"></i> ✅ Certified</span>
+                </div>
+            </div>
+            <div class="progress-track">
+                <span class="progress-fill high" style="width: 100%;"></span>
+            </div>
+            <span class="progress-text" style="color: #1a6d3b;">100%</span>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="footer-note">
+        <span><i class="fas fa-sync-alt"></i> Last sync: 2 min ago</span>
+        <span><i class="fas fa-graduation-cap"></i> 24 courses · 8 completed</span>
+        <span><i class="fas fa-chevron-right"></i> <a href="#" style="color: #2563eb; text-decoration: none;">view learning dashboard</a></span>
+        <span><i class="fas fa-certificate"></i> 5 certificates</span>
+    </div>
+</div>
+</body>
+</html>

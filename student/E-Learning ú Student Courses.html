@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <title>E-Learning · Student Courses</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #eef3fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .learning-portal {
+            max-width: 1300px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 44px;
+            box-shadow: 0 30px 60px -18px rgba(0, 20, 40, 0.18);
+            padding: 28px 32px 32px;
+            transition: all 0.2s;
+        }
+
+        /* header */
+        .portal-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            gap: 14px;
+        }
+
+        .portal-header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #0a1e32;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .portal-header h1 i {
+            color: #7c3aed;
+            font-size: 2rem;
+        }
+
+        .portal-header h1 .ai-badge {
+            font-size: 0.6rem;
+            background: #7c3aed;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .student-badge {
+            background: #e6edf8;
+            padding: 8px 20px;
+            border-radius: 60px;
+            font-weight: 500;
+            color: #1c3857;
+            font-size: 0.9rem;
+        }
+
+        .student-badge i {
+            margin-right: 6px;
+            color: #2563eb;
+        }
+
+        .live-badge {
+            background: #dc3545;
+            color: white;
+            font-weight: 600;
+            font-size: 0.7rem;
+            padding: 6px 16px 6px 14px;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            animation: livePulse 1.8s infinite;
+        }
+
+        @keyframes livePulse {
+            0% { opacity: 0.75; transform: scale(0.97); }
+            50% { opacity: 1; transform: scale(1.02); }
+            100% { opacity: 0.75; transform: scale(0.97); }
+        }
+
+        /* stats row */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 14px;
+            margin-bottom: 26px;
+        }
+
+        .stat-card {
+            background: #f8fbff;
+            border-radius: 20px;
+            padding: 14px 18px;
+            border: 1px solid #e7eef9;
+            text-align: center;
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: #4f6e8e;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0b1e31;
+            line-height: 1.3;
+        }
+
+        .stat-card .stat-value.learning-color {
+            color: #7c3aed;
+        }
+
+        /* search & filter */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+            gap: 16px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #f2f7fd;
+            border-radius: 60px;
+            padding: 0 8px 0 20px;
+            flex: 1 1 220px;
+            min-width: 160px;
+            border: 1px solid transparent;
+            transition: 0.15s;
+        }
+
+        .search-box:focus-within {
+            background: #ffffff;
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.10);
+        }
+
+        .search-box i {
+            color: #6f8aa8;
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            padding: 12px 12px;
+            font-size: 0.95rem;
+            width: 100%;
+            outline: none;
+            color: #11273f;
+        }
+
+        .search-box input::placeholder {
+            color: #8da3bd;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid #d8e2ef;
+            padding: 7px 18px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: #1d3957;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-btn i {
+            font-size: 0.7rem;
+            color: #617e9e;
+        }
+
+        .filter-btn:hover {
+            background: #e9f0fa;
+            border-color: #a6bdd9;
+        }
+
+        .filter-btn.active {
+            background: #7c3aed;
+            border-color: #7c3aed;
+            color: white;
+        }
+
+        .filter-btn.active i {
+            color: white;
+        }
+
+        /* course grid */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 22px;
+            margin-top: 4px;
+        }
+
+        .course-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 20px 20px 18px;
+            border: 1px solid #ebf1f9;
+            box-shadow: 0 4px 12px rgba(0, 20, 30, 0.02);
+            transition: 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .course-card:hover {
+            border-color: #c5d7ed;
+            box-shadow: 0 12px 28px -8px rgba(124, 58, 237, 0.08);
+            transform: translateY(-3px);
+        }
+
+        .course-card .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .course-card .course-code {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 40px;
+            background: #e9eff8;
+            color: #1e3b5a;
+        }
+
+        .course-card .level-badge {
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 40px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .level-badge.beginner {
+            background: #d1fae5;
+            color: #0b6e4f;
+        }
+
+        .level-badge.intermediate {
+            background: #fef3c7;
+            color: #8b6914;
+        }
+
+        .level-badge.advanced {
+            background: #fee9e7;
+            color: #b91c1c;
+        }
+
+        .course-card .course-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #0b1e31;
+            margin: 4px 0 6px;
+        }
+
+        .course-card .course-instructor {
+            font-size: 0.8rem;
+            color: #4f6e8e;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .course-card .course-instructor i {
+            color: #7c3aed;
+            font-size: 0.7rem;
+        }
+
+        .course-card .course-desc {
+            font-size: 0.85rem;
+            color: #2f4b69;
+            line-height: 1.5;
+            flex: 1;
+            margin-bottom: 12px;
+        }
+
+        .course-card .progress-section {
+            margin: 8px 0 12px;
+        }
+
+        .course-card .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e8eff8;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .course-card .progress-fill {
+            height: 100%;
+            background: #7c3aed;
+            border-radius: 20px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .course-card .progress-text {
+            font-size: 0.7rem;
+            color: #4f6e8e;
+            margin-top: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .course-card .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #e8eff7;
+            padding-top: 14px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .course-card .meta {
+            font-size: 0.7rem;
+            color: #5d7b9a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .course-card .meta i {
+            color: #7c3aed;
+        }
+
+        .course-card .action-icons {
+            display: flex;
+            gap: 12px;
+            color: #7e95b2;
+        }
+
+        .course-card .action-icons i {
+            cursor: pointer;
+            transition: 0.1s;
+            font-size: 0.9rem;
+        }
+
+        .course-card .action-icons i:hover {
+            color: #7c3aed;
+        }
+
+        .course-card .action-icons .delete-icon:hover {
+            color: #b91c1c;
+        }
+
+        .course-card .enroll-btn {
+            background: #7c3aed;
+            border: none;
+            color: white;
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .course-card .enroll-btn:hover {
+            background: #5b21b6;
+            transform: scale(1.02);
+        }
+
+        .course-card .enroll-btn.enrolled {
+            background: #059669;
+        }
+
+        .course-card .enroll-btn.enrolled:hover {
+            background: #047857;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px 20px;
+            color: #4b6a89;
+            background: #fafdff;
+            border-radius: 48px;
+            border: 1px dashed #c2d6ec;
+        }
+
+        .empty-state i {
+            font-size: 2.8rem;
+            color: #b0c8e0;
+            margin-bottom: 12px;
+        }
+
+        /* add button */
+        .add-area {
+            margin-top: 24px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .add-btn {
+            background: #1a3a6b;
+            border: none;
+            color: white;
+            padding: 12px 32px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.15s;
+            box-shadow: 0 4px 14px rgba(26, 58, 107, 0.20);
+        }
+
+        .add-btn:hover {
+            background: #0e2a4f;
+            transform: scale(1.02);
+        }
+
+        /* footer */
+        .portal-footer {
+            margin-top: 28px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 0.78rem;
+            color: #577392;
+            border-top: 1px solid #e7eef8;
+            padding-top: 20px;
+        }
+
+        .portal-footer i {
+            margin-right: 4px;
+        }
+
+        /* responsive */
+        @media (max-width: 700px) {
+            .learning-portal { padding: 20px 16px 24px; }
+            .portal-header h1 { font-size: 1.5rem; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .course-grid { grid-template-columns: 1fr 1fr; }
+            .toolbar { flex-direction: column; align-items: stretch; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .course-grid { grid-template-columns: 1fr; }
+            .filter-group { justify-content: center; }
+            .add-btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Student Home</a><a href="page1.html">page1</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page15.html">page15</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page9.html">page9</a></div>
+
+<div class="learning-portal" id="learningPortal">
+    <!-- header -->
+    <div class="portal-header">
+        <h1>
+            <i class="fas fa-graduation-cap"></i> LearnHub
+            <span class="ai-badge"><i class="fas fa-bolt"></i> E-Learning</span>
+        </h1>
+        <div class="header-right">
+            <span class="student-badge"><i class="fas fa-id-badge"></i> S-2026-014 · Sarah</span>
+            <span class="live-badge"><i class="fas fa-circle" style="font-size:0.45rem;"></i> LIVE</span>
+        </div>
+    </div>
+
+    <!-- stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Enrolled</div>
+            <div class="stat-value learning-color" id="enrolledCount">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">In Progress</div>
+            <div class="stat-value" id="inProgressCount">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Completed</div>
+            <div class="stat-value" id="completedCount">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Available</div>
+            <div class="stat-value learning-color" id="availableCount">0</div>
+        </div>
+    </div>
+
+    <!-- toolbar -->
+    <div class="toolbar">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search courses..." />
+        </div>
+        <div class="filter-group">
+            <button class="filter-btn active" data-filter="all"><i class="fas fa-th"></i> All</button>
+            <button class="filter-btn" data-filter="beginner"><i class="fas fa-seedling"></i> Beginner</button>
+            <button class="filter-btn" data-filter="intermediate"><i class="fas fa-chart-line"></i> Intermediate</button>
+            <button class="filter-btn" data-filter="advanced"><i class="fas fa-rocket"></i> Advanced</button>
+        </div>
+    </div>
+
+    <!-- course grid -->
+    <div class="course-grid" id="courseGrid">
+        <!-- injected by js -->
+    </div>
+
+    <!-- add button -->
+    <div class="add-area">
+        <button class="add-btn" id="addCourseBtn"><i class="fas fa-plus-circle"></i> Add Course</button>
+    </div>
+
+    <!-- footer -->
+    <div class="portal-footer">
+        <span><i class="far fa-clock"></i> updated: <span id="updateTime">just now</span></span>
+        <span><i class="fas fa-brain"></i> AI-powered recommendations</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // ----- course data -----
+        let courses = [
+            { id: 1, title: 'Python Programming', code: 'CS 101', instructor: 'Dr. Guido van Rossum', level: 'beginner', desc: 'Learn Python from scratch. Covers variables, loops, functions, and basic data structures.', progress: 75, enrolled: true },
+            { id: 2, title: 'Data Science Fundamentals', code: 'DS 201', instructor: 'Prof. Andrew Ng', level: 'intermediate', desc: 'Introduction to data analysis, visualization, and machine learning concepts.', progress: 40, enrolled: true },
+            { id: 3, title: 'Web Development Bootcamp', code: 'WD 301', instructor: 'Dr. Angela Yu', level: 'beginner', desc: 'Full-stack web development with HTML, CSS, JavaScript, React, and Node.js.', progress: 20, enrolled: true },
+            { id: 4, title: 'Machine Learning A-Z', code: 'ML 401', instructor: 'Dr. Andrew Ng', level: 'advanced', desc: 'Deep dive into supervised and unsupervised learning, neural networks, and NLP.', progress: 0, enrolled: false },
+            { id: 5, title: 'Database Design', code: 'DB 201', instructor: 'Dr. Edgar Codd', level: 'intermediate', desc: 'Relational databases, SQL, normalization, and query optimization techniques.', progress: 100, enrolled: true },
+            { id: 6, title: 'Cybersecurity Basics', code: 'CY 101', instructor: 'Prof. Bruce Schneier', level: 'beginner', desc: 'Introduction to cybersecurity principles, encryption, network security, and best practices.', progress: 0, enrolled: false },
+            { id: 7, title: 'Cloud Computing', code: 'CL 301', instructor: 'Dr. Werner Vogels', level: 'advanced', desc: 'AWS, Azure, and Google Cloud platforms. Deployment, scaling, and serverless architectures.', progress: 0, enrolled: false },
+            { id: 8, title: 'Mobile App Development', code: 'MA 201', instructor: 'Prof. Mark Zuckerberg', level: 'intermediate', desc: 'Build native and cross-platform mobile apps using Flutter and React Native.', progress: 55, enrolled: true },
+        ];
+
+        // ----- state -----
+        let currentFilter = 'all';
+        let searchTerm = '';
+
+        // DOM refs
+        const grid = document.getElementById('courseGrid');
+        const searchInput = document.getElementById('searchInput');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const enrolledCountEl = document.getElementById('enrolledCount');
+        const inProgressCountEl = document.getElementById('inProgressCount');
+        const completedCountEl = document.getElementById('completedCount');
+        const availableCountEl = document.getElementById('availableCount');
+        const updateTimeSpan = document.getElementById('updateTime');
+
+        // ----- helpers -----
+        function updateTimestamp() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2,'0');
+            const m = String(now.getMinutes()).padStart(2,'0');
+            updateTimeSpan.textContent = `${h}:${m}`;
+        }
+
+        function getLevelBadge(level) {
+            const map = {
+                'beginner': '<span class="level-badge beginner"><i class="fas fa-seedling"></i> Beginner</span>',
+                'intermediate': '<span class="level-badge intermediate"><i class="fas fa-chart-line"></i> Intermediate</span>',
+                'advanced': '<span class="level-badge advanced"><i class="fas fa-rocket"></i> Advanced</span>'
+            };
+            return map[level] || map.beginner;
+        }
+
+        // ----- render -----
+        function render() {
+            // filter + search
+            let filtered = courses.filter(c => {
+                if (currentFilter !== 'all' && c.level !== currentFilter) return false;
+                if (searchTerm.trim() !== '') {
+                    const term = searchTerm.trim().toLowerCase();
+                    return c.title.toLowerCase().includes(term) ||
+                           c.code.toLowerCase().includes(term) ||
+                           c.instructor.toLowerCase().includes(term);
+                }
+                return true;
+            });
+
+            // stats
+            const enrolled = courses.filter(c => c.enrolled).length;
+            const inProgress = courses.filter(c => c.enrolled && c.progress > 0 && c.progress < 100).length;
+            const completed = courses.filter(c => c.enrolled && c.progress >= 100).length;
+            const available = courses.filter(c => !c.enrolled).length;
+
+            enrolledCountEl.textContent = enrolled;
+            inProgressCountEl.textContent = inProgress;
+            completedCountEl.textContent = completed;
+            availableCountEl.textContent = available;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <p style="font-weight:500; margin-top:6px;">No courses found</p>
+                        <p style="font-size:0.85rem;">Try adjusting your search or filters</p>
+                    </div>
+                `;
+                updateTimestamp();
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(c => {
+                const levelBadge = getLevelBadge(c.level);
+                const isEnrolled = c.enrolled;
+                const progress = c.progress;
+
+                let btnHtml = '';
+                if (isEnrolled) {
+                    btnHtml = `<button class="enroll-btn enrolled" data-id="${c.id}"><i class="fas fa-check"></i> Enrolled</button>`;
+                } else {
+                    btnHtml = `<button class="enroll-btn" data-id="${c.id}"><i class="fas fa-plus"></i> Enroll</button>`;
+                }
+
+                html += `
+                    <div class="course-card" data-id="${c.id}">
+                        <div class="card-top">
+                            <span class="course-code"><i class="fas fa-code"></i> ${c.code}</span>
+                            ${levelBadge}
+                        </div>
+                        <div class="course-title">${c.title}</div>
+                        <div class="course-instructor"><i class="fas fa-user-tie"></i> ${c.instructor}</div>
+                        <div class="course-desc">${c.desc}</div>
+                        <div class="progress-section">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width:${isEnrolled ? progress : 0}%;"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span>${isEnrolled ? progress + '% complete' : 'Not enrolled'}</span>
+                                <span>${isEnrolled ? (progress >= 100 ? '✅ Completed' : '⏳ In progress') : '🔒 Locked'}</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <span class="meta"><i class="far fa-clock"></i> ${isEnrolled ? 'Resume' : 'Start learning'}</span>
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                ${btnHtml}
+                                <div class="action-icons">
+                                    <i class="far fa-edit" data-action="edit" data-id="${c.id}"></i>
+                                    <i class="far fa-trash-alt delete-icon" data-action="delete" data-id="${c.id}"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = html;
+            updateTimestamp();
+        }
+
+        // ----- enroll / unenroll -----
+        function toggleEnroll(id) {
+            const course = courses.find(c => c.id === id);
+            if (!course) return;
+
+            if (course.enrolled) {
+                // unenroll
+                if (!confirm(`Unenroll from "${course.title}"?`)) return;
+                course.enrolled = false;
+                course.progress = 0;
+            } else {
+                // enroll
+                course.enrolled = true;
+                course.progress = 0;
+            }
+            render();
+        }
+
+        // ----- CRUD -----
+        function addCourse() {
+            const title = prompt('Course title:');
+            if (title === null || title.trim() === '') return;
+            const code = prompt('Course code (e.g. CS 101):') || 'GEN 101';
+            const instructor = prompt('Instructor name:') || 'Staff';
+            const levelOptions = ['beginner', 'intermediate', 'advanced'];
+            const levelInput = prompt('Level (beginner / intermediate / advanced):', 'beginner');
+            let level = 'beginner';
+            if (levelInput && levelOptions.includes(levelInput.trim().toLowerCase())) {
+                level = levelInput.trim().toLowerCase();
+            }
+            const desc = prompt('Description:') || 'Course description';
+            const enrolled = confirm('Enroll in this course?') ? true : false;
+
+            const newId = courses.length ? Math.max(...courses.map(c => c.id)) + 1 : 1;
+            courses.push({
+                id: newId,
+                title: title.trim(),
+                code: code.trim().toUpperCase(),
+                instructor: instructor.trim(),
+                level: level,
+                desc: desc.trim(),
+                progress: enrolled ? 0 : 0,
+                enrolled: enrolled,
+            });
+            render();
+        }
+
+        function deleteCourse(id) {
+            if (!confirm('Remove this course?')) return;
+            courses = courses.filter(c => c.id !== id);
+            render();
+        }
+
+        function editCourse(id) {
+            const course = courses.find(c => c.id === id);
+            if (!course) return;
+
+            const newTitle = prompt('Edit title:', course.title);
+            if (newTitle === null) return;
+            const newCode = prompt('Edit code:', course.code);
+            if (newCode === null) return;
+            const newInstructor = prompt('Edit instructor:', course.instructor);
+            if (newInstructor === null) return;
+            const newLevel = prompt('Edit level (beginner/intermediate/advanced):', course.level);
+            let level = course.level;
+            if (newLevel !== null && ['beginner','intermediate','advanced'].includes(newLevel.trim().toLowerCase())) {
+                level = newLevel.trim().toLowerCase();
+            }
+            const newDesc = prompt('Edit description:', course.desc);
+            if (newDesc === null) return;
+            const newProgress = parseInt(prompt('Edit progress (0-100):', course.progress.toString())) || course.progress;
+
+            course.title = newTitle.trim() || course.title;
+            course.code = newCode.trim().toUpperCase() || course.code;
+            course.instructor = newInstructor.trim() || course.instructor;
+            course.level = level;
+            course.desc = newDesc.trim() || course.desc;
+            course.progress = Math.min(100, Math.max(0, newProgress));
+            render();
+        }
+
+        // ----- event delegation -----
+        grid.addEventListener('click', (e) => {
+            // enroll button
+            const enrollBtn = e.target.closest('.enroll-btn');
+            if (enrollBtn) {
+                const id = parseInt(enrollBtn.dataset.id);
+                if (!isNaN(id)) toggleEnroll(id);
+                return;
+            }
+
+            // action icons
+            const target = e.target.closest('[data-action]');
+            if (!target) return;
+            const action = target.dataset.action;
+            const id = Number(target.dataset.id);
+            if (isNaN(id)) return;
+
+            if (action === 'delete') deleteCourse(id);
+            else if (action === 'edit') editCourse(id);
+        });
+
+        // ----- filter & search -----
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                render();
+            });
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            render();
+        });
+
+        // ----- add button -----
+        document.getElementById('addCourseBtn').addEventListener('click', addCourse);
+
+        // ----- init -----
+        render();
+
+        // ----- live update: timestamp & random progress -----
+        setInterval(() => {
+            updateTimestamp();
+
+            // randomly increase progress for enrolled courses (simulate learning)
+            if (Math.random() > 0.6) {
+                const enrolledCourses = courses.filter(c => c.enrolled && c.progress < 100);
+                if (enrolledCourses.length > 0) {
+                    const randomIdx = Math.floor(Math.random() * enrolledCourses.length);
+                    const c = enrolledCourses[randomIdx];
+                    const increment = Math.floor(Math.random() * 10) + 1;
+                    c.progress = Math.min(100, c.progress + increment);
+                    render();
+                }
+            }
+        }, 25000);
+    })();
+</script>
+</body>
+</html>

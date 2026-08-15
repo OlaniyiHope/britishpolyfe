@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+  <title>Student Dashboard</title>
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      background: #f0f5fe;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    /* main dashboard card */
+    .dashboard {
+      max-width: 1400px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 44px;
+      box-shadow: 0 30px 60px -18px rgba(0, 20, 40, 0.25);
+      padding: 30px 32px 36px;
+      transition: all 0.2s;
+    }
+
+    /* header */
+    .dash-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+      gap: 12px;
+    }
+
+    .dash-header h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #0b1e31;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .dash-header h1 i {
+      color: #2563eb;
+      font-size: 2rem;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .date-badge {
+      background: #eaf1fc;
+      padding: 8px 20px;
+      border-radius: 60px;
+      font-weight: 500;
+      color: #1d3a5a;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .date-badge i {
+      color: #2563eb;
+    }
+
+    .student-id {
+      background: #dce6f5;
+      padding: 8px 18px;
+      border-radius: 60px;
+      font-weight: 500;
+      color: #0b1e31;
+      font-size: 0.85rem;
+    }
+
+    .student-id i {
+      margin-right: 6px;
+      color: #2563eb;
+    }
+
+    /* KPI row */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .kpi-card {
+      background: #f8fbff;
+      border-radius: 28px;
+      padding: 16px 18px;
+      border: 1px solid #e7eef9;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: 0.15s;
+    }
+
+    .kpi-card:hover {
+      background: #ffffff;
+      border-color: #bdcfe6;
+      box-shadow: 0 4px 12px rgba(0, 20, 40, 0.03);
+    }
+
+    .kpi-icon {
+      width: 44px;
+      height: 44px;
+      background: #e2ebf9;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2563eb;
+      font-size: 1.2rem;
+    }
+
+    .kpi-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #4f6e8e;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .kpi-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0b1e31;
+      line-height: 1.3;
+    }
+
+    /* main grid: courses + activity */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr;
+      gap: 28px;
+      margin-bottom: 28px;
+    }
+
+    /* ---- courses section ---- */
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .section-title h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #102b44;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title h2 i {
+      color: #2563eb;
+      font-size: 1.1rem;
+    }
+
+    .section-title .see-all {
+      font-size: 0.8rem;
+      color: #2563eb;
+      font-weight: 500;
+      cursor: default;
+    }
+
+    .course-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .course-item {
+      background: #f9fcff;
+      border-radius: 24px;
+      padding: 16px 18px;
+      border: 1px solid #eaf0f8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: 0.1s;
+      flex-wrap: wrap;
+    }
+
+    .course-item:hover {
+      background: #ffffff;
+      border-color: #c5d7ed;
+    }
+
+    .course-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 2 1 180px;
+    }
+
+    .course-color {
+      width: 12px;
+      height: 40px;
+      border-radius: 20px;
+      background: #2563eb;
+    }
+
+    .course-detail .course-name {
+      font-weight: 600;
+      color: #0b1e31;
+    }
+
+    .course-detail .course-meta {
+      font-size: 0.75rem;
+      color: #4f6e8e;
+      display: flex;
+      gap: 14px;
+      margin-top: 3px;
+    }
+
+    .course-progress {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1 1 120px;
+      justify-content: flex-end;
+    }
+
+    .progress-bar {
+      width: 80px;
+      height: 6px;
+      background: #dde6f2;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #2563eb;
+      border-radius: 20px;
+      width: 0%;
+    }
+
+    .progress-label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #1a3652;
+      min-width: 36px;
+      text-align: right;
+    }
+
+    /* ---- activity feed ---- */
+    .activity-feed {
+      background: #f8fbff;
+      border-radius: 28px;
+      padding: 20px 18px 18px;
+      border: 1px solid #e7eef9;
+    }
+
+    .activity-feed .section-title {
+      margin-bottom: 14px;
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid #e7eef9;
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-icon {
+      width: 34px;
+      height: 34px;
+      background: #e2ebf9;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2563eb;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .activity-text {
+      flex: 1;
+    }
+
+    .activity-text .act-title {
+      font-weight: 500;
+      color: #0b1e31;
+      font-size: 0.9rem;
+    }
+
+    .activity-text .act-time {
+      font-size: 0.7rem;
+      color: #5f7d9c;
+      margin-top: 2px;
+    }
+
+    /* ---- upcoming / assignments mini ---- */
+    .upcoming-box {
+      background: #ffffff;
+      border-radius: 24px;
+      border: 1px solid #e7eef9;
+      padding: 16px 18px;
+      margin-top: 16px;
+    }
+
+    .upcoming-box .up-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px dashed #e2eaf4;
+      font-size: 0.85rem;
+    }
+
+    .upcoming-box .up-item:last-child {
+      border-bottom: none;
+    }
+
+    .up-item .up-name {
+      font-weight: 500;
+      color: #102b44;
+    }
+
+    .up-item .up-date {
+      color: #4f6e8e;
+      font-size: 0.75rem;
+    }
+
+    /* ---- quick actions ---- */
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .quick-btn {
+      background: #f1f7ff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 60px;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #0b1e31;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: default;
+      border: 1px solid transparent;
+      transition: 0.1s;
+    }
+
+    .quick-btn i {
+      color: #2563eb;
+    }
+
+    .quick-btn:hover {
+      background: #e5effb;
+      border-color: #b8cee8;
+    }
+
+    /* footer */
+    .dash-footer {
+      margin-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.78rem;
+      color: #577392;
+      border-top: 1px solid #e7eef9;
+      padding-top: 20px;
+    }
+
+    .dash-footer i {
+      margin-right: 4px;
+    }
+
+    /* responsiveness */
+    @media (max-width: 960px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .dashboard { padding: 20px 16px 28px; }
+      .dash-header h1 { font-size: 1.6rem; }
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+      .course-item { flex-direction: column; align-items: stretch; gap: 8px; }
+      .course-progress { justify-content: flex-start; }
+    }
+
+    @media (max-width: 420px) {
+      .kpi-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Student Home</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page15.html">page15</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page9.html">page9</a></div>
+<div class="dashboard" id="studentDashboard">
+  <!-- header -->
+  <div class="dash-header">
+    <h1><i class="fas fa-graduation-cap"></i> Dashboard</h1>
+    <div class="header-right">
+      <span class="date-badge"><i class="far fa-calendar-alt"></i> <span id="currentDate"></span></span>
+      <span class="student-id"><i class="fas fa-id-badge"></i> S-2026-014</span>
+    </div>
+  </div>
+
+  <!-- KPI cards -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon"><i class="fas fa-book-open"></i></div>
+      <div class="kpi-content">
+        <span class="kpi-label">Enrolled</span>
+        <span class="kpi-value">6</span>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon"><i class="fas fa-check-circle"></i></div>
+      <div class="kpi-content">
+        <span class="kpi-label">Completed</span>
+        <span class="kpi-value">34</span>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon"><i class="fas fa-clock"></i></div>
+      <div class="kpi-content">
+        <span class="kpi-label">Upcoming</span>
+        <span class="kpi-value">4</span>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon"><i class="fas fa-star"></i></div>
+      <div class="kpi-content">
+        <span class="kpi-label">GPA</span>
+        <span class="kpi-value">3.8</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- main grid: courses + activity -->
+  <div class="main-grid">
+    <!-- left: courses -->
+    <div>
+      <div class="section-title">
+        <h2><i class="fas fa-list-ul"></i> My courses</h2>
+        <span class="see-all">view all <i class="fas fa-chevron-right" style="font-size:0.6rem;"></i></span>
+      </div>
+      <div class="course-list" id="courseList">
+        <!-- injected by js -->
+      </div>
+
+      <!-- quick actions (extra) -->
+      <div class="quick-actions">
+        <span class="quick-btn"><i class="fas fa-plus-circle"></i> Add course</span>
+        <span class="quick-btn"><i class="fas fa-calendar-plus"></i> Schedule</span>
+        <span class="quick-btn"><i class="fas fa-file-alt"></i> Assignments</span>
+      </div>
+    </div>
+
+    <!-- right: activity + upcoming -->
+    <div>
+      <div class="activity-feed">
+        <div class="section-title">
+          <h2><i class="fas fa-bolt"></i> Recent activity</h2>
+          <span class="see-all" style="font-size:0.7rem;">live</span>
+        </div>
+        <div id="activityFeed">
+          <!-- injected by js -->
+        </div>
+      </div>
+
+      <!-- upcoming box -->
+      <div class="upcoming-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-weight:600; color:#0b1e31; font-size:0.9rem;"><i class="far fa-calendar-alt" style="margin-right:8px; color:#2563eb;"></i>Upcoming</span>
+          <span style="font-size:0.7rem; color:#4f6e8e;">next 7 days</span>
+        </div>
+        <div id="upcomingList">
+          <!-- injected -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div class="dash-footer">
+    <span><i class="far fa-clock"></i> last updated: <span id="updateTime">just now</span></span>
+    <span><i class="fas fa-sync-alt fa-fw"></i> auto‑refresh</span>
+  </div>
+</div>
+
+<script>
+  (function() {
+    "use strict";
+
+    // ---- data ----
+    const courses = [
+      { name: "Data Structures", code: "CS 201", progress: 72, color: "#2563eb" },
+      { name: "Algorithms", code: "CS 202", progress: 58, color: "#7c3aed" },
+      { name: "Database Systems", code: "CS 310", progress: 90, color: "#0d9488" },
+      { name: "Web Development", code: "CS 260", progress: 45, color: "#d97706" },
+      { name: "Linear Algebra", code: "MATH 220", progress: 81, color: "#dc2626" },
+    ];
+
+    const activities = [
+      { text: "Completed quiz 'Sorting'", time: "2 hours ago" },
+      { text: "Submitted project draft", time: "5 hours ago" },
+      { text: "Joined study group", time: "1 day ago" },
+      { text: "Viewed lecture 4.2", time: "2 days ago" },
+    ];
+
+    const upcoming = [
+      { name: "Algorithms HW #4", date: "Mar 22" },
+      { name: "DB project milestone", date: "Mar 25" },
+      { name: "Web dev peer review", date: "Mar 28" },
+    ];
+
+    // ---- DOM refs ----
+    const courseList = document.getElementById('courseList');
+    const activityFeed = document.getElementById('activityFeed');
+    const upcomingList = document.getElementById('upcomingList');
+    const updateTimeSpan = document.getElementById('updateTime');
+    const dateSpan = document.getElementById('currentDate');
+
+    // ---- helpers ----
+    function formatDate() {
+      const now = new Date();
+      const opts = { year: 'numeric', month: 'short', day: 'numeric' };
+      return now.toLocaleDateString('en-US', opts);
+    }
+
+    function updateTimestamp() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2,'0');
+      const m = String(now.getMinutes()).padStart(2,'0');
+      updateTimeSpan.textContent = `${h}:${m}`;
+    }
+
+    // ---- render functions ----
+    function renderCourses() {
+      let html = '';
+      courses.forEach(c => {
+        html += `
+          <div class="course-item">
+            <div class="course-info">
+              <div class="course-color" style="background:${c.color};"></div>
+              <div class="course-detail">
+                <div class="course-name">${c.name}</div>
+                <div class="course-meta"><span>${c.code}</span><span>•</span><span>3 credits</span></div>
+              </div>
+            </div>
+            <div class="course-progress">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width:${c.progress}%; background:${c.color};"></div>
+              </div>
+              <span class="progress-label">${c.progress}%</span>
+            </div>
+          </div>
+        `;
+      });
+      courseList.innerHTML = html;
+    }
+
+    function renderActivities() {
+      let html = '';
+      activities.forEach(a => {
+        html += `
+          <div class="activity-item">
+            <div class="activity-icon"><i class="fas fa-pen-fancy"></i></div>
+            <div class="activity-text">
+              <div class="act-title">${a.text}</div>
+              <div class="act-time"><i class="far fa-clock"></i> ${a.time}</div>
+            </div>
+          </div>
+        `;
+      });
+      activityFeed.innerHTML = html;
+    }
+
+    function renderUpcoming() {
+      let html = '';
+      upcoming.forEach(u => {
+        html += `
+          <div class="up-item">
+            <span class="up-name"><i class="far fa-file" style="margin-right:6px; color:#2563eb;"></i>${u.name}</span>
+            <span class="up-date"><i class="far fa-calendar-alt" style="margin-right:4px;"></i>${u.date}</span>
+          </div>
+        `;
+      });
+      upcomingList.innerHTML = html;
+    }
+
+    // ---- full render ----
+    function renderAll() {
+      renderCourses();
+      renderActivities();
+      renderUpcoming();
+      dateSpan.textContent = formatDate();
+      updateTimestamp();
+    }
+
+    // ---- "live" update: rotate activities & upcoming (simulate) ----
+    function liveRotate() {
+      // shift activity messages & times
+      const msgs = ['Reviewed lecture notes', 'Posted in forum', 'Started reading chapter 5', 'Completed exercise set', 'Scheduled office hours'];
+      const times = ['now', '2 min ago', '8 min ago', '15 min ago', '1 hour ago'];
+      // randomly update first activity
+      if (activities.length > 0) {
+        activities[0].text = msgs[Math.floor(Math.random() * msgs.length)];
+        activities[0].time = times[Math.floor(Math.random() * times.length)];
+      }
+      // rotate upcoming dates slightly
+      const dateOpts = ['Mar 22', 'Mar 24', 'Mar 26', 'Mar 29', 'Apr 1'];
+      upcoming.forEach((u, idx) => {
+        if (Math.random() > 0.5) {
+          u.date = dateOpts[Math.floor(Math.random() * dateOpts.length)];
+        }
+      });
+
+      // re-render only activity & upcoming (keep courses static for demo)
+      renderActivities();
+      renderUpcoming();
+      updateTimestamp();
+    }
+
+    // ---- init ----
+    renderAll();
+
+    // live update every 20 seconds (activity + upcoming)
+    setInterval(() => {
+      liveRotate();
+    }, 20000);
+
+    // also update date every minute
+    setInterval(() => {
+      dateSpan.textContent = formatDate();
+    }, 60000);
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+  <title>Staff · live page</title>
+  <!-- Font Awesome (free) for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      background: #f4f7fc;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .staff-card {
+      max-width: 1300px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 36px;
+      box-shadow: 0 25px 50px -12px rgba(0, 20, 30, 0.25);
+      padding: 32px 30px 40px;
+      transition: all 0.2s ease;
+    }
+
+    /* header */
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .header-left h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #0b1a2b;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-left h1 i {
+      color: #2a7de1;
+      font-size: 1.8rem;
+    }
+
+    .header-left .live-badge {
+      background: #e53e3e;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      padding: 4px 12px;
+      border-radius: 40px;
+      margin-left: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      animation: pulse-badge 1.8s infinite;
+    }
+
+    @keyframes pulse-badge {
+      0% { opacity: 0.8; transform: scale(0.97); }
+      50% { opacity: 1; transform: scale(1.02); }
+      100% { opacity: 0.8; transform: scale(0.97); }
+    }
+
+    .header-right {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .header-right .date-box {
+      background: #eef3f9;
+      padding: 8px 18px;
+      border-radius: 60px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #1f3a5f;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-right .date-box i {
+      color: #2a7de1;
+    }
+
+    .staff-count {
+      background: #dce7f5;
+      padding: 8px 18px;
+      border-radius: 60px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #0b1a2b;
+    }
+
+    .staff-count span {
+      font-weight: 700;
+      color: #0b1a2b;
+    }
+
+    /* toolbar / actions */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      gap: 15px 10px;
+    }
+
+    .search-wrapper {
+      display: flex;
+      align-items: center;
+      background: #f0f4fa;
+      border-radius: 48px;
+      padding: 3px 10px 3px 18px;
+      flex: 1 1 240px;
+      min-width: 180px;
+      transition: 0.15s;
+      border: 1px solid transparent;
+    }
+
+    .search-wrapper:focus-within {
+      background: #ffffff;
+      border-color: #2a7de1;
+      box-shadow: 0 0 0 3px rgba(42, 125, 225, 0.15);
+    }
+
+    .search-wrapper i {
+      color: #6a7f9b;
+      font-size: 0.95rem;
+    }
+
+    .search-wrapper input {
+      border: none;
+      background: transparent;
+      padding: 12px 10px;
+      font-size: 0.95rem;
+      width: 100%;
+      outline: none;
+      color: #102433;
+    }
+
+    .search-wrapper input::placeholder {
+      color: #8a9eb5;
+      font-weight: 400;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: 1px solid #d6e0eb;
+      padding: 8px 16px;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #1f3a5f;
+      cursor: pointer;
+      transition: 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+    }
+
+    .filter-btn i {
+      font-size: 0.8rem;
+      color: #4f6f8f;
+    }
+
+    .filter-btn:hover {
+      background: #e6eefa;
+      border-color: #a0bcdb;
+    }
+
+    .filter-btn.active {
+      background: #2a7de1;
+      border-color: #2a7de1;
+      color: white;
+    }
+
+    .filter-btn.active i {
+      color: white;
+    }
+
+    .add-btn {
+      background: #1a2c44;
+      border: none;
+      color: white;
+      padding: 8px 22px;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: 0.15s;
+      box-shadow: 0 4px 8px rgba(0,20,40,0.08);
+    }
+
+    .add-btn i {
+      font-size: 0.9rem;
+    }
+
+    .add-btn:hover {
+      background: #0f1e30;
+      transform: scale(1.01);
+    }
+
+    /* staff grid */
+    .staff-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px 22px;
+      margin-top: 8px;
+    }
+
+    .staff-item {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 22px 18px 20px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.02), 0 2px 8px rgba(0, 20, 40, 0.04);
+      border: 1px solid #f0f4fb;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .staff-item:hover {
+      border-color: #cbdcee;
+      box-shadow: 0 12px 28px -8px rgba(26, 67, 113, 0.08);
+      transform: translateY(-3px);
+    }
+
+    .staff-item .avatar {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(145deg, #d6e4f5, #b8cee8);
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: #1a3150;
+      margin-bottom: 14px;
+      flex-shrink: 0;
+    }
+
+    .staff-item .info {
+      flex: 1;
+    }
+
+    .staff-item .name {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #0b1a2b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .staff-item .role {
+      font-size: 0.85rem;
+      color: #4b6a89;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .staff-item .role i {
+      color: #6f8aa8;
+      font-size: 0.7rem;
+    }
+
+    .staff-item .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      border-top: 1px solid #e7eef8;
+      padding-top: 14px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 5px 12px 5px 10px;
+      border-radius: 40px;
+      background: #eaf1fa;
+      color: #1f3a5f;
+    }
+
+    .status-badge i {
+      font-size: 0.55rem;
+    }
+
+    .status-badge.online {
+      background: #e3f5ec;
+      color: #0b6e4f;
+    }
+
+    .status-badge.online i {
+      color: #14a06b;
+    }
+
+    .status-badge.away {
+      background: #fff3dd;
+      color: #9e6d1a;
+    }
+
+    .status-badge.away i {
+      color: #d99b2b;
+    }
+
+    .status-badge.offline {
+      background: #f0f2f5;
+      color: #4b5b70;
+    }
+
+    .status-badge.offline i {
+      color: #7f8fa3;
+    }
+
+    .staff-item .action-icons {
+      display: flex;
+      gap: 12px;
+      color: #7e94b0;
+    }
+
+    .staff-item .action-icons i {
+      cursor: pointer;
+      transition: 0.1s;
+      font-size: 0.9rem;
+    }
+
+    .staff-item .action-icons i:hover {
+      color: #2a7de1;
+    }
+
+    .staff-item .time-tag {
+      font-size: 0.7rem;
+      color: #7b93af;
+      background: #f0f5fc;
+      padding: 3px 12px;
+      border-radius: 40px;
+      margin-top: 12px;
+      display: inline-block;
+      align-self: flex-start;
+      letter-spacing: 0.2px;
+    }
+
+    /* empty state */
+    .empty-message {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 50px 20px;
+      color: #4b6a89;
+      background: #f9fcff;
+      border-radius: 48px;
+      border: 1px dashed #c4d6ea;
+    }
+
+    .empty-message i {
+      font-size: 2.5rem;
+      color: #a7bed9;
+      margin-bottom: 12px;
+    }
+
+    /* footer */
+    .footer-note {
+      margin-top: 36px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: #59748f;
+      font-size: 0.8rem;
+      border-top: 1px solid #e9eff6;
+      padding-top: 22px;
+    }
+
+    .footer-note i {
+      margin-right: 4px;
+    }
+
+    /* responsive */
+    @media (max-width: 700px) {
+      .staff-card {
+        padding: 20px 16px 30px;
+      }
+      .header-left h1 {
+        font-size: 1.6rem;
+      }
+      .header-right .date-box {
+        font-size: 0.8rem;
+        padding: 5px 14px;
+      }
+      .staff-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .staff-grid {
+        grid-template-columns: 1fr;
+      }
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .add-btn {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Staff Home</a><a href="pag19.html">pag19</a><a href="page.10.html">page 10</a><a href="page.12.html">page 12</a><a href="page.14.html">page 14</a><a href="page.15.html">page 15</a><a href="page1.html">page1</a><a href="page11.html">page11</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a></div>
+  <div class="staff-card" id="app">
+    <!-- header -->
+    <div class="header">
+      <div class="header-left">
+        <h1>
+          <i class="fas fa-users"></i> Staff
+          <span class="live-badge"><i class="fas fa-circle" style="font-size: 0.5rem;"></i> LIVE</span>
+        </h1>
+      </div>
+      <div class="header-right">
+        <div class="date-box">
+          <i class="fas fa-calendar-alt"></i> <span id="currentDate"></span>
+        </div>
+        <div class="staff-count">
+          <i class="fas fa-user-check"></i> <span id="staffCounter">0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- toolbar -->
+    <div class="toolbar">
+      <div class="search-wrapper">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Search staff..." aria-label="Search staff">
+      </div>
+      <div class="filter-group">
+        <button class="filter-btn active" data-filter="all"><i class="fas fa-th-list"></i> All</button>
+        <button class="filter-btn" data-filter="online"><i class="fas fa-circle" style="color: #14a06b;"></i> Online</button>
+        <button class="filter-btn" data-filter="away"><i class="fas fa-clock" style="color: #d99b2b;"></i> Away</button>
+        <button class="filter-btn" data-filter="offline"><i class="fas fa-circle" style="color: #7f8fa3;"></i> Offline</button>
+      </div>
+      <button class="add-btn" id="addStaffBtn"><i class="fas fa-plus"></i> Add</button>
+    </div>
+
+    <!-- staff grid -->
+    <div class="staff-grid" id="staffGrid"></div>
+
+    <!-- footer -->
+    <div class="footer-note">
+      <span><i class="far fa-clock"></i> last updated: <span id="lastUpdated">just now</span></span>
+      <span><i class="fas fa-sync-alt fa-fw"></i> live · auto‑refresh</span>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      "use strict";
+
+      // ---------- INITIAL DATA ----------
+      const initialStaff = [
+        { id: 1, name: "Elena Vogt", role: "Product Lead", status: "online", time: "Active now" },
+        { id: 2, name: "Marcus Chen", role: "Senior Developer", status: "online", time: "Active 5m ago" },
+        { id: 3, name: "Aisha Patel", role: "UX Designer", status: "away", time: "Away · 15m" },
+        { id: 4, name: "James Okafor", role: "DevOps Engineer", status: "offline", time: "Offline · 2h" },
+        { id: 5, name: "Lena Kowalski", role: "Content Strategist", status: "online", time: "Active now" },
+        { id: 6, name: "David Kim", role: "Frontend Lead", status: "away", time: "In meeting" },
+        { id: 7, name: "Sophie Turner", role: "QA Specialist", status: "offline", time: "Offline · 1d" },
+        { id: 8, name: "Carlos Rivera", role: "Backend Developer", status: "online", time: "Active 10m ago" },
+      ];
+
+      // ---------- STATE ----------
+      let staffData = [...initialStaff];
+      let currentFilter = 'all';
+      let searchTerm = '';
+
+      // DOM refs
+      const grid = document.getElementById('staffGrid');
+      const searchInput = document.getElementById('searchInput');
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const staffCounter = document.getElementById('staffCounter');
+      const lastUpdatedSpan = document.getElementById('lastUpdated');
+      const dateSpan = document.getElementById('currentDate');
+
+      // ---------- HELPERS ----------
+      function formatDate() {
+        const now = new Date();
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return now.toLocaleDateString('en-US', options);
+      }
+
+      function updateDate() {
+        dateSpan.textContent = formatDate();
+      }
+
+      function updateLastUpdated() {
+        const now = new Date();
+        const h = String(now.getHours()).padStart(2,'0');
+        const m = String(now.getMinutes()).padStart(2,'0');
+        lastUpdatedSpan.textContent = `${h}:${m}`;
+      }
+
+      // ---------- RENDER ----------
+      function render() {
+        // filter + search
+        let filtered = staffData.filter(item => {
+          // status filter
+          if (currentFilter !== 'all' && item.status !== currentFilter) return false;
+          // search (name or role)
+          if (searchTerm.trim() !== '') {
+            const term = searchTerm.trim().toLowerCase();
+            return item.name.toLowerCase().includes(term) || 
+                   item.role.toLowerCase().includes(term);
+          }
+          return true;
+        });
+
+        // update counter
+        staffCounter.textContent = filtered.length;
+
+        // if empty
+        if (filtered.length === 0) {
+          grid.innerHTML = `
+            <div class="empty-message">
+              <i class="fas fa-user-slash"></i>
+              <p style="margin-top: 8px; font-weight: 500;">No staff members match</p>
+              <p style="font-size:0.85rem; margin-top:4px;">Try adjusting filters or search</p>
+            </div>
+          `;
+          return;
+        }
+
+        // build cards
+        let html = '';
+        filtered.forEach(staff => {
+          const statusClass = staff.status;
+          const statusIcon = staff.status === 'online' ? 'fa-circle' : 
+                             staff.status === 'away' ? 'fa-clock' : 'fa-circle';
+          // avatar initial
+          const initial = staff.name.charAt(0).toUpperCase();
+
+          html += `
+            <div class="staff-item" data-id="${staff.id}">
+              <div class="avatar">${initial}</div>
+              <div class="info">
+                <div class="name">${staff.name}</div>
+                <div class="role"><i class="fas fa-briefcase"></i> ${staff.role}</div>
+              </div>
+              <div class="status-row">
+                <span class="status-badge ${statusClass}">
+                  <i class="fas ${statusIcon}"></i> ${staff.status.charAt(0).toUpperCase() + staff.status.slice(1)}
+                </span>
+                <div class="action-icons">
+                  <i class="far fa-edit" data-action="edit" data-id="${staff.id}"></i>
+                  <i class="far fa-trash-alt" data-action="delete" data-id="${staff.id}"></i>
+                </div>
+              </div>
+              <span class="time-tag"><i class="far fa-clock"></i> ${staff.time}</span>
+            </div>
+          `;
+        });
+
+        grid.innerHTML = html;
+
+        // update last updated
+        updateLastUpdated();
+      }
+
+      // ---------- ACTIONS (add, delete, edit) ----------
+      function addStaff() {
+        const newName = prompt('Enter staff name:');
+        if (newName === null || newName.trim() === '') return;
+        const newRole = prompt('Enter role (e.g. "Developer"):') || 'Staff';
+        // status picker (simple)
+        const statusOptions = ['online', 'away', 'offline'];
+        const statusInput = prompt('Status (online / away / offline):', 'online');
+        let status = 'online';
+        if (statusInput && statusOptions.includes(statusInput.trim().toLowerCase())) {
+          status = statusInput.trim().toLowerCase();
+        }
+        const newId = staffData.length ? Math.max(...staffData.map(s => s.id)) + 1 : 1;
+        const newStaff = {
+          id: newId,
+          name: newName.trim(),
+          role: newRole.trim(),
+          status: status,
+          time: 'Just added',
+        };
+        staffData.push(newStaff);
+        render();
+      }
+
+      function deleteStaff(id) {
+        if (!confirm('Remove this staff member?')) return;
+        staffData = staffData.filter(s => s.id !== id);
+        render();
+      }
+
+      function editStaff(id) {
+        const staff = staffData.find(s => s.id === id);
+        if (!staff) return;
+        const newName = prompt('Edit name:', staff.name);
+        if (newName === null) return;
+        const newRole = prompt('Edit role:', staff.role);
+        if (newRole === null) return;
+        const newStatus = prompt('Edit status (online / away / offline):', staff.status);
+        let status = staff.status;
+        if (newStatus !== null) {
+          const cleaned = newStatus.trim().toLowerCase();
+          if (['online','away','offline'].includes(cleaned)) status = cleaned;
+        }
+        staff.name = newName.trim() || staff.name;
+        staff.role = newRole.trim() || staff.role;
+        staff.status = status;
+        staff.time = 'Updated now';
+        render();
+      }
+
+      // ---------- EVENT DELEGATION (grid actions) ----------
+      grid.addEventListener('click', (e) => {
+        const target = e.target.closest('[data-action]');
+        if (!target) return;
+        const action = target.dataset.action;
+        const id = Number(target.dataset.id);
+        if (isNaN(id)) return;
+
+        if (action === 'delete') {
+          deleteStaff(id);
+        } else if (action === 'edit') {
+          editStaff(id);
+        }
+      });
+
+      // ---------- FILTER & SEARCH ----------
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentFilter = btn.dataset.filter;
+          render();
+        });
+      });
+
+      searchInput.addEventListener('input', (e) => {
+        searchTerm = e.target.value;
+        render();
+      });
+
+      // ---------- ADD BUTTON ----------
+      document.getElementById('addStaffBtn').addEventListener('click', addStaff);
+
+      // ---------- INIT ----------
+      updateDate();
+      render();
+
+      // "live" update: update time every 30s (simulate live)
+      setInterval(() => {
+        // update last updated timestamp
+        updateLastUpdated();
+        // also rotate some statuses to simulate live (optional extra)
+        // we'll just update the time tag for "online" staff with a random active message
+        // but keep it subtle: only update if not offline
+        staffData.forEach(s => {
+          if (s.status === 'online') {
+            const msgs = ['Active now', 'Active 2m ago', 'Active 5m ago', 'Active now', 'Just joined'];
+            s.time = msgs[Math.floor(Math.random() * msgs.length)];
+          } else if (s.status === 'away') {
+            const msgs = ['Away · 5m', 'In meeting', 'Away · 10m', 'BRB'];
+            s.time = msgs[Math.floor(Math.random() * msgs.length)];
+          } else {
+            // offline: keep static, but can randomize
+            const msgs = ['Offline · 1h', 'Offline · 2h', 'Offline · 30m', 'Offline'];
+            s.time = msgs[Math.floor(Math.random() * msgs.length)];
+          }
+        });
+        render(); // re-render with new times
+      }, 30000); // every 30 sec
+
+      // also update date each minute
+      setInterval(() => {
+        updateDate();
+      }, 60000);
+    })();
+  </script>
+</body>
+</html>

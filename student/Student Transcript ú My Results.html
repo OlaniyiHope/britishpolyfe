@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <title>Student Transcript · My Results</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #eef3fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .transcript-portal {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 44px;
+            box-shadow: 0 30px 60px -18px rgba(0, 20, 40, 0.18);
+            padding: 28px 32px 32px;
+            transition: all 0.2s;
+        }
+
+        /* header */
+        .portal-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            gap: 14px;
+        }
+
+        .portal-header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #0a1e32;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .portal-header h1 i {
+            color: #059669;
+            font-size: 2rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .student-badge {
+            background: #e6edf8;
+            padding: 8px 20px;
+            border-radius: 60px;
+            font-weight: 500;
+            color: #1c3857;
+            font-size: 0.9rem;
+        }
+
+        .student-badge i {
+            margin-right: 6px;
+            color: #2563eb;
+        }
+
+        .live-badge {
+            background: #dc3545;
+            color: white;
+            font-weight: 600;
+            font-size: 0.7rem;
+            padding: 6px 16px 6px 14px;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            animation: livePulse 1.8s infinite;
+        }
+
+        @keyframes livePulse {
+            0% { opacity: 0.75; transform: scale(0.97); }
+            50% { opacity: 1; transform: scale(1.02); }
+            100% { opacity: 0.75; transform: scale(0.97); }
+        }
+
+        /* student info card */
+        .student-info {
+            background: #f8fbff;
+            border-radius: 24px;
+            padding: 18px 24px;
+            border: 1px solid #e7eef9;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px 24px;
+            margin-bottom: 26px;
+        }
+
+        .student-info .info-item {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 8px;
+        }
+
+        .student-info .info-item .label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #4f6e8e;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            min-width: 70px;
+        }
+
+        .student-info .info-item .value {
+            font-weight: 500;
+            color: #0b1e31;
+        }
+
+        /* summary cards */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .summary-card {
+            background: #f8fbff;
+            border-radius: 20px;
+            padding: 14px 18px;
+            border: 1px solid #e7eef9;
+            text-align: center;
+        }
+
+        .summary-card .sum-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #4f6e8e;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .summary-card .sum-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0b1e31;
+            line-height: 1.3;
+        }
+
+        .summary-card .sum-value.gpa {
+            color: #059669;
+        }
+
+        .summary-card .sum-value.credits {
+            color: #7c3aed;
+        }
+
+        /* table */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 20px;
+            border: 1px solid #e7eef9;
+            background: #fafdff;
+            margin-bottom: 20px;
+        }
+
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 620px;
+        }
+
+        .result-table th {
+            text-align: left;
+            padding: 14px 16px;
+            background: #f2f8ff;
+            font-weight: 600;
+            color: #1a3652;
+            border-bottom: 2px solid #dce6f2;
+        }
+
+        .result-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #eaf0f8;
+            color: #1d3957;
+            vertical-align: middle;
+        }
+
+        .result-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .result-table .grade-badge {
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 40px;
+            display: inline-block;
+            font-size: 0.85rem;
+            min-width: 44px;
+            text-align: center;
+        }
+
+        .grade-A {
+            background: #d1fae5;
+            color: #0b6e4f;
+        }
+        .grade-B {
+            background: #dbeafe;
+            color: #1e4b8f;
+        }
+        .grade-C {
+            background: #fef3c7;
+            color: #8b6914;
+        }
+        .grade-D {
+            background: #fee9e7;
+            color: #b91c1c;
+        }
+        .grade-F {
+            background: #f0f2f5;
+            color: #4b5b70;
+        }
+        .grade-pass {
+            background: #d1fae5;
+            color: #0b6e4f;
+        }
+
+        .result-table .credit-hours {
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .result-table .status-pass {
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .result-table .status-fail {
+            color: #b91c1c;
+            font-weight: 600;
+        }
+
+        /* semester total row */
+        .semester-total {
+            background: #f2f8ff;
+            font-weight: 600;
+        }
+
+        .semester-total td {
+            padding: 12px 16px;
+            border-top: 2px solid #dce6f2;
+        }
+
+        /* footer */
+        .transcript-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 0.78rem;
+            color: #577392;
+            border-top: 1px solid #e7eef8;
+            padding-top: 18px;
+        }
+
+        .transcript-footer i {
+            margin-right: 4px;
+        }
+
+        .transcript-footer .print-btn {
+            background: #1a3652;
+            border: none;
+            color: white;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .transcript-footer .print-btn:hover {
+            background: #0a1e32;
+        }
+
+        /* print styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0.2in;
+            }
+            .transcript-portal {
+                box-shadow: none;
+                padding: 0;
+                border-radius: 0;
+            }
+            .print-btn {
+                display: none !important;
+            }
+            .live-badge {
+                display: none !important;
+            }
+            .table-wrap {
+                border-color: #ccc;
+            }
+            .result-table th {
+                background: #eef3fa;
+                border-bottom-color: #aaa;
+            }
+            .result-table td {
+                border-bottom-color: #dde6f2;
+            }
+            .student-info {
+                background: #f5f9ff;
+                border-color: #ccc;
+            }
+            .summary-card {
+                border-color: #ccc;
+            }
+            .semester-total {
+                background: #f0f4fa;
+            }
+            .transcript-footer {
+                border-top-color: #ccc;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .transcript-portal { padding: 20px 16px 24px; }
+            .portal-header h1 { font-size: 1.5rem; }
+            .student-info { grid-template-columns: 1fr 1fr; padding: 14px 18px; }
+            .result-table { font-size: 0.8rem; min-width: 520px; }
+            .result-table th, .result-table td { padding: 10px 12px; }
+            .summary-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            .student-info { grid-template-columns: 1fr; }
+            .result-table { font-size: 0.7rem; min-width: 440px; }
+            .result-table th, .result-table td { padding: 8px 8px; }
+            .summary-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Student Home</a><a href="page1.html">page1</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page15.html">page15</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page9.html">page9</a></div>
+
+<div class="transcript-portal" id="transcriptApp">
+    <!-- header -->
+    <div class="portal-header">
+        <h1><i class="fas fa-scroll"></i> My Transcript</h1>
+        <div class="header-right">
+            <span class="student-badge"><i class="fas fa-id-badge"></i> S-2026-014 · Sarah Chen</span>
+            <span class="live-badge"><i class="fas fa-circle" style="font-size:0.45rem;"></i> LIVE</span>
+        </div>
+    </div>
+
+    <!-- student info -->
+    <div class="student-info">
+        <div class="info-item">
+            <span class="label">Student ID</span>
+            <span class="value">S-2026-014</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Name</span>
+            <span class="value">Sarah Chen</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Program</span>
+            <span class="value">B.S. Computer Science</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Department</span>
+            <span class="value">Computer Science</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Academic Year</span>
+            <span class="value">2025–2026</span>
+        </div>
+        <div class="info-item">
+            <span class="label">Semester</span>
+            <span class="value">Spring 2026</span>
+        </div>
+    </div>
+
+    <!-- summary -->
+    <div class="summary-grid">
+        <div class="summary-card">
+            <div class="sum-label">Semester GPA</div>
+            <div class="sum-value gpa" id="semesterGpa">3.67</div>
+        </div>
+        <div class="summary-card">
+            <div class="sum-label">Cumulative GPA</div>
+            <div class="sum-value gpa" id="cumulativeGpa">3.52</div>
+        </div>
+        <div class="summary-card">
+            <div class="sum-label">Credits Earned</div>
+            <div class="sum-value credits" id="creditsEarned">17</div>
+        </div>
+        <div class="summary-card">
+            <div class="sum-label">Status</div>
+            <div class="sum-value" style="font-size:1.2rem; color:#059669;" id="academicStatus">Good Standing</div>
+        </div>
+    </div>
+
+    <!-- result table -->
+    <div class="table-wrap">
+        <table class="result-table" id="resultTable">
+            <thead>
+                <tr>
+                    <th>Course Code</th>
+                    <th>Course Title</th>
+                    <th style="text-align:center;">Credits</th>
+                    <th style="text-align:center;">Grade</th>
+                    <th style="text-align:center;">Status</th>
+                    <th style="text-align:right;">Grade Points</th>
+                </tr>
+            </thead>
+            <tbody id="resultBody">
+                <!-- injected by js -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- footer -->
+    <div class="transcript-footer">
+        <span>
+            <i class="far fa-clock"></i> generated: <span id="updateTime">just now</span>
+            &nbsp;·&nbsp; <i class="fas fa-print"></i> <button class="print-btn" onclick="window.print()"><i class="fas fa-print"></i> Print Transcript</button>
+        </span>
+        <span><i class="fas fa-check-circle" style="color:#059669;"></i> official transcript · verified</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // ----- result data (courses with grades) -----
+        let results = [
+            { code: 'CS 201', title: 'Data Structures', credits: 3, grade: 'A', points: 12.0 },
+            { code: 'CS 260', title: 'Web Development', credits: 4, grade: 'B+', points: 13.2 },
+            { code: 'MATH 220', title: 'Linear Algebra', credits: 3, grade: 'A-', points: 10.8 },
+            { code: 'PHYS 101', title: 'Intro to Physics', credits: 4, grade: 'B', points: 12.0 },
+            { code: 'ENG 110', title: 'Composition I', credits: 3, grade: 'A', points: 12.0 },
+        ];
+
+        // ----- state -----
+        let semesterGPA = 3.67;
+        let cumulativeGPA = 3.52;
+        let creditsEarned = 17;
+
+        // DOM refs
+        const tbody = document.getElementById('resultBody');
+        const semesterGpaEl = document.getElementById('semesterGpa');
+        const cumulativeGpaEl = document.getElementById('cumulativeGpa');
+        const creditsEarnedEl = document.getElementById('creditsEarned');
+        const updateTimeSpan = document.getElementById('updateTime');
+
+        // ----- helpers -----
+        function updateTimestamp() {
+            const now = new Date();
+            const opts = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            updateTimeSpan.textContent = now.toLocaleDateString('en-US', opts);
+        }
+
+        function getGradeClass(grade) {
+            const clean = grade.replace('+', '').replace('-', '');
+            const map = {
+                'A': 'grade-A',
+                'B': 'grade-B',
+                'C': 'grade-C',
+                'D': 'grade-D',
+                'F': 'grade-F',
+                'P': 'grade-pass'
+            };
+            return map[clean] || 'grade-B';
+        }
+
+        function getStatus(grade) {
+            const clean = grade.replace('+', '').replace('-', '');
+            if (clean === 'F') {
+                return '<span class="status-fail"><i class="fas fa-times-circle"></i> Fail</span>';
+            }
+            return '<span class="status-pass"><i class="fas fa-check-circle"></i> Pass</span>';
+        }
+
+        function getGradePoints(grade) {
+            const map = {
+                'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7,
+                'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D+': 1.3, 'D': 1.0, 'F': 0.0
+            };
+            return map[grade] || 0.0;
+        }
+
+        // ----- render -----
+        function render() {
+            let totalPoints = 0;
+            let totalCredits = 0;
+            let html = '';
+
+            results.forEach((r, idx) => {
+                const gradeClass = getGradeClass(r.grade);
+                const statusHtml = getStatus(r.grade);
+                const points = r.points || (getGradePoints(r.grade) * r.credits);
+                totalPoints += points;
+                totalCredits += r.credits;
+
+                html += `
+                    <tr>
+                        <td><strong>${r.code}</strong></td>
+                        <td>${r.title}</td>
+                        <td style="text-align:center;">${r.credits}</td>
+                        <td style="text-align:center;"><span class="grade-badge ${gradeClass}">${r.grade}</span></td>
+                        <td style="text-align:center;">${statusHtml}</td>
+                        <td style="text-align:right; font-weight:500;">${points.toFixed(1)}</td>
+                    </tr>
+                `;
+            });
+
+            // semester total row
+            const calculatedGPA = totalCredits > 0 ? (totalPoints / totalCredits) : 0;
+            semesterGPA = calculatedGPA;
+            semesterGpaEl.textContent = calculatedGPA.toFixed(2);
+
+            // update cumulative (for demo, we'll keep it slightly different)
+            // cumulativeGPA = (cumulativeGPA * 0.7 + calculatedGPA * 0.3);
+            // we'll just keep it as is for demo
+
+            creditsEarned = totalCredits;
+            creditsEarnedEl.textContent = totalCredits;
+
+            // academic status
+            const statusEl = document.getElementById('academicStatus');
+            if (calculatedGPA >= 3.0) {
+                statusEl.textContent = 'Good Standing';
+                statusEl.style.color = '#059669';
+            } else if (calculatedGPA >= 2.0) {
+                statusEl.textContent = 'Academic Warning';
+                statusEl.style.color = '#d97706';
+            } else {
+                statusEl.textContent = 'Academic Probation';
+                statusEl.style.color = '#b91c1c';
+            }
+
+            tbody.innerHTML = html + `
+                <tr class="semester-total">
+                    <td colspan="2" style="text-align:right;">Semester Total</td>
+                    <td style="text-align:center; font-weight:700;">${totalCredits}</td>
+                    <td colspan="2" style="text-align:center; font-weight:600;">GPA: ${calculatedGPA.toFixed(2)}</td>
+                    <td style="text-align:right; font-weight:700;">${totalPoints.toFixed(1)}</td>
+                </tr>
+            `;
+
+            // update cumulative GPA display (just for show)
+            // we'll keep it static but let it change slightly
+            // cumulativeGPA = (cumulativeGPA * 0.9 + calculatedGPA * 0.1);
+            // cumulativeGpaEl.textContent = cumulativeGPA.toFixed(2);
+
+            updateTimestamp();
+        }
+
+        // ----- init -----
+        render();
+
+        // ----- live simulation: update grades or add new course -----
+        setInterval(() => {
+            // update timestamp
+            updateTimestamp();
+
+            // randomly update a grade (simulate live result)
+            if (results.length > 0 && Math.random() > 0.7) {
+                const randomIdx = Math.floor(Math.random() * results.length);
+                const r = results[randomIdx];
+                const grades = ['A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'F'];
+                let newGrade = grades[Math.floor(Math.random() * grades.length)];
+                while (newGrade === r.grade) {
+                    newGrade = grades[Math.floor(Math.random() * grades.length)];
+                }
+                r.grade = newGrade;
+                r.points = getGradePoints(newGrade) * r.credits;
+                render();
+            }
+
+            // occasionally add a new course (if less than 8)
+            if (results.length < 8 && Math.random() > 0.85) {
+                const newCourses = [
+                    { code: 'CS 310', title: 'Database Systems', credits: 3 },
+                    { code: 'PSY 201', title: 'Cognitive Psychology', credits: 3 },
+                    { code: 'STAT 101', title: 'Statistics', credits: 4 },
+                ];
+                const newC = newCourses[Math.floor(Math.random() * newCourses.length)];
+                const grades = ['A', 'B+', 'B', 'A-', 'C+'];
+                const grade = grades[Math.floor(Math.random() * grades.length)];
+                results.push({
+                    code: newC.code,
+                    title: newC.title,
+                    credits: newC.credits,
+                    grade: grade,
+                    points: getGradePoints(grade) * newC.credits
+                });
+                render();
+            }
+        }, 30000);
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff · Student Roster & Attendance</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f2f6fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1.2rem;
+        }
+
+        .dashboard {
+            max-width: 1280px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 40px;
+            box-shadow: 0 24px 56px -16px rgba(0, 20, 40, 0.15), 0 8px 24px -6px rgba(0,0,0,0.04);
+            padding: 2rem 2.2rem;
+            transition: all 0.2s ease;
+        }
+
+        /* header */
+        .dash-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem 1.5rem;
+            border-bottom: 1px solid #e9eff6;
+            padding-bottom: 1.4rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .header-left h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #0b1e2e;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-left h1 i {
+            color: #2563eb;
+        }
+
+        .header-left .badge-staff {
+            background: #e5edf9;
+            color: #1f4f8a;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .header-right .date-badge {
+            background: #f2f6fc;
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            color: #1f3b57;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-outline {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #1f3f5c;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+
+        .btn-outline i {
+            color: #2563eb;
+        }
+
+        .btn-outline:hover {
+            background: #f4f9ff;
+            border-color: #b2c8dd;
+        }
+
+        /* tabs */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.8rem;
+            border-bottom: 1px solid #e9eff6;
+            padding-bottom: 0.6rem;
+        }
+
+        .tab {
+            padding: 0.4rem 1.4rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #4d6a87;
+            background: transparent;
+            transition: 0.15s;
+            cursor: default;
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .tab.active {
+            background: #e5edf9;
+            color: #1f4f8a;
+            border-color: #c9d9ec;
+            font-weight: 600;
+        }
+
+        .tab i {
+            font-size: 0.85rem;
+        }
+
+        .tab .count {
+            background: #d7e2ed;
+            color: #1f3b57;
+            border-radius: 40px;
+            padding: 0.05rem 0.6rem;
+            font-size: 0.7rem;
+            margin-left: 0.2rem;
+        }
+
+        .tab.active .count {
+            background: #b8cee5;
+        }
+
+        /* filter bar */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.8rem 1.2rem;
+            margin-bottom: 1.6rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #e9eff6;
+        }
+
+        .filter-bar .filter-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #4d6a87;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .filter-chip {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.2rem 1rem;
+            font-size: 0.8rem;
+            color: #1f3f5c;
+            cursor: default;
+            transition: 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .filter-chip.active {
+            background: #e5edf9;
+            border-color: #b2c8dd;
+            font-weight: 500;
+        }
+
+        .filter-chip i {
+            color: #6a86a3;
+            font-size: 0.7rem;
+        }
+
+        .filter-chip.active i {
+            color: #2563eb;
+        }
+
+        .filter-search {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.2rem 0.8rem 0.2rem 1rem;
+        }
+
+        .filter-search i {
+            color: #8aa5c2;
+            font-size: 0.8rem;
+        }
+
+        .filter-search input {
+            border: none;
+            background: transparent;
+            padding: 0.4rem 0.4rem 0.4rem 0.6rem;
+            font-size: 0.85rem;
+            outline: none;
+            width: 160px;
+            color: #0b1e2e;
+        }
+
+        .filter-search input::placeholder {
+            color: #a5bdd4;
+        }
+
+        /* table wrapper */
+        .table-responsive {
+            overflow-x: auto;
+            margin-bottom: 1.8rem;
+            border-radius: 24px;
+            border: 1px solid #e9f0f7;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 680px;
+        }
+
+        th {
+            background: #f7faff;
+            text-align: left;
+            padding: 0.9rem 1rem;
+            font-weight: 600;
+            color: #1f3b57;
+            border-bottom: 1px solid #e9f0f7;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid #eef4fa;
+            color: #0b1e2e;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #fafdff;
+        }
+
+        .student-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
+            background: #e5effb;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .student-info {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .student-name {
+            font-weight: 500;
+        }
+
+        .student-email {
+            font-size: 0.75rem;
+            color: #4d6a87;
+        }
+
+        .status-badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.15rem 0.8rem;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .status-badge.present {
+            background: #e2f0e6;
+            color: #1a6d3b;
+        }
+
+        .status-badge.absent {
+            background: #fde8e8;
+            color: #b13e3e;
+        }
+
+        .status-badge.late {
+            background: #fef3d7;
+            color: #a7691a;
+        }
+
+        .status-badge.excused {
+            background: #ede4f5;
+            color: #6b3f9e;
+        }
+
+        .status-badge.enrolled {
+            background: #e5edf9;
+            color: #1f4f8a;
+        }
+
+        .attendance-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .bar-track {
+            width: 80px;
+            height: 6px;
+            background: #e9eff6;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 20px;
+            background: #2563eb;
+        }
+
+        .bar-fill.high {
+            background: #1a6d3b;
+        }
+
+        .bar-fill.medium {
+            background: #a7691a;
+        }
+
+        .bar-fill.low {
+            background: #b13e3e;
+        }
+
+        .attendance-text {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #1f3b57;
+            min-width: 32px;
+        }
+
+        .action-icons {
+            display: flex;
+            gap: 0.2rem;
+        }
+
+        .action-icons .btn-icon {
+            background: transparent;
+            border: none;
+            color: #8aa5c2;
+            padding: 0.2rem 0.5rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+
+        .action-icons .btn-icon:hover {
+            background: #eef4fa;
+            color: #1f4f8a;
+        }
+
+        /* attendance summary cards */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .summary-card {
+            background: #f9fcff;
+            border-radius: 20px;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #e9f0f7;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .summary-card .sum-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            background: #e5effb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 1rem;
+        }
+
+        .summary-card .sum-content .sum-number {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #0b1e2e;
+            line-height: 1.2;
+        }
+
+        .summary-card .sum-content .sum-label {
+            font-size: 0.75rem;
+            color: #4d6a87;
+        }
+
+        /* responsive */
+        @media (max-width: 700px) {
+            .dashboard {
+                padding: 1.5rem;
+                border-radius: 28px;
+            }
+            .header-left h1 {
+                font-size: 1.4rem;
+            }
+            .filter-search {
+                margin-left: 0;
+                width: 100%;
+            }
+            .filter-search input {
+                width: 100%;
+            }
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            table {
+                font-size: 0.8rem;
+                min-width: 600px;
+            }
+            th, td {
+                padding: 0.6rem 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard {
+                padding: 1rem;
+            }
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            .filter-chip {
+                font-size: 0.7rem;
+                padding: 0.1rem 0.7rem;
+            }
+            .tab {
+                font-size: 0.75rem;
+                padding: 0.2rem 0.9rem;
+            }
+            .bar-track {
+                width: 50px;
+            }
+        }
+
+        .footer-note {
+            margin-top: 1.2rem;
+            font-size: 0.75rem;
+            color: #7f99b5;
+            display: flex;
+            justify-content: flex-end;
+            border-top: 1px solid #e9eff6;
+            padding-top: 1.2rem;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Staff Home</a><a href="pag19.html">pag19</a><a href="page.10.html">page 10</a><a href="page.12.html">page 12</a><a href="page.14.html">page 14</a><a href="page.15.html">page 15</a><a href="page1.html">page1</a><a href="page11.html">page11</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a></div>
+<div class="dashboard">
+
+    <!-- header -->
+    <div class="dash-header">
+        <div class="header-left">
+            <h1><i class="fas fa-users"></i> Roster & Attendance</h1>
+            <span class="badge-staff"><i class="fas fa-chalkboard-teacher"></i> CS-301 · Data Structures</span>
+        </div>
+        <div class="header-right">
+            <span class="date-badge"><i class="far fa-calendar-alt"></i> Aug 14, 2026</span>
+            <span class="btn-outline"><i class="fas fa-download"></i> Export</span>
+            <span class="btn-outline"><i class="fas fa-print"></i> Print</span>
+        </div>
+    </div>
+
+    <!-- tabs -->
+    <div class="tabs">
+        <span class="tab active"><i class="fas fa-list-ul"></i> Roster <span class="count">32</span></span>
+        <span class="tab"><i class="fas fa-clipboard-check"></i> Attendance <span class="count">Today</span></span>
+        <span class="tab"><i class="fas fa-chart-line"></i> Analytics</span>
+        <span class="tab"><i class="fas fa-cog"></i> Settings</span>
+    </div>
+
+    <!-- summary stats -->
+    <div class="summary-grid">
+        <div class="summary-card">
+            <div class="sum-icon"><i class="fas fa-user-graduate"></i></div>
+            <div class="sum-content">
+                <div class="sum-number">32</div>
+                <div class="sum-label">Total enrolled</div>
+            </div>
+        </div>
+        <div class="summary-card">
+            <div class="sum-icon"><i class="fas fa-check-circle" style="color: #1a6d3b;"></i></div>
+            <div class="sum-content">
+                <div class="sum-number">28</div>
+                <div class="sum-label">Present today</div>
+            </div>
+        </div>
+        <div class="summary-card">
+            <div class="sum-icon"><i class="fas fa-clock" style="color: #a7691a;"></i></div>
+            <div class="sum-content">
+                <div class="sum-number">2</div>
+                <div class="sum-label">Late</div>
+            </div>
+        </div>
+        <div class="summary-card">
+            <div class="sum-icon"><i class="fas fa-times-circle" style="color: #b13e3e;"></i></div>
+            <div class="sum-content">
+                <div class="sum-number">2</div>
+                <div class="sum-label">Absent</div>
+            </div>
+        </div>
+        <div class="summary-card">
+            <div class="sum-icon"><i class="fas fa-percent" style="color: #6b3f9e;"></i></div>
+            <div class="sum-content">
+                <div class="sum-number">94%</div>
+                <div class="sum-label">Attendance rate</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- filter bar -->
+    <div class="filter-bar">
+        <span class="filter-label"><i class="fas fa-filter"></i> Filter:</span>
+        <span class="filter-chip active"><i class="fas fa-users"></i> All</span>
+        <span class="filter-chip"><i class="fas fa-check-circle"></i> Present</span>
+        <span class="filter-chip"><i class="fas fa-clock"></i> Late</span>
+        <span class="filter-chip"><i class="fas fa-times-circle"></i> Absent</span>
+        <span class="filter-chip"><i class="fas fa-user-slash"></i> Excused</span>
+        <div class="filter-search">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search students..." />
+        </div>
+    </div>
+
+    <!-- table -->
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>ID</th>
+                    <th>Status</th>
+                    <th>Attendance</th>
+                    <th>Last active</th>
+                    <th style="text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- row 1 -->
+                <tr>
+                    <td>
+                        <div class="student-info">
+                            <span class="student-avatar">JD</span>
+                            <div>
+                                <div class="student-name">Jonathan Doe</div>
+                                <div class="student-email">j.doe@university.edu</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>S-1024</td>
+                    <td><span class="status-badge present"><i class="fas fa-circle" style="font-size: 0.4rem;"></i> Present</span></td>
+                    <td>
+                        <div class="attendance-bar">
+                            <span class="bar-track"><span class="bar-fill high" style="width: 92%;"></span></span>
+                            <span class="attendance-text">92%</span>
+                        </div>
+                    </td>
+                    <td><i class="far fa-clock" style="color: #6a86a3;"></i> 10:15 AM</td>
+                    <td style="text-align: center;">
+                        <div class="action-icons" style="justify-content: center;">
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon"><i class="fas fa-notes-medical"></i></span>
+                            <span class="btn-icon"><i class="fas fa-ellipsis-v"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 2 -->
+                <tr>
+                    <td>
+                        <div class="student-info">
+                            <span class="student-avatar">SM</span>
+                            <div>
+                                <div class="student-name">Sarah Mitchell</div>
+                                <div class="student-email">s.mitchell@university.edu</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>S-1032</td>
+                    <td><span class="status-badge present"><i class="fas fa-circle" style="font-size: 0.4rem;"></i> Present</span></td>
+                    <td>
+                        <div class="attendance-bar">
+                            <span class="bar-track"><span class="bar-fill high" style="width: 88%;"></span></span>
+                            <span class="attendance-text">88%</span>
+                        </div>
+                    </td>
+                    <td><i class="far fa-clock" style="color: #6a86a3;"></i> 10:05 AM</td>
+                    <td style="text-align: center;">
+                        <div class="action-icons" style="justify-content: center;">
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon"><i class="fas fa-notes-medical"></i></span>
+                            <span class="btn-icon"><i class="fas fa-ellipsis-v"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 3 - late -->
+                <tr>
+                    <td>
+                        <div class="student-info">
+                            <span class="student-avatar">AK</span>
+                            <div>
+                                <div class="student-name">Aisha Khan</div>
+                                <div class="student-email">a.khan@university.edu</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>S-1045</td>
+                    <td><span class="status-badge late"><i class="fas fa-clock"></i> Late</span></td>
+                    <td>
+                        <div class="attendance-bar">
+                            <span class="bar-track"><span class="bar-fill medium" style="width: 74%;"></span></span>
+                            <span class="attendance-text">74%</span>
+                        </div>
+                    </td>
+                    <td><i class="far fa-clock" style="color: #a7691a;"></i> 10:45 AM</td>
+                    <td style="text-align: center;">
+                        <div class="action-icons" style="justify-content: center;">
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon"><i class="fas fa-notes-medical"></i></span>
+                            <span class="btn-icon"><i class="fas fa-ellipsis-v"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 4 - absent -->
+                <tr>
+                    <td>
+                        <div class="student-info">
+                            <span class="student-avatar">MR</span>
+                            <div>
+                                <div class="student-name">Miguel Rodriguez</div>
+                                <div class="student-email">m.rodriguez@university.edu</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>S-1058</td>
+                    <td><span class="status-badge absent"><i class="fas fa-times-circle"></i> Absent</span></td>
+                    <td>
+                        <div class="attendance-bar">
+                            <span class="bar-track"><span class="bar-fill low" style="width: 45%;"></span></span>
+                            <span class="attendance-text">45%</span>
+                        </div>
+                    </td>
+                    <td><i class="far fa-clock" style="color: #b13e3e;"></i> —</td>
+                    <td style="text-align: center;">
+                        <div class="action-icons" style="justify-content: center;">
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon"><i class="fas fa-notes-medical"></i></span>
+                            <span class="btn-icon"><i class="fas fa-ellipsis-v"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 5 - present -->
+                <tr>
+                    <td>
+                        <div class="student-info">
+                            <span class="student-avatar">LW</span>
+                            <div>
+                                <div class="student-name">Li Wei</div>
+                                <div class="student-email">l.wei@university.edu</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>S-1062</td>
+                    <td><span class="status-badge present"><i class="fas fa-circle" style="font-size: 0.4rem;"></i> Present</span></td>
+                    <td>
+                        <div class="attendance-bar">
+                            <span class="bar-track"><span class="bar-fill high" style="width: 95%;"></span></span>
+                            <span class="attendance-text">95%</span>
+                        </div>
+                    </td>
+                    <td><i class="far fa-clock" style="color: #6a86a3;"></i> 09:55 AM</td>
+                    <td style="text-align: center;">
+                        <div class="action-icons" style="justify-content: center;">
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon"><i class="fas fa-notes-medical"></i></span>
+                            <span class="btn-icon"><i class="fas fa-ellipsis-v"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 6 - excused -->
+                <tr>
+                    <td>
+                        <div class="student-info">
+                            <span class="student-avatar">EP</span>
+                            <div>
+                                <div class="student-name">Elena Petrova</div>
+                                <div class="student-email">e.petrova@university.edu</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>S-1070</td>
+                    <td><span class="status-badge excused"><i class="fas fa-user-slash"></i> Excused</span></td>
+                    <td>
+                        <div class="attendance-bar">
+                            <span class="bar-track"><span class="bar-fill medium" style="width: 68%;"></span></span>
+                            <span class="attendance-text">68%</span>
+                        </div>
+                    </td>
+                    <td><i class="far fa-clock" style="color: #6b3f9e;"></i> approved</td>
+                    <td style="text-align: center;">
+                        <div class="action-icons" style="justify-content: center;">
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon"><i class="fas fa-notes-medical"></i></span>
+                            <span class="btn-icon"><i class="fas fa-ellipsis-v"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 7 - present -->
+                <tr>
+                    <td>
+                        <div class="student-info">
+                            <span class="student-avatar">TN</span>
+                            <div>
+                                <div class="student-name">Tunde Nwachukwu</div>
+                                <div class="student-email">t.nwachukwu@university.edu</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>S-1085</td>
+                    <td><span class="status-badge present"><i class="fas fa-circle" style="font-size: 0.4rem;"></i> Present</span></td>
+                    <td>
+                        <div class="attendance-bar">
+                            <span class="bar-track"><span class="bar-fill high" style="width: 90%;"></span></span>
+                            <span class="attendance-text">90%</span>
+                        </div>
+                    </td>
+                    <td><i class="far fa-clock" style="color: #6a86a3;"></i> 10:10 AM</td>
+                    <td style="text-align: center;">
+                        <div class="action-icons" style="justify-content: center;">
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon"><i class="fas fa-notes-medical"></i></span>
+                            <span class="btn-icon"><i class="fas fa-ellipsis-v"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 8 - late -->
+                <tr>
+                    <td>
+                        <div class="student-info">
+                            <span class="student-avatar">CF</span>
+                            <div>
+                                <div class="student-name">Clara Fontaine</div>
+                                <div class="student-email">c.fontaine@university.edu</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>S-1093</td>
+                    <td><span class="status-badge late"><i class="fas fa-clock"></i> Late</span></td>
+                    <td>
+                        <div class="attendance-bar">
+                            <span class="bar-track"><span class="bar-fill medium" style="width: 71%;"></span></span>
+                            <span class="attendance-text">71%</span>
+                        </div>
+                    </td>
+                    <td><i class="far fa-clock" style="color: #a7691a;"></i> 10:30 AM</td>
+                    <td style="text-align: center;">
+                        <div class="action-icons" style="justify-content: center;">
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon"><i class="fas fa-notes-medical"></i></span>
+                            <span class="btn-icon"><i class="fas fa-ellipsis-v"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 9 - absent -->
+                <tr>
+                    <td>
+                        <div class="student-info">
+                            <span class="student-avatar">DS</span>
+                            <div>
+                                <div class="student-name">David Smith</div>
+                                <div class="student-email">d.smith@university.edu</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>S-1102</td>
+                    <td><span class="status-badge absent"><i class="fas fa-times-circle"></i> Absent</span></td>
+                    <td>
+                        <div class="attendance-bar">
+                            <span class="bar-track"><span class="bar-fill low" style="width: 38%;"></span></span>
+                            <span class="attendance-text">38%</span>
+                        </div>
+                    </td>
+                    <td><i class="far fa-clock" style="color: #b13e3e;"></i> —</td>
+                    <td style="text-align: center;">
+                        <div class="action-icons" style="justify-content: center;">
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon"><i class="fas fa-notes-medical"></i></span>
+                            <span class="btn-icon"><i class="fas fa-ellipsis-v"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 10 - present -->
+                <tr>
+                    <td>
+                        <div class="student-info">
+                            <span class="student-avatar">PM</span>
+                            <div>
+                                <div class="student-name">Priya Mehta</div>
+                                <div class="student-email">p.mehta@university.edu</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>S-1115</td>
+                    <td><span class="status-badge present"><i class="fas fa-circle" style="font-size: 0.4rem;"></i> Present</span></td>
+                    <td>
+                        <div class="attendance-bar">
+                            <span class="bar-track"><span class="bar-fill high" style="width: 93%;"></span></span>
+                            <span class="attendance-text">93%</span>
+                        </div>
+                    </td>
+                    <td><i class="far fa-clock" style="color: #6a86a3;"></i> 10:00 AM</td>
+                    <td style="text-align: center;">
+                        <div class="action-icons" style="justify-content: center;">
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon"><i class="fas fa-notes-medical"></i></span>
+                            <span class="btn-icon"><i class="fas fa-ellipsis-v"></i></span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- bulk actions -->
+    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.8rem; margin-bottom: 0.4rem;">
+        <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+            <span class="btn-outline" style="padding: 0.2rem 1rem; font-size: 0.75rem;"><i class="fas fa-check-double"></i> Mark present</span>
+            <span class="btn-outline" style="padding: 0.2rem 1rem; font-size: 0.75rem;"><i class="fas fa-clock"></i> Mark late</span>
+            <span class="btn-outline" style="padding: 0.2rem 1rem; font-size: 0.75rem;"><i class="fas fa-user-slash"></i> Excuse</span>
+            <span class="btn-outline" style="padding: 0.2rem 1rem; font-size: 0.75rem; border-color: #f3d4d4; color: #b13e3e;"><i class="fas fa-times-circle"></i> Absent</span>
+        </div>
+        <span style="font-size: 0.75rem; color: #4d6a87;"><i class="fas fa-info-circle"></i> 32 students · 28 present</span>
+    </div>
+
+    <!-- footer -->
+    <div class="footer-note">
+        <span><i class="fas fa-sync-alt"></i> Last sync: 2 min ago</span>
+        <span><i class="fas fa-database"></i> CS-301 · Fall 2026</span>
+        <span><i class="fas fa-chevron-right"></i> <a href="#" style="color: #2563eb; text-decoration: none;">full attendance report</a></span>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff · Exam Mark Entry Sheet</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f2f6fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem 1.2rem;
+        }
+
+        .dashboard {
+            max-width: 1280px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 40px;
+            box-shadow: 0 24px 56px -16px rgba(0, 20, 40, 0.15), 0 8px 24px -6px rgba(0,0,0,0.04);
+            padding: 2rem 2.2rem;
+            transition: all 0.2s ease;
+        }
+
+        /* header */
+        .dash-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem 1.5rem;
+            border-bottom: 1px solid #e9eff6;
+            padding-bottom: 1.4rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .header-left h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #0b1e2e;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-left h1 i {
+            color: #2563eb;
+        }
+
+        .header-left .badge-staff {
+            background: #e5edf9;
+            color: #1f4f8a;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .header-right .date-badge {
+            background: #f2f6fc;
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            color: #1f3b57;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-outline {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #1f3f5c;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+
+        .btn-outline i {
+            color: #2563eb;
+        }
+
+        .btn-outline:hover {
+            background: #f4f9ff;
+            border-color: #b2c8dd;
+        }
+
+        .btn-primary {
+            background: #0b1e2e;
+            border: 1px solid #0b1e2e;
+            color: white;
+        }
+
+        .btn-primary i {
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1a3147;
+        }
+
+        /* stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .stat-card {
+            background: #f9fcff;
+            border-radius: 20px;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #e9f0f7;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .stat-card .stat-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 14px;
+            background: #e5effb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .stat-card .stat-content .stat-number {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #0b1e2e;
+            line-height: 1.2;
+        }
+
+        .stat-card .stat-content .stat-label {
+            font-size: 0.75rem;
+            color: #4d6a87;
+        }
+
+        /* filter + action bar */
+        .action-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.8rem 1.2rem;
+            margin-bottom: 1.6rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #e9eff6;
+        }
+
+        .action-bar .filter-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #4d6a87;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .filter-chip {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.2rem 1rem;
+            font-size: 0.8rem;
+            color: #1f3f5c;
+            cursor: default;
+            transition: 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .filter-chip.active {
+            background: #e5edf9;
+            border-color: #b2c8dd;
+            font-weight: 500;
+        }
+
+        .filter-chip i {
+            color: #6a86a3;
+            font-size: 0.7rem;
+        }
+
+        .filter-chip.active i {
+            color: #2563eb;
+        }
+
+        .filter-search {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.2rem 0.8rem 0.2rem 1rem;
+        }
+
+        .filter-search i {
+            color: #8aa5c2;
+            font-size: 0.8rem;
+        }
+
+        .filter-search input {
+            border: none;
+            background: transparent;
+            padding: 0.4rem 0.4rem 0.4rem 0.6rem;
+            font-size: 0.85rem;
+            outline: none;
+            width: 150px;
+            color: #0b1e2e;
+        }
+
+        .filter-search input::placeholder {
+            color: #a5bdd4;
+        }
+
+        .btn-add {
+            background: #2563eb;
+            border: none;
+            color: white;
+            border-radius: 60px;
+            padding: 0.4rem 1.4rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+
+        .btn-add:hover {
+            background: #1a4fbf;
+        }
+
+        /* table */
+        .table-responsive {
+            overflow-x: auto;
+            margin-bottom: 1.8rem;
+            border-radius: 24px;
+            border: 1px solid #e9f0f7;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 750px;
+        }
+
+        th {
+            background: #f7faff;
+            text-align: left;
+            padding: 0.8rem 1rem;
+            font-weight: 600;
+            color: #1f3b57;
+            border-bottom: 1px solid #e9f0f7;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.6rem 1rem;
+            border-bottom: 1px solid #eef4fa;
+            color: #0b1e2e;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #fafdff;
+        }
+
+        .student-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .student-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 10px;
+            background: #e5effb;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-weight: 600;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        .student-name {
+            font-weight: 500;
+        }
+
+        .student-id {
+            font-size: 0.7rem;
+            color: #4d6a87;
+        }
+
+        /* editable mark input */
+        .mark-input {
+            width: 72px;
+            padding: 0.3rem 0.5rem;
+            border: 1px solid #d7e2ed;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #0b1e2e;
+            background: white;
+            transition: 0.15s;
+            text-align: center;
+        }
+
+        .mark-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .mark-input.high {
+            border-color: #1a6d3b;
+            background: #f2fcf5;
+        }
+
+        .mark-input.medium {
+            border-color: #a7691a;
+            background: #fefcf0;
+        }
+
+        .mark-input.low {
+            border-color: #b13e3e;
+            background: #fdf5f5;
+        }
+
+        .grade-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.1rem 0.8rem;
+            border-radius: 40px;
+            background: #ede4f5;
+            color: #6b3f9e;
+            display: inline-block;
+            text-align: center;
+            min-width: 32px;
+        }
+
+        .grade-badge.a { background: #e2f0e6; color: #1a6d3b; }
+        .grade-badge.b { background: #e5edf9; color: #1f4f8a; }
+        .grade-badge.c { background: #fef3d7; color: #a7691a; }
+        .grade-badge.d { background: #fde8e8; color: #b13e3e; }
+        .grade-badge.f { background: #f0f2f5; color: #5f7d9b; }
+
+        .status-badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.1rem 0.7rem;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: #e5edf9;
+            color: #1f4f8a;
+        }
+
+        .status-badge.pass { background: #e2f0e6; color: #1a6d3b; }
+        .status-badge.fail { background: #fde8e8; color: #b13e3e; }
+        .status-badge.entry { background: #fef3d7; color: #a7691a; }
+
+        .action-icons {
+            display: flex;
+            gap: 0.2rem;
+            justify-content: center;
+        }
+
+        .action-icons .btn-icon {
+            background: transparent;
+            border: none;
+            color: #8aa5c2;
+            padding: 0.2rem 0.5rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+
+        .action-icons .btn-icon:hover {
+            background: #eef4fa;
+            color: #1f4f8a;
+        }
+
+        .action-icons .btn-icon.danger:hover {
+            background: #fde8e8;
+            color: #b13e3e;
+        }
+
+        .action-icons .btn-icon.save:hover {
+            background: #e2f0e6;
+            color: #1a6d3b;
+        }
+
+        /* bulk actions row */
+        .bulk-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem;
+            margin-top: 0.2rem;
+        }
+
+        .bulk-row .bulk-actions {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .bulk-row .bulk-actions .btn-sm {
+            background: white;
+            border: 1px solid #d7e2ed;
+            border-radius: 60px;
+            padding: 0.2rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #1f3f5c;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: default;
+            transition: 0.1s;
+        }
+
+        .bulk-row .bulk-actions .btn-sm i {
+            color: #2563eb;
+        }
+
+        .bulk-row .bulk-actions .btn-sm:hover {
+            background: #f4f9ff;
+            border-color: #b2c8dd;
+        }
+
+        .bulk-row .bulk-actions .btn-sm.primary {
+            background: #0b1e2e;
+            border-color: #0b1e2e;
+            color: white;
+        }
+
+        .bulk-row .bulk-actions .btn-sm.primary i {
+            color: white;
+        }
+
+        .bulk-row .info-text {
+            font-size: 0.75rem;
+            color: #4d6a87;
+        }
+
+        /* responsive */
+        @media (max-width: 700px) {
+            .dashboard {
+                padding: 1.5rem;
+                border-radius: 28px;
+            }
+            .header-left h1 {
+                font-size: 1.4rem;
+            }
+            .filter-search {
+                margin-left: 0;
+                width: 100%;
+            }
+            .filter-search input {
+                width: 100%;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            table {
+                font-size: 0.8rem;
+                min-width: 600px;
+            }
+            th, td {
+                padding: 0.5rem 0.7rem;
+            }
+            .mark-input {
+                width: 60px;
+                font-size: 0.8rem;
+            }
+            .bulk-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .bulk-row .bulk-actions {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard {
+                padding: 1rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .filter-chip {
+                font-size: 0.7rem;
+                padding: 0.1rem 0.7rem;
+            }
+            .action-bar {
+                gap: 0.4rem;
+            }
+            .grade-badge {
+                font-size: 0.65rem;
+                padding: 0.05rem 0.5rem;
+                min-width: 28px;
+            }
+        }
+
+        .footer-note {
+            margin-top: 1.2rem;
+            font-size: 0.75rem;
+            color: #7f99b5;
+            display: flex;
+            justify-content: flex-end;
+            border-top: 1px solid #e9eff6;
+            padding-top: 1.2rem;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Staff Home</a><a href="pag19.html">pag19</a><a href="page.10.html">page 10</a><a href="page.12.html">page 12</a><a href="page.14.html">page 14</a><a href="page.15.html">page 15</a><a href="page1.html">page1</a><a href="page11.html">page11</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a></div>
+<div class="dashboard">
+
+    <!-- header -->
+    <div class="dash-header">
+        <div class="header-left">
+            <h1><i class="fas fa-pen-fancy"></i> Exam Mark Entry</h1>
+            <span class="badge-staff"><i class="fas fa-chalkboard-teacher"></i> CS-301 · Data Structures</span>
+        </div>
+        <div class="header-right">
+            <span class="date-badge"><i class="far fa-calendar-alt"></i> Aug 14, 2026</span>
+            <span class="btn-outline"><i class="fas fa-download"></i> Export</span>
+            <span class="btn-outline"><i class="fas fa-print"></i> Print</span>
+        </div>
+    </div>
+
+    <!-- stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">32</div>
+                <div class="stat-label">Students</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-check-circle" style="color: #1a6d3b;"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">24</div>
+                <div class="stat-label">Passed</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-times-circle" style="color: #b13e3e;"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Failed</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-percent" style="color: #a7691a;"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">75%</div>
+                <div class="stat-label">Pass rate</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-flag" style="color: #6b3f9e;"></i></div>
+            <div class="stat-content">
+                <div class="stat-number">68.4</div>
+                <div class="stat-label">Avg. score</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- action bar -->
+    <div class="action-bar">
+        <span class="filter-label"><i class="fas fa-filter"></i> Filter:</span>
+        <span class="filter-chip active"><i class="fas fa-list"></i> All</span>
+        <span class="filter-chip"><i class="fas fa-check-circle"></i> Pass</span>
+        <span class="filter-chip"><i class="fas fa-times-circle"></i> Fail</span>
+        <span class="filter-chip"><i class="fas fa-sort-alpha-up"></i> A–F</span>
+        <div class="filter-search">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search student..." />
+        </div>
+        <span class="btn-add"><i class="fas fa-plus-circle"></i> Add row</span>
+    </div>
+
+    <!-- table -->
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Exam</th>
+                    <th>Mark <span style="font-weight:400; font-size:0.65rem;">(max 100)</span></th>
+                    <th>Grade</th>
+                    <th>Status</th>
+                    <th style="text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- row 1 -->
+                <tr>
+                    <td>
+                        <div class="student-cell">
+                            <span class="student-avatar">JD</span>
+                            <div>
+                                <div class="student-name">Jonathan Doe</div>
+                                <div class="student-id">S-1024</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Final Exam</td>
+                    <td><input class="mark-input high" type="text" value="86" /></td>
+                    <td><span class="grade-badge a">A</span></td>
+                    <td><span class="status-badge pass"><i class="fas fa-check-circle"></i> Pass</span></td>
+                    <td style="text-align: center;">
+                        <div class="action-icons">
+                            <span class="btn-icon save"><i class="fas fa-save"></i></span>
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon danger"><i class="fas fa-trash-alt"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 2 -->
+                <tr>
+                    <td>
+                        <div class="student-cell">
+                            <span class="student-avatar">SM</span>
+                            <div>
+                                <div class="student-name">Sarah Mitchell</div>
+                                <div class="student-id">S-1032</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Final Exam</td>
+                    <td><input class="mark-input high" type="text" value="81" /></td>
+                    <td><span class="grade-badge a">A</span></td>
+                    <td><span class="status-badge pass"><i class="fas fa-check-circle"></i> Pass</span></td>
+                    <td style="text-align: center;">
+                        <div class="action-icons">
+                            <span class="btn-icon save"><i class="fas fa-save"></i></span>
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon danger"><i class="fas fa-trash-alt"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 3 -->
+                <tr>
+                    <td>
+                        <div class="student-cell">
+                            <span class="student-avatar">AK</span>
+                            <div>
+                                <div class="student-name">Aisha Khan</div>
+                                <div class="student-id">S-1045</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Final Exam</td>
+                    <td><input class="mark-input medium" type="text" value="64" /></td>
+                    <td><span class="grade-badge c">C</span></td>
+                    <td><span class="status-badge pass"><i class="fas fa-check-circle"></i> Pass</span></td>
+                    <td style="text-align: center;">
+                        <div class="action-icons">
+                            <span class="btn-icon save"><i class="fas fa-save"></i></span>
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon danger"><i class="fas fa-trash-alt"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 4 -->
+                <tr>
+                    <td>
+                        <div class="student-cell">
+                            <span class="student-avatar">MR</span>
+                            <div>
+                                <div class="student-name">Miguel Rodriguez</div>
+                                <div class="student-id">S-1058</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Final Exam</td>
+                    <td><input class="mark-input low" type="text" value="42" /></td>
+                    <td><span class="grade-badge f">F</span></td>
+                    <td><span class="status-badge fail"><i class="fas fa-times-circle"></i> Fail</span></td>
+                    <td style="text-align: center;">
+                        <div class="action-icons">
+                            <span class="btn-icon save"><i class="fas fa-save"></i></span>
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon danger"><i class="fas fa-trash-alt"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 5 -->
+                <tr>
+                    <td>
+                        <div class="student-cell">
+                            <span class="student-avatar">LW</span>
+                            <div>
+                                <div class="student-name">Li Wei</div>
+                                <div class="student-id">S-1062</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Final Exam</td>
+                    <td><input class="mark-input high" type="text" value="93" /></td>
+                    <td><span class="grade-badge a">A</span></td>
+                    <td><span class="status-badge pass"><i class="fas fa-check-circle"></i> Pass</span></td>
+                    <td style="text-align: center;">
+                        <div class="action-icons">
+                            <span class="btn-icon save"><i class="fas fa-save"></i></span>
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon danger"><i class="fas fa-trash-alt"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 6 -->
+                <tr>
+                    <td>
+                        <div class="student-cell">
+                            <span class="student-avatar">EP</span>
+                            <div>
+                                <div class="student-name">Elena Petrova</div>
+                                <div class="student-id">S-1070</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Final Exam</td>
+                    <td><input class="mark-input medium" type="text" value="58" /></td>
+                    <td><span class="grade-badge d">D</span></td>
+                    <td><span class="status-badge fail"><i class="fas fa-times-circle"></i> Fail</span></td>
+                    <td style="text-align: center;">
+                        <div class="action-icons">
+                            <span class="btn-icon save"><i class="fas fa-save"></i></span>
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon danger"><i class="fas fa-trash-alt"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 7 -->
+                <tr>
+                    <td>
+                        <div class="student-cell">
+                            <span class="student-avatar">TN</span>
+                            <div>
+                                <div class="student-name">Tunde Nwachukwu</div>
+                                <div class="student-id">S-1085</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Final Exam</td>
+                    <td><input class="mark-input medium" type="text" value="67" /></td>
+                    <td><span class="grade-badge c">C</span></td>
+                    <td><span class="status-badge pass"><i class="fas fa-check-circle"></i> Pass</span></td>
+                    <td style="text-align: center;">
+                        <div class="action-icons">
+                            <span class="btn-icon save"><i class="fas fa-save"></i></span>
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon danger"><i class="fas fa-trash-alt"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 8 -->
+                <tr>
+                    <td>
+                        <div class="student-cell">
+                            <span class="student-avatar">CF</span>
+                            <div>
+                                <div class="student-name">Clara Fontaine</div>
+                                <div class="student-id">S-1093</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Final Exam</td>
+                    <td><input class="mark-input high" type="text" value="79" /></td>
+                    <td><span class="grade-badge b">B</span></td>
+                    <td><span class="status-badge pass"><i class="fas fa-check-circle"></i> Pass</span></td>
+                    <td style="text-align: center;">
+                        <div class="action-icons">
+                            <span class="btn-icon save"><i class="fas fa-save"></i></span>
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon danger"><i class="fas fa-trash-alt"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 9 -->
+                <tr>
+                    <td>
+                        <div class="student-cell">
+                            <span class="student-avatar">DS</span>
+                            <div>
+                                <div class="student-name">David Smith</div>
+                                <div class="student-id">S-1102</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Final Exam</td>
+                    <td><input class="mark-input low" type="text" value="35" /></td>
+                    <td><span class="grade-badge f">F</span></td>
+                    <td><span class="status-badge fail"><i class="fas fa-times-circle"></i> Fail</span></td>
+                    <td style="text-align: center;">
+                        <div class="action-icons">
+                            <span class="btn-icon save"><i class="fas fa-save"></i></span>
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon danger"><i class="fas fa-trash-alt"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- row 10 -->
+                <tr>
+                    <td>
+                        <div class="student-cell">
+                            <span class="student-avatar">PM</span>
+                            <div>
+                                <div class="student-name">Priya Mehta</div>
+                                <div class="student-id">S-1115</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Final Exam</td>
+                    <td><input class="mark-input high" type="text" value="88" /></td>
+                    <td><span class="grade-badge a">A</span></td>
+                    <td><span class="status-badge pass"><i class="fas fa-check-circle"></i> Pass</span></td>
+                    <td style="text-align: center;">
+                        <div class="action-icons">
+                            <span class="btn-icon save"><i class="fas fa-save"></i></span>
+                            <span class="btn-icon"><i class="fas fa-edit"></i></span>
+                            <span class="btn-icon danger"><i class="fas fa-trash-alt"></i></span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- bulk actions -->
+    <div class="bulk-row">
+        <div class="bulk-actions">
+            <span class="btn-sm"><i class="fas fa-check-double"></i> Pass selected</span>
+            <span class="btn-sm"><i class="fas fa-times-circle"></i> Fail selected</span>
+            <span class="btn-sm primary"><i class="fas fa-save"></i> Save all</span>
+            <span class="btn-sm"><i class="fas fa-undo-alt"></i> Reset</span>
+        </div>
+        <span class="info-text"><i class="fas fa-info-circle"></i> 32 students · 10 shown</span>
+    </div>
+
+    <!-- footer -->
+    <div class="footer-note">
+        <span><i class="fas fa-sync-alt"></i> Last sync: 2 min ago</span>
+        <span><i class="fas fa-database"></i> Final Exam · CS-301</span>
+        <span><i class="fas fa-chevron-right"></i> <a href="#" style="color: #2563eb; text-decoration: none;">full grade report</a></span>
+    </div>
+</div>
+
+<!-- small script to toggle input styling based on value (demo) -->
+<script>
+    document.querySelectorAll('.mark-input').forEach(input => {
+        input.addEventListener('input', function() {
+            const val = parseInt(this.value);
+            this.classList.remove('high', 'medium', 'low');
+            if (!isNaN(val)) {
+                if (val >= 70) this.classList.add('high');
+                else if (val >= 50) this.classList.add('medium');
+                else this.classList.add('low');
+            }
+        });
+    });
+</script>
+</body>
+</html>

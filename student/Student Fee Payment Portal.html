@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+  <title>Student Fee Payment Portal</title>
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: #f0f5fe;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .portal {
+      max-width: 1200px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 44px;
+      box-shadow: 0 30px 60px -18px rgba(0, 20, 40, 0.20);
+      padding: 30px 32px 36px;
+      transition: all 0.2s;
+    }
+
+    /* header */
+    .portal-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+      gap: 14px;
+    }
+
+    .portal-header h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #0a1e32;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .portal-header h1 i {
+      color: #059669;
+      font-size: 2rem;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .student-badge {
+      background: #e6edf8;
+      padding: 8px 20px;
+      border-radius: 60px;
+      font-weight: 500;
+      color: #1c3857;
+      font-size: 0.9rem;
+    }
+
+    .student-badge i {
+      margin-right: 6px;
+      color: #2563eb;
+    }
+
+    .live-badge {
+      background: #dc3545;
+      color: white;
+      font-weight: 600;
+      font-size: 0.7rem;
+      padding: 6px 16px 6px 14px;
+      border-radius: 40px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      animation: livePulse 1.8s infinite;
+    }
+
+    @keyframes livePulse {
+      0% { opacity: 0.75; transform: scale(0.97); }
+      50% { opacity: 1; transform: scale(1.02); }
+      100% { opacity: 0.75; transform: scale(0.97); }
+    }
+
+    /* summary cards */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .summary-card {
+      background: #f8fbff;
+      border-radius: 28px;
+      padding: 16px 18px;
+      border: 1px solid #e7eef9;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .summary-icon {
+      width: 44px;
+      height: 44px;
+      background: #e2ebf9;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2563eb;
+      font-size: 1.2rem;
+    }
+
+    .summary-content .label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #4f6e8e;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .summary-content .value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #0b1e31;
+      line-height: 1.3;
+    }
+
+    /* main layout: fee table + payment form */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.8fr 1.2fr;
+      gap: 28px;
+      margin-bottom: 24px;
+    }
+
+    /* ----- fee table ----- */
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .section-title h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #102b44;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title h2 i {
+      color: #2563eb;
+    }
+
+    .fee-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .fee-table th {
+      text-align: left;
+      padding: 10px 6px 8px 0;
+      font-weight: 600;
+      color: #1f3a5a;
+      border-bottom: 2px solid #e2eaf4;
+    }
+
+    .fee-table td {
+      padding: 14px 6px 14px 0;
+      border-bottom: 1px solid #eef3fa;
+      color: #1d3957;
+    }
+
+    .fee-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .fee-table .status-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 4px 14px;
+      border-radius: 40px;
+      display: inline-block;
+    }
+
+    .status-badge.paid {
+      background: #d1fae5;
+      color: #0b6e4f;
+    }
+
+    .status-badge.pending {
+      background: #fef3c7;
+      color: #8b6914;
+    }
+
+    .status-badge.overdue {
+      background: #fee9e7;
+      color: #b91c1c;
+    }
+
+    .fee-table .amount {
+      font-weight: 600;
+    }
+
+    .fee-table .pay-btn {
+      background: #2563eb;
+      border: none;
+      color: white;
+      padding: 4px 16px;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.1s;
+    }
+
+    .fee-table .pay-btn:hover {
+      background: #1a4eb5;
+    }
+
+    .fee-table .pay-btn:disabled {
+      background: #b8cfe5;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    /* ----- payment form (right) ----- */
+    .payment-form {
+      background: #f8fbff;
+      border-radius: 28px;
+      padding: 22px 20px 24px;
+      border: 1px solid #e7eef9;
+    }
+
+    .payment-form h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0b1e31;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .payment-form h3 i {
+      color: #059669;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #4b6a89;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #d8e2ef;
+      border-radius: 16px;
+      font-size: 0.9rem;
+      background: white;
+      transition: 0.15s;
+      outline: none;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .pay-submit {
+      width: 100%;
+      background: #059669;
+      border: none;
+      color: white;
+      padding: 14px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .pay-submit:hover {
+      background: #047857;
+      transform: scale(1.01);
+    }
+
+    .pay-submit:disabled {
+      background: #9bb8d6;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .payment-note {
+      font-size: 0.7rem;
+      color: #5f7d9c;
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    /* footer */
+    .portal-footer {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: #577392;
+      border-top: 1px solid #e7eef8;
+      padding-top: 20px;
+    }
+
+    .portal-footer i {
+      margin-right: 4px;
+    }
+
+    /* responsive */
+    @media (max-width: 920px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .portal { padding: 20px 16px 28px; }
+      .portal-header h1 { font-size: 1.5rem; }
+      .summary-grid { grid-template-columns: 1fr 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 420px) {
+      .summary-grid { grid-template-columns: 1fr; }
+      .fee-table { font-size: 0.8rem; }
+      .fee-table th, .fee-table td { padding: 8px 4px 8px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Student Home</a><a href="page1.html">page1</a><a href="page10.html">page10</a><a href="page11.html">page11</a><a href="page12.html">page12</a><a href="page13.html">page13</a><a href="page14.html">page14</a><a href="page15.html">page15</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page9.html">page9</a></div>
+<div class="portal" id="feePortal">
+  <!-- header -->
+  <div class="portal-header">
+    <h1><i class="fas fa-wallet"></i> Fee Payment</h1>
+    <div class="header-right">
+      <span class="student-badge"><i class="fas fa-id-badge"></i> S-2026-014 · Sarah Chen</span>
+      <span class="live-badge"><i class="fas fa-circle" style="font-size:0.45rem;"></i> LIVE</span>
+    </div>
+  </div>
+
+  <!-- summary -->
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-icon"><i class="fas fa-receipt"></i></div>
+      <div class="summary-content">
+        <div class="label">Total Due</div>
+        <div class="value" id="totalDue">$0</div>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon"><i class="fas fa-check-circle"></i></div>
+      <div class="summary-content">
+        <div class="label">Paid</div>
+        <div class="value" id="totalPaid">$0</div>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon"><i class="fas fa-clock"></i></div>
+      <div class="summary-content">
+        <div class="label">Pending</div>
+        <div class="value" id="totalPending">$0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- main grid -->
+  <div class="main-grid">
+    <!-- left: fee table -->
+    <div>
+      <div class="section-title">
+        <h2><i class="fas fa-list-ul"></i> Fee breakdown</h2>
+        <span style="font-size:0.7rem; color:#4f6e8e;">semester · Spring 2026</span>
+      </div>
+      <table class="fee-table" id="feeTable">
+        <thead>
+          <tr><th>Description</th><th>Due</th><th>Status</th><th style="text-align:right;">Amount</th><th></th></tr>
+        </thead>
+        <tbody id="feeTableBody">
+          <!-- injected by js -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- right: payment form -->
+    <div class="payment-form">
+      <h3><i class="fas fa-credit-card"></i> Make payment</h3>
+      <div class="form-group">
+        <label for="feeSelect">Select fee to pay</label>
+        <select id="feeSelect">
+          <option value="">— choose —</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="amountInput">Amount ($)</label>
+        <input type="number" id="amountInput" placeholder="0.00" step="0.01" min="0" />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cardName">Cardholder name</label>
+          <input type="text" id="cardName" placeholder="Full name" />
+        </div>
+        <div class="form-group">
+          <label for="cardNumber">Card number</label>
+          <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="expiry">Expiry</label>
+          <input type="text" id="expiry" placeholder="MM/YY" />
+        </div>
+        <div class="form-group">
+          <label for="cvv">CVV</label>
+          <input type="text" id="cvv" placeholder="123" />
+        </div>
+      </div>
+      <button class="pay-submit" id="payBtn"><i class="fas fa-lock"></i> Pay now</button>
+      <div class="payment-note"><i class="fas fa-shield-alt"></i> Secured · test mode</div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div class="portal-footer">
+    <span><i class="far fa-clock"></i> updated: <span id="updateTime">just now</span></span>
+    <span><i class="fas fa-sync-alt fa-fw"></i> auto‑sync</span>
+  </div>
+</div>
+
+<script>
+  (function() {
+    "use strict";
+
+    // ----- fee data -----
+    let fees = [
+      { id: 1, description: 'Tuition - Spring 2026', amount: 3250.00, status: 'pending' },
+      { id: 2, description: 'Lab fee - Computer Science', amount: 150.00, status: 'pending' },
+      { id: 3, description: 'Library fee', amount: 45.00, status: 'paid' },
+      { id: 4, description: 'Student activity fee', amount: 80.00, status: 'pending' },
+      { id: 5, description: 'Health insurance', amount: 220.00, status: 'overdue' },
+    ];
+
+    // ----- DOM refs -----
+    const tbody = document.getElementById('feeTableBody');
+    const feeSelect = document.getElementById('feeSelect');
+    const amountInput = document.getElementById('amountInput');
+    const payBtn = document.getElementById('payBtn');
+    const totalDueEl = document.getElementById('totalDue');
+    const totalPaidEl = document.getElementById('totalPaid');
+    const totalPendingEl = document.getElementById('totalPending');
+    const updateTimeSpan = document.getElementById('updateTime');
+
+    // ----- helpers -----
+    function updateTimestamp() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2,'0');
+      const m = String(now.getMinutes()).padStart(2,'0');
+      updateTimeSpan.textContent = `${h}:${m}`;
+    }
+
+    function formatCurrency(amount) {
+      return '$' + amount.toFixed(2);
+    }
+
+    function getStatusBadge(status) {
+      const map = {
+        'paid': '<span class="status-badge paid"><i class="fas fa-check-circle"></i> Paid</span>',
+        'pending': '<span class="status-badge pending"><i class="fas fa-clock"></i> Pending</span>',
+        'overdue': '<span class="status-badge overdue"><i class="fas fa-exclamation-triangle"></i> Overdue</span>'
+      };
+      return map[status] || map.pending;
+    }
+
+    // ----- render fee table & update select / summary -----
+    function renderAll() {
+      // table rows
+      let html = '';
+      fees.forEach(f => {
+        const statusHtml = getStatusBadge(f.status);
+        const isPaid = f.status === 'paid';
+        const payBtnHtml = isPaid 
+          ? '<button class="pay-btn" disabled><i class="fas fa-check"></i> Paid</button>' 
+          : `<button class="pay-btn" data-id="${f.id}"><i class="fas fa-credit-card"></i> Pay</button>`;
+        html += `
+          <tr>
+            <td>${f.description}</td>
+            <td>${f.status === 'overdue' ? '<span style="color:#b91c1c;font-weight:500;">Overdue</span>' : '—'}</td>
+            <td>${statusHtml}</td>
+            <td style="text-align:right; font-weight:600;">${formatCurrency(f.amount)}</td>
+            <td style="text-align:right;">${payBtnHtml}</td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+
+      // update select dropdown
+      const pendingFees = fees.filter(f => f.status !== 'paid');
+      feeSelect.innerHTML = '<option value="">— choose —</option>';
+      pendingFees.forEach(f => {
+        const opt = document.createElement('option');
+        opt.value = f.id;
+        opt.textContent = `${f.description} (${formatCurrency(f.amount)})`;
+        feeSelect.appendChild(opt);
+      });
+
+      // update summary
+      const totalDue = fees.reduce((sum, f) => sum + f.amount, 0);
+      const totalPaid = fees.filter(f => f.status === 'paid').reduce((sum, f) => sum + f.amount, 0);
+      const totalPending = fees.filter(f => f.status !== 'paid').reduce((sum, f) => sum + f.amount, 0);
+      totalDueEl.textContent = formatCurrency(totalDue);
+      totalPaidEl.textContent = formatCurrency(totalPaid);
+      totalPendingEl.textContent = formatCurrency(totalPending);
+
+      // if a fee is selected, update amount field
+      const selectedId = parseInt(feeSelect.value);
+      if (selectedId) {
+        const found = fees.find(f => f.id === selectedId);
+        if (found) amountInput.value = found.amount.toFixed(2);
+      } else {
+        // keep amount as is
+      }
+
+      updateTimestamp();
+    }
+
+    // ----- handle "Pay" button inside table (quick pay) -----
+    function handleTablePay(id) {
+      const fee = fees.find(f => f.id === id);
+      if (!fee || fee.status === 'paid') return;
+      // simulate payment: mark as paid
+      fee.status = 'paid';
+      renderAll();
+      // show feedback
+      const msg = `✅ Payment for "${fee.description}" completed (simulated).`;
+      alert(msg);
+    }
+
+    // ----- handle "Pay now" from form -----
+    function handleFormPay() {
+      const selectedId = parseInt(feeSelect.value);
+      if (!selectedId) {
+        alert('Please select a fee to pay.');
+        return;
+      }
+      const fee = fees.find(f => f.id === selectedId);
+      if (!fee) return;
+      if (fee.status === 'paid') {
+        alert('This fee is already paid.');
+        return;
+      }
+
+      const amount = parseFloat(amountInput.value);
+      if (isNaN(amount) || amount <= 0) {
+        alert('Please enter a valid amount.');
+        return;
+      }
+      // simple validation for card fields (just check non-empty)
+      const cardName = document.getElementById('cardName').value.trim();
+      const cardNumber = document.getElementById('cardNumber').value.trim();
+      const expiry = document.getElementById('expiry').value.trim();
+      const cvv = document.getElementById('cvv').value.trim();
+      if (!cardName || !cardNumber || !expiry || !cvv) {
+        alert('Please fill in all card details (test mode).');
+        return;
+      }
+
+      // mark as paid
+      fee.status = 'paid';
+      // update amount if user changed it (we use the selected fee's amount)
+      // but we set the fee amount to the paid amount (in case they paid partial? we just mark full)
+      // we'll keep original amount
+      renderAll();
+      alert(`✅ Payment of ${formatCurrency(amount)} for "${fee.description}" successful (simulated).`);
+      // reset form
+      feeSelect.value = '';
+      amountInput.value = '';
+      document.getElementById('cardName').value = '';
+      document.getElementById('cardNumber').value = '';
+      document.getElementById('expiry').value = '';
+      document.getElementById('cvv').value = '';
+    }
+
+    // ----- event delegation for table pay buttons -----
+    tbody.addEventListener('click', (e) => {
+      const btn = e.target.closest('.pay-btn');
+      if (!btn) return;
+      if (btn.disabled) return;
+      const id = parseInt(btn.dataset.id);
+      if (!isNaN(id)) handleTablePay(id);
+    });
+
+    // ----- form pay button -----
+    payBtn.addEventListener('click', handleFormPay);
+
+    // ----- auto-fill amount when select changes -----
+    feeSelect.addEventListener('change', () => {
+      const id = parseInt(feeSelect.value);
+      if (id) {
+        const fee = fees.find(f => f.id === id);
+        if (fee) amountInput.value = fee.amount.toFixed(2);
+      } else {
+        amountInput.value = '';
+      }
+    });
+
+    // ----- init -----
+    renderAll();
+
+    // ----- live simulation: update timestamps & random status flip (demo) -----
+    setInterval(() => {
+      // update timestamp
+      updateTimestamp();
+
+      // subtle: flip one pending/overdue to paid (to simulate live payment)
+      // only if there is at least one non-paid
+      const nonPaid = fees.filter(f => f.status !== 'paid');
+      if (nonPaid.length > 0 && Math.random() > 0.65) {
+        const randomFee = nonPaid[Math.floor(Math.random() * nonPaid.length)];
+        randomFee.status = 'paid';
+        renderAll();
+        // show a tiny visual clue (we won't alert to keep it smooth)
+      }
+    }, 30000); // every 30 sec
+  })();
+</script>
+</body>
+</html>

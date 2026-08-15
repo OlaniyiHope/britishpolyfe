@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Staff · Profile System</title>
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: #f2f6fc;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    /* main card – profile system */
+    .profile-system {
+      max-width: 1300px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 40px;
+      box-shadow: 0 25px 50px -12px rgba(0, 20, 40, 0.25);
+      padding: 30px 28px 36px;
+      transition: all 0.2s;
+    }
+
+    /* header */
+    .system-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .system-header h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #0c1e30;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .system-header h1 i {
+      color: #1f6feb;
+      font-size: 1.9rem;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .header-actions .badge-live {
+      background: #dc3545;
+      color: white;
+      font-weight: 600;
+      font-size: 0.7rem;
+      letter-spacing: 0.4px;
+      padding: 5px 14px 5px 12px;
+      border-radius: 40px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      animation: livePulse 1.8s infinite;
+    }
+
+    @keyframes livePulse {
+      0% { opacity: 0.7; transform: scale(0.97); }
+      50% { opacity: 1; transform: scale(1.02); }
+      100% { opacity: 0.7; transform: scale(0.97); }
+    }
+
+    .staff-count-badge {
+      background: #e4edf8;
+      padding: 6px 18px;
+      border-radius: 40px;
+      font-weight: 500;
+      color: #15304c;
+      font-size: 0.9rem;
+    }
+
+    .staff-count-badge i {
+      margin-right: 6px;
+      color: #1f6feb;
+    }
+
+    /* profile grid */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 26px 24px;
+      margin: 10px 0 12px;
+    }
+
+    /* profile card */
+    .profile-card {
+      background: #ffffff;
+      border-radius: 32px;
+      padding: 22px 18px 20px;
+      border: 1px solid #eef3f9;
+      box-shadow: 0 4px 12px rgba(0, 20, 30, 0.02);
+      transition: 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .profile-card:hover {
+      border-color: #c7d9ec;
+      box-shadow: 0 12px 28px -8px rgba(22, 60, 110, 0.08);
+      transform: translateY(-3px);
+    }
+
+    /* avatar + primary info */
+    .profile-top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .avatar-large {
+      width: 68px;
+      height: 68px;
+      background: linear-gradient(145deg, #d3e2f5, #b8cde5);
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 500;
+      color: #102a44;
+      flex-shrink: 0;
+    }
+
+    .profile-title {
+      flex: 1;
+    }
+
+    .profile-title .name {
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: #0b1e31;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .profile-title .role {
+      font-size: 0.85rem;
+      color: #4b6b8a;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .profile-title .role i {
+      color: #6f8aa8;
+      font-size: 0.7rem;
+    }
+
+    /* status row */
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 8px 0 12px;
+      padding: 6px 0;
+      border-top: 1px solid #eaf0f7;
+      border-bottom: 1px solid #eaf0f7;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 6px 14px 6px 10px;
+      border-radius: 40px;
+      background: #eef3fa;
+      color: #1f3b5a;
+    }
+
+    .status-chip i {
+      font-size: 0.5rem;
+    }
+
+    .status-chip.online {
+      background: #e0f2e9;
+      color: #0b6e4f;
+    }
+    .status-chip.online i { color: #14a06b; }
+
+    .status-chip.away {
+      background: #fef3dd;
+      color: #8f6b1a;
+    }
+    .status-chip.away i { color: #d99b2b; }
+
+    .status-chip.offline {
+      background: #eef0f3;
+      color: #4f627a;
+    }
+    .status-chip.offline i { color: #7f8fa3; }
+
+    .time-tag {
+      font-size: 0.7rem;
+      background: #f3f8ff;
+      padding: 3px 12px;
+      border-radius: 30px;
+      color: #567394;
+    }
+
+    /* profile details (meta) */
+    .profile-details {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 10px 0 14px;
+      font-size: 0.88rem;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #1d3957;
+    }
+
+    .detail-item i {
+      width: 20px;
+      color: #5f7d9c;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .detail-item .label {
+      color: #5c7896;
+      min-width: 70px;
+      font-weight: 400;
+    }
+
+    .detail-item .value {
+      font-weight: 500;
+      color: #0a223a;
+    }
+
+    /* actions */
+    .profile-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 16px;
+      margin-top: 8px;
+      border-top: 1px solid #ecf2f9;
+      padding-top: 14px;
+    }
+
+    .profile-actions i {
+      color: #7f96b3;
+      cursor: pointer;
+      transition: 0.1s;
+      font-size: 1rem;
+    }
+
+    .profile-actions i:hover {
+      color: #1f6feb;
+    }
+
+    .profile-actions .delete-icon:hover {
+      color: #dc3545;
+    }
+
+    /* empty state */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 50px 20px;
+      color: #4b6a89;
+      background: #fafdff;
+      border-radius: 48px;
+      border: 1px dashed #c2d6ec;
+    }
+
+    .empty-state i {
+      font-size: 2.8rem;
+      color: #b0c8e0;
+      margin-bottom: 12px;
+    }
+
+    /* toolbar */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0 16px;
+      gap: 16px;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: #f1f6fd;
+      border-radius: 60px;
+      padding: 0 8px 0 18px;
+      flex: 1 1 220px;
+      min-width: 170px;
+      border: 1px solid transparent;
+      transition: 0.15s;
+    }
+
+    .search-box:focus-within {
+      background: #ffffff;
+      border-color: #1f6feb;
+      box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.12);
+    }
+
+    .search-box i {
+      color: #6f89a8;
+    }
+
+    .search-box input {
+      border: none;
+      background: transparent;
+      padding: 12px 10px;
+      font-size: 0.95rem;
+      width: 100%;
+      outline: none;
+      color: #11273f;
+    }
+
+    .search-box input::placeholder {
+      color: #8da3bd;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      background: white;
+      border: 1px solid #d8e2ef;
+      padding: 7px 18px;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 0.8rem;
+      color: #1d3957;
+      cursor: pointer;
+      transition: 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-btn i {
+      font-size: 0.75rem;
+      color: #617e9e;
+    }
+
+    .filter-btn:hover {
+      background: #e9f0fa;
+      border-color: #a6bdd9;
+    }
+
+    .filter-btn.active {
+      background: #1f6feb;
+      border-color: #1f6feb;
+      color: white;
+    }
+
+    .filter-btn.active i {
+      color: white;
+    }
+
+    .add-btn {
+      background: #112a42;
+      border: none;
+      color: white;
+      padding: 8px 24px;
+      border-radius: 60px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: 0.15s;
+      box-shadow: 0 4px 10px rgba(0, 20, 40, 0.06);
+    }
+
+    .add-btn i {
+      font-size: 0.85rem;
+    }
+
+    .add-btn:hover {
+      background: #051a2b;
+      transform: scale(1.01);
+    }
+
+    /* footer */
+    .system-footer {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: #5f7b99;
+      border-top: 1px solid #e7eef8;
+      padding-top: 20px;
+    }
+
+    .system-footer i {
+      margin-right: 4px;
+    }
+
+    @media (max-width: 640px) {
+      .profile-system { padding: 20px 14px 28px; }
+      .system-header h1 { font-size: 1.6rem; }
+      .profile-grid { grid-template-columns: 1fr; }
+      .toolbar { flex-direction: column; align-items: stretch; }
+      .add-btn { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<style>
+  .page-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 12px 18px;
+    background: #0a1e3c;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .page-nav strong {
+    color: #ffffff;
+    margin-right: 6px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .page-nav a {
+    color: #dfeaff;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    transition: background 0.2s ease;
+  }
+  .page-nav a:hover {
+    background: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+</style>
+<div class="page-nav"><strong>Pages</strong><a href="page1.html">Staff Home</a><a href="page.10.html">page 10</a><a href="page.12.html">page 12</a><a href="page.14.html">page 14</a><a href="page.15.html">page 15</a><a href="page1.html">page1</a><a href="page11.html">page11</a><a href="page16.html">page16</a><a href="page17.html">page17</a><a href="page18.html">page18</a><a href="page2.html">page2</a><a href="page3.html">page3</a><a href="page4.html">page4</a><a href="page5.html">page5</a><a href="page6.html">page6</a><a href="page7.html">page7</a><a href="page8.html">page8</a><a href="page9.html">page9</a></div>
+<div class="profile-system" id="profileApp">
+  <!-- header -->
+  <div class="system-header">
+    <h1><i class="fas fa-id-card"></i> Staff profiles</h1>
+    <div class="header-actions">
+      <span class="badge-live"><i class="fas fa-circle" style="font-size: 0.5rem;"></i> LIVE</span>
+      <span class="staff-count-badge"><i class="fas fa-user-check"></i> <span id="profileCounter">0</span></span>
+    </div>
+  </div>
+
+  <!-- toolbar -->
+  <div class="toolbar">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="profileSearch" placeholder="Search by name, role...">
+    </div>
+    <div class="filter-group">
+      <button class="filter-btn active" data-filter="all"><i class="fas fa-th"></i> All</button>
+      <button class="filter-btn" data-filter="online"><i class="fas fa-circle" style="color:#14a06b;"></i> Online</button>
+      <button class="filter-btn" data-filter="away"><i class="fas fa-clock" style="color:#d99b2b;"></i> Away</button>
+      <button class="filter-btn" data-filter="offline"><i class="fas fa-circle" style="color:#7f8fa3;"></i> Offline</button>
+    </div>
+    <button class="add-btn" id="addProfileBtn"><i class="fas fa-plus"></i> Add profile</button>
+  </div>
+
+  <!-- profile grid -->
+  <div class="profile-grid" id="profileGrid"></div>
+
+  <!-- footer -->
+  <div class="system-footer">
+    <span><i class="far fa-clock"></i> updated: <span id="updateTime">just now</span></span>
+    <span><i class="fas fa-sync-alt fa-fw"></i> auto‑sync</span>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // ----- initial staff data (rich profiles) -----
+    const defaultProfiles = [
+      { id: 1, name: "Elena Vogt", role: "Product Lead", email: "elena.v@staff.co", phone: "+1 212 555 0123", status: "online", time: "Active now" },
+      { id: 2, name: "Marcus Chen", role: "Senior Developer", email: "m.chen@staff.co", phone: "+1 415 555 7890", status: "online", time: "Active 5m ago" },
+      { id: 3, name: "Aisha Patel", role: "UX Designer", email: "a.patel@staff.co", phone: "+44 20 7946 0321", status: "away", time: "Away · 15m" },
+      { id: 4, name: "James Okafor", role: "DevOps Engineer", email: "j.okafor@staff.co", phone: "+234 803 555 4567", status: "offline", time: "Offline · 2h" },
+      { id: 5, name: "Lena Kowalski", role: "Content Strategist", email: "l.kowalski@staff.co", phone: "+49 30 555 9876", status: "online", time: "Active now" },
+      { id: 6, name: "David Kim", role: "Frontend Lead", email: "d.kim@staff.co", phone: "+1 213 555 2468", status: "away", time: "In meeting" },
+      { id: 7, name: "Sophie Turner", role: "QA Specialist", email: "s.turner@staff.co", phone: "+61 2 555 1357", status: "offline", time: "Offline · 1d" },
+      { id: 8, name: "Carlos Rivera", role: "Backend Developer", email: "c.rivera@staff.co", phone: "+52 55 555 8024", status: "online", time: "Active 10m ago" },
+    ];
+
+    // ----- state -----
+    let profiles = [...defaultProfiles];
+    let currentFilter = 'all';
+    let searchTerm = '';
+
+    // DOM refs
+    const grid = document.getElementById('profileGrid');
+    const searchInput = document.getElementById('profileSearch');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const counterSpan = document.getElementById('profileCounter');
+    const updateTimeSpan = document.getElementById('updateTime');
+
+    // ----- helpers -----
+    function updateTimestamp() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2,'0');
+      const m = String(now.getMinutes()).padStart(2,'0');
+      updateTimeSpan.textContent = `${h}:${m}`;
+    }
+
+    // ----- render profiles -----
+    function render() {
+      // filter + search
+      let filtered = profiles.filter(p => {
+        if (currentFilter !== 'all' && p.status !== currentFilter) return false;
+        if (searchTerm.trim() !== '') {
+          const term = searchTerm.trim().toLowerCase();
+          return p.name.toLowerCase().includes(term) || 
+                 p.role.toLowerCase().includes(term) ||
+                 p.email.toLowerCase().includes(term);
+        }
+        return true;
+      });
+
+      // update counter
+      counterSpan.textContent = filtered.length;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-address-card"></i>
+            <p style="font-weight: 500; margin-top: 6px;">No profiles match</p>
+            <p style="font-size:0.85rem; margin-top:4px;">Try adjusting filters or search</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      filtered.forEach(p => {
+        const statusClass = p.status;
+        const statusIcon = p.status === 'online' ? 'fa-circle' : 
+                           p.status === 'away' ? 'fa-clock' : 'fa-circle';
+        const initial = p.name.charAt(0).toUpperCase();
+
+        html += `
+          <div class="profile-card" data-id="${p.id}">
+            <div class="profile-top">
+              <div class="avatar-large">${initial}</div>
+              <div class="profile-title">
+                <div class="name">${p.name}</div>
+                <div class="role"><i class="fas fa-briefcase"></i> ${p.role}</div>
+              </div>
+            </div>
+
+            <div class="status-row">
+              <span class="status-chip ${statusClass}">
+                <i class="fas ${statusIcon}"></i> ${p.status.charAt(0).toUpperCase() + p.status.slice(1)}
+              </span>
+              <span class="time-tag"><i class="far fa-clock"></i> ${p.time}</span>
+            </div>
+
+            <div class="profile-details">
+              <div class="detail-item">
+                <i class="fas fa-envelope"></i>
+                <span class="label">Email</span>
+                <span class="value">${p.email}</span>
+              </div>
+              <div class="detail-item">
+                <i class="fas fa-phone-alt"></i>
+                <span class="label">Phone</span>
+                <span class="value">${p.phone}</span>
+              </div>
+            </div>
+
+            <div class="profile-actions">
+              <i class="far fa-edit" data-action="edit" data-id="${p.id}"></i>
+              <i class="far fa-trash-alt delete-icon" data-action="delete" data-id="${p.id}"></i>
+            </div>
+          </div>
+        `;
+      });
+
+      grid.innerHTML = html;
+      updateTimestamp();
+    }
+
+    // ----- CRUD -----
+    function addProfile() {
+      const name = prompt('Enter full name:');
+      if (name === null || name.trim() === '') return;
+      const role = prompt('Role (e.g. "Designer"):') || 'Staff';
+      const email = prompt('Email:') || 'user@staff.co';
+      const phone = prompt('Phone number:') || '+0 000 000 0000';
+      let status = 'online';
+      const statusInput = prompt('Status (online / away / offline):', 'online');
+      if (statusInput && ['online','away','offline'].includes(statusInput.trim().toLowerCase())) {
+        status = statusInput.trim().toLowerCase();
+      }
+      const newId = profiles.length ? Math.max(...profiles.map(p => p.id)) + 1 : 1;
+      profiles.push({
+        id: newId,
+        name: name.trim(),
+        role: role.trim(),
+        email: email.trim() || 'no-email@staff.co',
+        phone: phone.trim() || '—',
+        status: status,
+        time: 'Just added',
+      });
+      render();
+    }
+
+    function deleteProfile(id) {
+      if (!confirm('Permanently remove this profile?')) return;
+      profiles = profiles.filter(p => p.id !== id);
+      render();
+    }
+
+    function editProfile(id) {
+      const profile = profiles.find(p => p.id === id);
+      if (!profile) return;
+      const newName = prompt('Edit name:', profile.name);
+      if (newName === null) return;
+      const newRole = prompt('Edit role:', profile.role);
+      if (newRole === null) return;
+      const newEmail = prompt('Edit email:', profile.email);
+      if (newEmail === null) return;
+      const newPhone = prompt('Edit phone:', profile.phone);
+      if (newPhone === null) return;
+      const newStatus = prompt('Edit status (online / away / offline):', profile.status);
+      let status = profile.status;
+      if (newStatus !== null) {
+        const cleaned = newStatus.trim().toLowerCase();
+        if (['online','away','offline'].includes(cleaned)) status = cleaned;
+      }
+      profile.name = newName.trim() || profile.name;
+      profile.role = newRole.trim() || profile.role;
+      profile.email = newEmail.trim() || profile.email;
+      profile.phone = newPhone.trim() || profile.phone;
+      profile.status = status;
+      profile.time = 'Updated now';
+      render();
+    }
+
+    // ----- event delegation (edit/delete) -----
+    grid.addEventListener('click', (e) => {
+      const target = e.target.closest('[data-action]');
+      if (!target) return;
+      const action = target.dataset.action;
+      const id = Number(target.dataset.id);
+      if (isNaN(id)) return;
+
+      if (action === 'delete') deleteProfile(id);
+      else if (action === 'edit') editProfile(id);
+    });
+
+    // ----- filter & search -----
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        render();
+      });
+    });
+
+    searchInput.addEventListener('input', (e) => {
+      searchTerm = e.target.value;
+      render();
+    });
+
+    // ----- add button -----
+    document.getElementById('addProfileBtn').addEventListener('click', addProfile);
+
+    // ----- initial render -----
+    render();
+
+    // ----- live simulation: update timestamps & randomize status activity -----
+    setInterval(() => {
+      // update timestamp
+      updateTimestamp();
+
+      // simulate live activity: rotate time messages & occasionally flip status
+      profiles.forEach(p => {
+        // rotate time messages based on status
+        if (p.status === 'online') {
+          const msgs = ['Active now', 'Active 2m ago', 'Active 5m ago', 'Just joined', 'Active now'];
+          p.time = msgs[Math.floor(Math.random() * msgs.length)];
+        } else if (p.status === 'away') {
+          const msgs = ['Away · 5m', 'In meeting', 'Away · 10m', 'BRB', 'Away'];
+          p.time = msgs[Math.floor(Math.random() * msgs.length)];
+        } else {
+          const msgs = ['Offline · 1h', 'Offline · 2h', 'Offline · 30m', 'Offline'];
+          p.time = msgs[Math.floor(Math.random() * msgs.length)];
+        }
+
+        // tiny chance (10%) to flip status for more "live" feel
+        if (Math.random() < 0.12) {
+          const statuses = ['online', 'away', 'offline'];
+          const current = p.status;
+          let next = statuses[Math.floor(Math.random() * statuses.length)];
+          while (next === current) {
+            next = statuses[Math.floor(Math.random() * statuses.length)];
+          }
+          p.status = next;
+          // also update time to reflect change
+          p.time = p.status === 'online' ? 'Active now' : 
+                   p.status === 'away' ? 'Away' : 'Offline';
+        }
+      });
+
+      render(); // re-render with updated values
+    }, 25000); // every 25 sec
+  })();
+</script>
+</body>
+</html>
